@@ -36,7 +36,7 @@ Use repository-root-relative paths. Record unknown values as JSON `null`, not gu
 ```
 
 ## Current sample
-[Unknown tool / unknown prompt / run 001](unknown/prompt-unknown/run-001/metadata.json) registers the existing [JC1301–JC1303 JSON](../transcriptions/2020-01-16_JC1301-JC1303.json). Its output stays at the original path so the existing link remains usable. Tool, model, original prompt, and execution date are unknown until confirmed. The repository upload date is not the AI execution date.
+[ChatGPT / p001-v1 / run 001](chatgpt/p001-v1/run-001/metadata.json) registers the existing [JC1301–JC1303 JSON](../transcriptions/2020-01-16_JC1301-JC1303.json). Its output stays at the original path so the existing link remains usable. The tool is confirmed as ChatGPT and the exact user prompt is saved as [p001-v1](../prompts/p001-v1.txt). The exact model and execution date remain unknown. Source worksheet: `1.pdf` (provided in chat; not stored in the repository). The repository upload date is not the AI execution date.
 
 ## Comparison procedure
 1. Use the same approved source pages and the same prompt version across tools when comparing models. Record any unavoidable tool-specific differences.
