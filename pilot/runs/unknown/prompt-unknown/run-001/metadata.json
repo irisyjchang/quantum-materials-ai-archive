@@ -1,0 +1,24 @@
+{
+  "run_id": "unknown_prompt-unknown_001",
+  "tool": null,
+  "model": null,
+  "prompt_id": null,
+  "prompt_path": null,
+  "executed_at": null,
+  "operator": null,
+  "settings": null,
+  "input_records": [
+    "JC1301",
+    "JC1302",
+    "JC1303"
+  ],
+  "source_reference": null,
+  "output_path": "pilot/transcriptions/2020-01-16_JC1301-JC1303.json",
+  "raw_response_path": null,
+  "review_status": "unvalidated",
+  "notes": [
+    "Existing user-supplied JSON; extraction tool, model, prompt, and execution date have not been confirmed.",
+    "The date within the JSON describes the transcribed record, not the AI execution date.",
+    "Original output values are preserved; this registry does not imply a new AI run."
+  ]
+}
