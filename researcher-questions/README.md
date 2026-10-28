@@ -26,6 +26,13 @@ Which 3–5 additional growth records best represent typical records and difficu
 
 **Answer:** Pending
 
+## 🔴 P1 · 6. AI access and credits
+Does the lab or university provide access to paid AI plans (such as Claude, ChatGPT, or Gemini), API credits, or research/education programs we could use for the pilot? Who should I contact to request access, and is there a budget if needed?
+
+**Why it matters:** Helps plan which models we can test and how many runs we can support. Initial tests can continue with available access.
+
+**Answer:** Pending
+
 ## 🟡 P2 · 2. Ambiguous entries
 What are the intended overwritten `x` values for JC1301 and JC1302? Does the reference note say **Pd or Pb**?
 
