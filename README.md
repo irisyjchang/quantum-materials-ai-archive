@@ -4,7 +4,7 @@ A small pilot comparing AI extraction of scanned lab worksheets into JSON.
 
 - **[Start with the pilot](pilot/README.md)**
 - [View the first ChatGPT result](pilot/runs/chatgpt/worksheet-to-json/run-001/output.json)
-- [See its prompt](pilot/prompts/worksheet-to-json.txt)
+- [See its prompt](pilot/prompts/pdf-to-json-v1.text)
 - [Project board](https://github.com/users/irisyjchang/projects/2)
 
 The current result is **unvalidated**.
