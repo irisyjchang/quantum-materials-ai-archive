@@ -4,7 +4,7 @@
 
 - [Prompt versions](prompts/README.md): save the exact instructions used, including follow-up messages.
 - [AI runs](runs/README.md): separate results by tool, prompt version, and attempt, with model and source details in `metadata.json`.
-- [Current sample run record](runs/unknown/prompt-unknown/run-001/metadata.json): tool/model and prompt remain unknown until confirmed.
+- [Current sample run record](runs/chatgpt/p001-v1/run-001/metadata.json): ChatGPT with [prompt p001-v1](prompts/p001-v1.txt); the exact model and execution date remain unknown.
 
 For a new test, use `runs/<tool>/<prompt-id>/run-001/` with `metadata.json` and `output.json`. Keep the original response when possible. The current JSON remains at its existing link and is referenced by its run record.
 
@@ -16,8 +16,8 @@ For a new test, use `runs/<tool>/<prompt-id>/run-001/` with `metadata.json` and 
 - Source date as transcribed: `1/16/2020`.
 - Sample identifiers: JC1301, JC1302, and JC1303.
 - The user-supplied JSON values and structure are preserved, including blanks, overwritten-value markers, units, and annotations. No scientific values have been inferred or corrected.
-- Source scan / approved Dropbox link: not provided yet.
-- Extraction tool, model, and prompt: not provided yet.
+- Source worksheet filename: `1.pdf`, supplied in chat. The scan is not uploaded to this repository; approved shared-storage link is not yet recorded.
+- Extraction tool: ChatGPT. Exact model: unknown. User prompt: [p001-v1](prompts/p001-v1.txt).
 
 ## Questions for researcher review
 1. Should the composition variable `x` remain within `Compound`, or map to the separate `X` column? The separate column is blank in this draft.
