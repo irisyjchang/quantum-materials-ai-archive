@@ -1,6 +1,10 @@
 # Quantum Materials Lab — AI Archival System
 
-A small pilot comparing AI extraction of scanned lab worksheets into JSON.
+An AI-assisted archival system to organize research data from Dropbox, paper growth records, and files shared through Slack. Some sources overlap, so part of the project will be identifying duplicates and connecting related records. The goal is to make the data easier to search, sort, and use.
+
+The planned system will use AI to extract crystal-growth data into structured JSON, compare outputs across models, and flag discrepancies for human review. A web interface will support photo and file uploads across devices, with a Python/FastAPI backend and SQLite database for searchable storage, filtering, and CSV export.
+
+We’ll start with a small pilot to test different AI models and prompts before expanding to the full dataset.
 
 - **[Start with the pilot](pilot/README.md)**
 - **[Questions for the research team](researcher-questions/README.md)**
