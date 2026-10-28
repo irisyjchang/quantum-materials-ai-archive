@@ -1,5 +1,5 @@
 {
-  "run_id": "chatgpt_worksheet-to-json_001",
+  "run_id": "chatgpt_pdf-to-json_001",
   "tool": "ChatGPT",
   "model": "gpt-6.1-sol",
   "prompt_id": "pdf-to-json-v1",
@@ -15,7 +15,7 @@
     "JC1303"
   ],
   "source_reference": "1.pdf (user-supplied attachment; not stored in the repository)",
-  "output_path": "pilot/runs/chatgpt/worksheet-to-json/run-001/output.json",
+  "output_path": "pilot/runs/chatgpt/pdf-to-json/run-001/output.json",
   "raw_response_path": null,
   "review_status": "unvalidated",
   "notes": [
