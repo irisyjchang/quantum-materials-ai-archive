@@ -9,8 +9,7 @@
 ## Add another test
 Save its output and run details together under `runs/<ai>/<prompt-version>/<attempt>/`. Keep exact prompts in `prompts/`; give changed prompts a new version. Compare the same worksheet across tools.
 
-## Questions to check against the scan
-- Placement and overwritten values of `x`; `Pd` versus `Pb`.
-- Meaning of the slash in the JC1303 Pb cell, `1:20:3`, and margin annotations.
+## Questions for the team
+- **[Questions for the research team](../researcher-questions/README.md)**
 
 Original JSON values are preserved. Matching AI outputs still need researcher validation.
