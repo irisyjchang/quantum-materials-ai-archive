@@ -27,11 +27,6 @@ Which 3–5 additional worksheets best represent typical records and difficult c
 
 **Answer:** Pending
 
-## 6. Approved data handling
-Is this private GitHub repository approved for extracted JSON? Which AI tools are approved to process the scans, and where should the source scans be stored?
-
-**Answer:** Pending
-
 ## Reference
 - [Current extracted JSON](../pilot/runs/chatgpt/pdf-to-json/run01/output.json)
 - [Prompt used](../pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text)
