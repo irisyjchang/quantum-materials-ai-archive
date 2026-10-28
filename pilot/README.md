@@ -2,7 +2,7 @@
 
 ## ChatGPT — first test
 - **[View extracted JSON](runs/chatgpt/worksheet-to-json/run-001/output.json)**
-- [Prompt used](prompts/worksheet-to-json.txt) · [Run details](runs/chatgpt/worksheet-to-json/run-001/metadata.json)
+- [Prompt used](prompts/pdf-to-json-v1.text) · [Run details](runs/chatgpt/worksheet-to-json/run-001/metadata.json)
 - Input: scanned worksheet `1.pdf`, covering JC1301–JC1303, dated January 16, 2020. The scan is not uploaded here.
 - Status: **unvalidated**. Exact ChatGPT model and run date are not recorded.
 
