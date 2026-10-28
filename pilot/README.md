@@ -1,5 +1,13 @@
 # Small-dataset pilot
 
+## Compare AI tools and prompts
+
+- [Prompt versions](prompts/README.md): save the exact instructions used, including follow-up messages.
+- [AI runs](runs/README.md): separate results by tool, prompt version, and attempt, with model and source details in `metadata.json`.
+- [Current sample run record](runs/unknown/prompt-unknown/run-001/metadata.json): tool/model and prompt remain unknown until confirmed.
+
+For a new test, use `runs/<tool>/<prompt-id>/run-001/` with `metadata.json` and `output.json`. Keep the original response when possible. The current JSON remains at its existing link and is referenced by its run record.
+
 ## Status
 **Draft, unvalidated transcription.** This is an initial sample for researcher review; it has not been checked against the source scan or compared across AI tools.
 
@@ -18,7 +26,7 @@
 4. Confirm what `/` means in the JC1303 Pb field; it has not been converted to zero or null.
 5. Confirm the meaning and units of `1:20:3` and the right-margin annotations.
 
-## File organization
-Keep one JSON per source sheet, using `YYYY-MM-DD_<first-JC>-<last-JC>.json` where the identifiers and date are known. Retain the original transcription in `transcriptions/`; add reviewed corrections separately in `validated/` when confirmed. Keep scans in the lab-approved storage location and record their source reference.
+## Source-sheet naming
+Keep one JSON per source sheet, using `YYYY-MM-DD_<first-JC>-<last-JC>.json` where the identifiers and date are known. The initial supplied transcription stays in `transcriptions/`; save new tool-specific outputs under the run folders described above. Add reviewed corrections separately in `validated/` when confirmed. Keep scans in the lab-approved storage location and record their source reference.
 
 Blank measured, furnace, load, and timestamp fields mean only that the supplied draft contains no value; they do not establish that an event did not occur. Do not mark implementation tasks complete based on this sample alone.
