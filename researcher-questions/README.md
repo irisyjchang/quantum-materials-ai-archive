@@ -33,8 +33,8 @@ Is this private GitHub repository approved for extracted JSON? Which AI tools ar
 **Answer:** Pending
 
 ## Reference
-- [Current extracted JSON](../pilot/runs/chatgpt/pdf-to-json/run-001/output.json)
-- [Prompt used](../pilot/prompts/pdf-to-json-v1.text)
-- Source worksheet: `1.pdf` (not uploaded to this repository).
+- [Current extracted JSON](../pilot/runs/chatgpt/pdf-to-json/run01/output.json)
+- [Prompt used](../pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text)
+- [Source worksheet: 1.pdf](../pilot/runs/chatgpt/pdf-to-json/run01/1.pdf).
 
 [Back to the project](../README.md)
