@@ -1,9 +1,9 @@
 {
-  "run_id": "chatgpt_p001-v1_001",
+  "run_id": "chatgpt_worksheet-to-json_001",
   "tool": "ChatGPT",
   "model": null,
-  "prompt_id": "p001-v1",
-  "prompt_path": "pilot/prompts/p001-v1.txt",
+  "prompt_id": "worksheet-to-json",
+  "prompt_path": "pilot/prompts/worksheet-to-json.txt",
   "executed_at": null,
   "operator": null,
   "settings": null,
@@ -13,7 +13,7 @@
     "JC1303"
   ],
   "source_reference": "1.pdf (user-supplied attachment; not stored in the repository)",
-  "output_path": "pilot/runs/chatgpt/p001-v1/run-001/output.json",
+  "output_path": "pilot/runs/chatgpt/worksheet-to-json/run-001/output.json",
   "raw_response_path": null,
   "review_status": "unvalidated",
   "notes": [
