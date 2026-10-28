@@ -1,0 +1,146 @@
+{
+  "name": "Yue",
+  "date": "1/16/2020",
+  "reference_notes": [
+    {
+      "element": "Eu",
+      "value": "151.96"
+    },
+    {
+      "element": "Pd",
+      "value": "106.42"
+    },
+    {
+      "element": "Sn",
+      "value": "118.71"
+    },
+    {
+      "element": "As",
+      "value": "74.922"
+    }
+  ],
+  "calculated": {
+    "note": "1:20:3",
+    "columns": [
+      "#",
+      "Compound",
+      "X",
+      "Sn",
+      "Eu",
+      "Pb",
+      "As",
+      "Total (g)"
+    ],
+    "rows": [
+      {
+        "#": "JC1301",
+        "Compound": {
+          "formula": "Eu(PbₓSn₁₋ₓ)₂As₂",
+          "x": "0.0[overwritten]5"
+        },
+        "X": "",
+        "Sn": "2.0590",
+        "Eu": "0.1387",
+        "Pb": "0.0771",
+        "As": "0.2052",
+        "Total (g)": "~2.5 g",
+        "right_margin_annotation": "2738.636"
+      },
+      {
+        "#": "JC1302",
+        "Compound": {
+          "formula": "Eu(PbₓSn₁₋ₓ)₂As₂",
+          "x": "0.[overwritten]"
+        },
+        "X": "",
+        "Sn": "1.9594",
+        "Eu": "0.1393",
+        "Pb": "0.1952",
+        "As": "0.2061",
+        "Total (g)": "~2.5 g",
+        "right_margin_annotation": "2726.446"
+      },
+      {
+        "#": "JC1303",
+        "Compound": {
+          "formula": "Eu(PbₓSn₁₋ₓ)₂As₂",
+          "x": "0"
+        },
+        "X": "",
+        "Sn": "2.1580",
+        "Eu": "0.1381",
+        "Pb": "/",
+        "As": "0.2043",
+        "Total (g)": "~2.5 g",
+        "right_margin_annotation": "2750.926"
+      }
+    ]
+  },
+  "measured": {
+    "columns": [
+      "#",
+      "Compound",
+      "X",
+      "Sn",
+      "Eu",
+      "Pb",
+      "As",
+      "Total (g)"
+    ],
+    "rows": [
+      {
+        "#": "",
+        "Compound": "",
+        "X": "",
+        "Sn": "",
+        "Eu": "",
+        "Pb": "",
+        "As": "",
+        "Total (g)": ""
+      },
+      {
+        "#": "",
+        "Compound": "",
+        "X": "",
+        "Sn": "",
+        "Eu": "",
+        "Pb": "",
+        "As": "",
+        "Total (g)": ""
+      },
+      {
+        "#": "",
+        "Compound": "",
+        "X": "",
+        "Sn": "",
+        "Eu": "",
+        "Pb": "",
+        "As": "",
+        "Total (g)": ""
+      }
+    ]
+  },
+  "furnace_layout": {
+    "content": "",
+    "door": "Door"
+  },
+  "load": {
+    "label": "Load (g)",
+    "rows": [
+      [
+        "",
+        ""
+      ],
+      [
+        "",
+        ""
+      ],
+      [
+        "",
+        ""
+      ]
+    ]
+  },
+  "start_timestamp": "",
+  "end_timestamp": ""
+}

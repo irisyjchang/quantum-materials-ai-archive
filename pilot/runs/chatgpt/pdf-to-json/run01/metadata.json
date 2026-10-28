@@ -1,0 +1,27 @@
+{
+  "run_id": "chatgpt_pdf-to-json_run01",
+  "tool": "ChatGPT",
+  "model": "gpt-6.1-sol",
+  "prompt_id": "pdf-to-json-v1",
+  "prompt_path": "pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text",
+  "executed_at": null,
+  "operator": null,
+  "settings": {
+    "reasoning_effort": "medium"
+  },
+  "input_records": [
+    "JC1301",
+    "JC1302",
+    "JC1303"
+  ],
+  "source_reference": "pilot/runs/chatgpt/pdf-to-json/run01/1.pdf",
+  "output_path": "pilot/runs/chatgpt/pdf-to-json/run01/output.json",
+  "raw_response_path": null,
+  "review_status": "unvalidated",
+  "notes": [
+    "Tool, model, reasoning effort, and user prompt were confirmed by the user. Execution date and system instructions are not recorded.",
+    "The prompt requested lab_report_extraction.json; the saved response is named output.json in this run folder.",
+    "The date within the output describes the transcribed record, not the AI execution date.",
+    "Original output values are preserved; recording this metadata does not imply a new AI run."
+  ]
+}
