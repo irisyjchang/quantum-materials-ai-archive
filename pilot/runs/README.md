@@ -1,7 +1,7 @@
 # AI results
 
-**[ChatGPT — prompt pdf-to-json-v1 — first test](chatgpt/pdf-to-json/run-001/output.json)**
+**[ChatGPT — prompt pdf-to-json-v1 — first test](chatgpt/pdf-to-json/run01/output.json)**
 
-Each test folder holds `output.json` and `metadata.json` (AI, exact model when known, prompt, source, and review status). Use a new attempt folder for each rerun.
+Each run folder contains its README, source PDF, prompt file, `metadata.json`, and `output.json`. Use `run02` for another attempt.
 
 [Back to the pilot](../README.md)
