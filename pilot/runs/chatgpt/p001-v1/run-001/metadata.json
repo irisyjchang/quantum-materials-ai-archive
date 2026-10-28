@@ -12,12 +12,12 @@
     "JC1302",
     "JC1303"
   ],
-  "source_reference": null,
+  "source_reference": "1.pdf (user-supplied attachment; not stored in the repository)",
   "output_path": "pilot/transcriptions/2020-01-16_JC1301-JC1303.json",
   "raw_response_path": null,
   "review_status": "unvalidated",
   "notes": [
-    "Tool and user prompt were confirmed by the user. Exact model, execution date, system instructions, and source attachment are not recorded.",
+    "Tool and user prompt were confirmed by the user. Exact model, execution date, and system instructions are not recorded.",
     "The prompt requested lab_report_extraction.json; the repository uses a source-sheet-specific filename for organization.",
     "The date within the output describes the transcribed record, not the AI execution date.",
     "Original output values are preserved; recording this metadata does not imply a new AI run."
