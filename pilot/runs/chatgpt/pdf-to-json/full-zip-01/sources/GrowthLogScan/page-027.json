@@ -1,0 +1,128 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 27,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhong - 28 Nov 2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Mn",
+      "Te",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Mn",
+      "Te",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "746",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "746",
+            "Compound": {
+              "formula": "α-MnTe",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0"
+              },
+              {
+                "column": "n",
+                "value": "0.0329"
+              },
+              {
+                "column": "Mn",
+                "value": "1.8058"
+              },
+              {
+                "column": "Te",
+                "value": "4.1942"
+              },
+              {
+                "column": "Total (g)",
+                "value": "6.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "746",
+            "Compound": {
+              "formula": "α-MnTe",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0329"
+              },
+              {
+                "column": "Mn",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "6.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Firing Pattern\nRamp to [overwritten]1000°C 750 in 3 h/180 min. Dwell for 10 days/9000+5400 min. Shut down.",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "6"
+    ],
+    [
+      "Mn",
+      "54.938"
+    ],
+    [
+      "Te",
+      "127.6"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

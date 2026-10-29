@@ -1,0 +1,561 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 28,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhong - 27 November 2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Mo",
+      "W",
+      "Se",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Mo",
+      "W",
+      "Se",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "740",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "740",
+            "Compound": {
+              "formula": "MoSe₂ → Mo Se 20",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9524"
+              },
+              {
+                "column": "n",
+                "value": "0.0024"
+              },
+              {
+                "column": "Mo",
+                "value": "0.2291"
+              },
+              {
+                "column": "W",
+                "value": ""
+              },
+              {
+                "column": "Se",
+                "value": "3.7709"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "740",
+            "Compound": {
+              "formula": "MoSe₂ → Mo Se 20",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9524"
+              },
+              {
+                "column": "n",
+                "value": "0.0024"
+              },
+              {
+                "column": "Mo",
+                "value": "0.2304"
+              },
+              {
+                "column": "W",
+                "value": ""
+              },
+              {
+                "column": "Se",
+                "value": "3.8020"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "741",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "741",
+            "Compound": {
+              "formula": "W Se₂ → W Se 20",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9524"
+              },
+              {
+                "column": "n",
+                "value": "0.0023"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "W",
+                "value": "0.4170"
+              },
+              {
+                "column": "Se",
+                "value": "3.5830"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "741",
+            "Compound": {
+              "formula": "W Se₂ → W Se 20",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9524"
+              },
+              {
+                "column": "n",
+                "value": "0.0023"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "W",
+                "value": "0.4200"
+              },
+              {
+                "column": "Se",
+                "value": "3.629"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "742",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "742",
+            "Compound": {
+              "formula": "MoSe₂ → Mo Se 10",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9091"
+              },
+              {
+                "column": "n",
+                "value": "0.0045"
+              },
+              {
+                "column": "Mo",
+                "value": "0.4333"
+              },
+              {
+                "column": "W",
+                "value": ""
+              },
+              {
+                "column": "Se",
+                "value": "3.5667"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "742",
+            "Compound": {
+              "formula": "MoSe₂ → Mo Se 10",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9091"
+              },
+              {
+                "column": "n",
+                "value": "0.0045"
+              },
+              {
+                "column": "Mo",
+                "value": "0.4353"
+              },
+              {
+                "column": "W",
+                "value": ""
+              },
+              {
+                "column": "Se",
+                "value": "3.6021"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "743",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "743",
+            "Compound": {
+              "formula": "W Se₂ → W Se 10",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9091"
+              },
+              {
+                "column": "n",
+                "value": "0.0041"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "W",
+                "value": "0.7553"
+              },
+              {
+                "column": "Se",
+                "value": "3.2447"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "743",
+            "Compound": {
+              "formula": "W Se₂ → W Se 10",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.9091"
+              },
+              {
+                "column": "n",
+                "value": "0.0041"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "W",
+                "value": "0.7505"
+              },
+              {
+                "column": "Se",
+                "value": "3.2947"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "744",
+      "Calculated": [
+        {
+          "row_number": 5,
+          "transcription": {
+            "#": "744",
+            "Compound": {
+              "formula": "MoSe₂ → Mo Se 5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.8333"
+              },
+              {
+                "column": "n",
+                "value": "0.0081"
+              },
+              {
+                "column": "Mo",
+                "value": "0.7820"
+              },
+              {
+                "column": "W",
+                "value": ""
+              },
+              {
+                "column": "Se",
+                "value": "3.2180"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 5,
+          "transcription": {
+            "#": "744",
+            "Compound": {
+              "formula": "MoSe₂ → Mo Se 5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.8333"
+              },
+              {
+                "column": "n",
+                "value": "0.0081"
+              },
+              {
+                "column": "Mo",
+                "value": "0.7849"
+              },
+              {
+                "column": "W",
+                "value": ""
+              },
+              {
+                "column": "Se",
+                "value": "3.2533"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "745",
+      "Calculated": [
+        {
+          "row_number": 6,
+          "transcription": {
+            "#": "745",
+            "Compound": {
+              "formula": "W Se₂ → W Se 5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.8333"
+              },
+              {
+                "column": "n",
+                "value": "0.0069"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "W",
+                "value": "1.2707"
+              },
+              {
+                "column": "Se",
+                "value": "2.7293"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 6,
+          "transcription": {
+            "#": "745",
+            "Compound": {
+              "formula": "W Se₂ → W Se 5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.8333"
+              },
+              {
+                "column": "n",
+                "value": "0.0069"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "W",
+                "value": "1.275"
+              },
+              {
+                "column": "Se",
+                "value": "2.7581"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Firing Pattern\nRamp to 1000°C in 48 h/2880 min. Dwell at 1000°C for 72 h/4320 min. Ramp to 400°C at 1.5°C/h → Ramp to 800°C from 1000°C in 8000 min. Ramp to 600°C from 800°C in 8000 min. Ramp to 400°C from 600°C in 8000 min. Decant.",
+  "Furnace Layout": [
+    [
+      "740",
+      "741"
+    ],
+    [
+      "742",
+      "743"
+    ],
+    [
+      "744",
+      "745"
+    ],
+    "↑ back"
+  ],
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "Mo",
+      "95.95"
+    ],
+    [
+      "W",
+      "183.84"
+    ],
+    [
+      "Se",
+      "78.971"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

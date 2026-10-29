@@ -1,0 +1,374 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 9,
+  "review_status": "unvalidated",
+  "top_annotations": "20191225 Qianni Zhaoyu Zhong",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "AuPd alloy",
+      "Te",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "AuPd alloy",
+      "Te",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC1268",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1268",
+            "Compound": {
+              "formula": "Au₀.₄Pd₀.₆Te₅ flux (decant 440°C)",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "AuPd alloy",
+                "value": "0.2307"
+              },
+              {
+                "column": "Te",
+                "value": "1.0319"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1268",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "AuPd alloy",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": "1.0369"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "JC1269",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1269",
+            "Compound": {
+              "formula": "Au₀.₄Pd₀.₆Te₅ (435°C)",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "AuPd alloy",
+                "value": "0.2119"
+              },
+              {
+                "column": "Te",
+                "value": "0.9478"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1269",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "AuPd alloy",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": "0.9486"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "AuPd alloy",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": "1"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "AuPd alloy",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "AuPd alloy",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "AuPd alloy",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "Au₀.₄Pd₀.₆ - 142.638616",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "Au",
+      "196.96654"
+    ],
+    [
+      "Pd",
+      "106.42"
+    ],
+    [
+      "Te",
+      "127.6"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

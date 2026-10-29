@@ -1,0 +1,394 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 8,
+  "review_status": "unvalidated",
+  "top_annotations": "Yue & Qianni",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Fe",
+      "Sb",
+      "Se/Te",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Fe",
+      "Sb",
+      "Se/Te",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC1270",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1270",
+            "Compound": {
+              "formula": "FeSb₂Se₄",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": "3.[overwritten] × 10⁻³"
+              },
+              {
+                "column": "Fe",
+                "value": "0.18[overwritten]"
+              },
+              {
+                "column": "Sb",
+                "value": "0.7916"
+              },
+              {
+                "column": "Se/Te",
+                "value": "1.0268"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1271",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1271",
+            "Compound": {
+              "formula": "FeSb₂Te₄",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "3.25 × [illegible]"
+              },
+              {
+                "column": "n",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Fe",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Sb",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Se/Te",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1272",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "JC1272",
+            "Compound": {
+              "formula": "FeSb₂Se₄",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Fe",
+                "value": "0.1816"
+              },
+              {
+                "column": "Sb",
+                "value": "0.7916"
+              },
+              {
+                "column": "Se/Te",
+                "value": "1.0268"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1273",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "JC1273",
+            "Compound": {
+              "formula": "FeSb₂Te₄",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Fe",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Sb",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Se/Te",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.1819"
+            },
+            {
+              "column": "Sb",
+              "value": "0.7918"
+            },
+            {
+              "column": "Se/Te",
+              "value": "1.6553 / 1.026[illegible]"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1270",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.1818"
+            },
+            {
+              "column": "Sb",
+              "value": "0.7913"
+            },
+            {
+              "column": "Se/Te",
+              "value": "1.0271 + 0.6326"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1271",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.18[overwritten]9"
+            },
+            {
+              "column": "Sb",
+              "value": "0.7912"
+            },
+            {
+              "column": "Se/Te",
+              "value": "1.0272"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1272",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.1814 ↓"
+            },
+            {
+              "column": "Sb",
+              "value": "0.7920 ↓"
+            },
+            {
+              "column": "Se/Te",
+              "value": "1.65[overwritten] ↓"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1273",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "1.0267\n[overwritten]\n0.6326g.\nFeSb₂Se₄ = 615.187\nFeSb₂Te₄ = 809.747",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "Fe",
+      "55.847"
+    ],
+    [
+      "Sb",
+      "121.75"
+    ],
+    [
+      "Se",
+      "78.96"
+    ],
+    [
+      "Te",
+      "127.60"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

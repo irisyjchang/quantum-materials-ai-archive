@@ -1,0 +1,384 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 21,
+  "review_status": "unvalidated",
+  "top_annotations": "Qianni + Paul\nNovember 2[overwritten],2019\nFe₁.₀₁Se₁₋ₓSₓ\nFe: 55.85\nSe: 78.96\nS: 32.07\nK: 39.10\nCl: 35.45\nAl: 26.98",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X ~n",
+      "KCl",
+      "Fe g",
+      "Se g",
+      "S g",
+      "AlCl₃ / Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X ~n",
+      "KCl",
+      "Fe g",
+      "Se g",
+      "S g",
+      "AlCl₃ / Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC1238",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1238",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X ~n",
+                "value": "x=0"
+              },
+              {
+                "column": "KCl",
+                "value": "1 (rel)"
+              },
+              {
+                "column": "Fe g",
+                "value": "0.2000"
+              },
+              {
+                "column": "Se g",
+                "value": "0.2571"
+              },
+              {
+                "column": "S g",
+                "value": "0"
+              },
+              {
+                "column": "AlCl₃ / Total (g)",
+                "value": "3.5769"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1239",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1239",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X ~n",
+                "value": "x=0.06"
+              },
+              {
+                "column": "KCl",
+                "value": "1 (rel)"
+              },
+              {
+                "column": "Fe g",
+                "value": "0.2000"
+              },
+              {
+                "column": "Se g",
+                "value": "0.2416"
+              },
+              {
+                "column": "S g",
+                "value": "0.0063"
+              },
+              {
+                "column": "AlCl₃ / Total (g)",
+                "value": "3.5769"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1240",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "JC1240",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X ~n",
+                "value": "x=0.10"
+              },
+              {
+                "column": "KCl",
+                "value": "1 (rel)"
+              },
+              {
+                "column": "Fe g",
+                "value": "0.2000"
+              },
+              {
+                "column": "Se g",
+                "value": "0.2313"
+              },
+              {
+                "column": "S g",
+                "value": "0.0104"
+              },
+              {
+                "column": "AlCl₃ / Total (g)",
+                "value": "3.5769"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X ~n",
+              "value": ""
+            },
+            {
+              "column": "KCl",
+              "value": "1.5320g"
+            },
+            {
+              "column": "Fe g",
+              "value": "0.2001"
+            },
+            {
+              "column": "Se g",
+              "value": "0.2570"
+            },
+            {
+              "column": "S g",
+              "value": "0"
+            },
+            {
+              "column": "AlCl₃ / Total (g)",
+              "value": "5.4777"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1238",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X ~n",
+              "value": ""
+            },
+            {
+              "column": "KCl",
+              "value": "1.4706g"
+            },
+            {
+              "column": "Fe g",
+              "value": "0.1998"
+            },
+            {
+              "column": "Se g",
+              "value": "0.2415"
+            },
+            {
+              "column": "S g",
+              "value": "0.0064"
+            },
+            {
+              "column": "AlCl₃ / Total (g)",
+              "value": "5.2675"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1239",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X ~n",
+              "value": ""
+            },
+            {
+              "column": "KCl",
+              "value": "1.4470g"
+            },
+            {
+              "column": "Fe g",
+              "value": "0.2002"
+            },
+            {
+              "column": "Se g",
+              "value": "0.231[overwritten]3"
+            },
+            {
+              "column": "S g",
+              "value": "0.0104"
+            },
+            {
+              "column": "AlCl₃ / Total (g)",
+              "value": "5.1610"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC1240",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X ~n",
+              "value": ""
+            },
+            {
+              "column": "KCl",
+              "value": ""
+            },
+            {
+              "column": "Fe g",
+              "value": ""
+            },
+            {
+              "column": "Se g",
+              "value": ""
+            },
+            {
+              "column": "S g",
+              "value": ""
+            },
+            {
+              "column": "AlCl₃ / Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X ~n",
+              "value": ""
+            },
+            {
+              "column": "KCl",
+              "value": ""
+            },
+            {
+              "column": "Fe g",
+              "value": ""
+            },
+            {
+              "column": "Se g",
+              "value": ""
+            },
+            {
+              "column": "S g",
+              "value": ""
+            },
+            {
+              "column": "AlCl₃ / Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "KCl: 74.55\nAlCl₃ = 133.33\n2 1\nAlCl₃ : KCl\n12CM Tube\n⇒ volume = π(0.7)²12 = 18.5cm³\nKCl density = 1.98g/cm³\nAlCl₃ density = 2.48g/cm³\n= 4.46g/cm³",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

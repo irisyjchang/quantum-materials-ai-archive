@@ -1,0 +1,358 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 3,
+  "review_status": "unvalidated",
+  "top_annotations": "Qianni Dec 25th",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "Zr",
+      "Te",
+      "I₂",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "Zr",
+      "Te",
+      "I₂",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC774",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC774",
+            "Compound": {
+              "formula": "ZrTe₂ CVT 12cm",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Zr",
+                "value": "0.2632"
+              },
+              {
+                "column": "Te",
+                "value": "0.7365"
+              },
+              {
+                "column": "I₂",
+                "value": "0.051[illegible]"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC775",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC775",
+            "Compound": {
+              "formula": "ZrTe₂ Solid State Normal",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Zr",
+                "value": "0.2633"
+              },
+              {
+                "column": "Te",
+                "value": "0.7365"
+              },
+              {
+                "column": "I₂",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": "0.264[overwritten]"
+            },
+            {
+              "column": "Te",
+              "value": "0.7366"
+            },
+            {
+              "column": "I₂",
+              "value": "0.0505"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC774",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": "0.2631"
+            },
+            {
+              "column": "Te",
+              "value": "0.7366"
+            },
+            {
+              "column": "I₂",
+              "value": "0.0524"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC775",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "CVT: Ramp to 960°C - 850°C in 24[overwritten]\nStay for 2 weeks Cool to RT in 3hrs\nJC775: Ramp to [overwritten]°C in 24hrs stay for 48[overwritten]\nRamp to 1200°C in 12hrs stay for 3hrs\nCool down to [overwritten]°C in [overwritten]hrs\nCool down to RT in 24hrs\nZr: 91.224\nTe: 127.60",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

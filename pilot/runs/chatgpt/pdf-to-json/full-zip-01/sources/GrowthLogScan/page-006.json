@@ -1,0 +1,352 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 6,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhaoyu & Qianni Dec 22, 2018\nBaFe₂(As₀.₈P₀.₂)₂",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "BaAs₂",
+      "Au₂P₃",
+      "FeAs",
+      "FeP",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "BaAs₂",
+      "Au₂P₃",
+      "FeAs",
+      "FeP",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC770",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC770",
+            "Compound": {
+              "formula": "BaFe₂[overwritten](As₀.₈P₀.₂)₂",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "BaAs₂",
+                "value": "1.8914"
+              },
+              {
+                "column": "Au₂P₃",
+                "value": "0.0323"
+              },
+              {
+                "column": "FeAs",
+                "value": "0.1577"
+              },
+              {
+                "column": "FeP",
+                "value": "0.0225"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "~2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC771",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC771",
+            "Compound": {
+              "formula": "BaFe₂(As₀.₇₆P₀.₂₄)₂",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "BaAs₂",
+                "value": "1.7906"
+              },
+              {
+                "column": "Au₂P₃",
+                "value": "0.0452"
+              },
+              {
+                "column": "FeAs",
+                "value": "0.1563"
+              },
+              {
+                "column": "FeP",
+                "value": "0.0039"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "~2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "BaAs₂",
+              "value": ""
+            },
+            {
+              "column": "Au₂P₃",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "FeP",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "BaAs₂",
+              "value": ""
+            },
+            {
+              "column": "Au₂P₃",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "FeP",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "BaAs₂",
+              "value": ""
+            },
+            {
+              "column": "Au₂P₃",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "FeP",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "BaAs₂",
+              "value": ""
+            },
+            {
+              "column": "Au₂P₃",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "FeP",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "BaAs₂",
+              "value": ""
+            },
+            {
+              "column": "Au₂P₃",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "FeP",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "BaAs₂",
+              "value": ""
+            },
+            {
+              "column": "Au₂P₃",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "FeP",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

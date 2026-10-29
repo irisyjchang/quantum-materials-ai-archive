@@ -1,0 +1,339 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 14,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhaoyu & Qianni 12/15/2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "",
+      "Ba",
+      "As",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "",
+      "Ba",
+      "As",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [],
+  "unassigned_rows": {
+    "Calculated": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "BaAs₂",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": "1.2214"
+            },
+            {
+              "column": "As",
+              "value": "1.1966"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": "1.2661"
+            },
+            {
+              "column": "As",
+              "value": "1.1998"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": "1.0444"
+            },
+            {
+              "column": "As",
+              "value": "1.1935"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": "1.573"
+            },
+            {
+              "column": "As",
+              "value": "1.2583"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": "1.1867"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": "1.1993"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": "1.1938"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": "1.2563"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

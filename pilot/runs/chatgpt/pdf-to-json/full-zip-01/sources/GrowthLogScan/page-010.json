@@ -1,0 +1,349 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 10,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhaoyu & Qianni 12/17/18",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "Gd",
+      "I₂",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "Gd",
+      "I₂",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "765",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "765",
+            "Compound": {
+              "formula": "GdI₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Gd",
+                "value": "0.021"
+              },
+              {
+                "column": "I₂",
+                "value": "0.05"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": "0.02"
+            },
+            {
+              "column": "I₂",
+              "value": "0.06"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "765",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}
