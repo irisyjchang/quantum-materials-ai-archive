@@ -31,7 +31,7 @@ Does the lab or university provide access to paid AI plans (such as Claude, Chat
 
 **Why it matters:** Helps plan which models we can test and how many runs we can support. Initial tests can continue with available access.
 
-**Answer:** Pending
+**Answer:** UW Purple is the only platform I'm aware of that the university provides, you have some monthly budget of tokens I believe but they have quite a few models available for you to try. You should be able to log in with just your net ID. -- Shaan
 
 ## 🟡 P2 · 2. Ambiguous entries
 What are the intended overwritten `x` values for JC1301 and JC1302? Does the reference note say **Pd or Pb**?
