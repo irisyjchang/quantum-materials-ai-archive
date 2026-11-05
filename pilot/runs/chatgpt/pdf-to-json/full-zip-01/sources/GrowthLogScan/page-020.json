@@ -1,0 +1,358 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 20,
+  "review_status": "unvalidated",
+  "top_annotations": "n = 0.002886",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "Zr",
+      "Te",
+      "Se",
+      "",
+      "I₂",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "Zr",
+      "Te",
+      "Se",
+      "",
+      "I₂",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "753",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "753",
+            "Compound": {
+              "formula": "ZrTe₂",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Zr",
+                "value": "0.2633"
+              },
+              {
+                "column": "Te",
+                "value": "0.7[overwritten]658"
+              },
+              {
+                "column": "Se",
+                "value": "0"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": "0.09109"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "754",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "754",
+            "Compound": {
+              "formula": "ZrTe₂₋ₓSeₓ",
+              "x": "0.02"
+            },
+            "quantities": [
+              {
+                "column": "Zr",
+                "value": "0.2633"
+              },
+              {
+                "column": "Te",
+                "value": "0.7291"
+              },
+              {
+                "column": "Se",
+                "value": "0.0046"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": "0.09109"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": "0.2633"
+            },
+            {
+              "column": "Te",
+              "value": "0.7365"
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": "0.0917"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "753",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": "0.2635"
+            },
+            {
+              "column": "Te",
+              "value": "0.7291"
+            },
+            {
+              "column": "Se",
+              "value": "0.0045"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": "0.0917"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "754",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Zr",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "Go to 960°C (Source)/860°C sink\nin 6hrs/360min. Stay for 2 weeks\n(9000+9000+2160min) Cool to RT\nin 32hrs/1920min.\n24 × 4 / 96\n24 / 32hr\n90 × 3 + 60\nZr: 91.2240\nSe: 78.96\nTe: 127.6",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

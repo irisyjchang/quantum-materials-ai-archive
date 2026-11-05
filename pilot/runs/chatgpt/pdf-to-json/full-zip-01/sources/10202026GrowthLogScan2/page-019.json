@@ -1,0 +1,358 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 19,
+  "review_status": "unvalidated",
+  "top_annotations": "Yue 11-25-2019\nIn 114.818\nSn: 118.710\nSb: 121.75\nAs: 74.92159\nP: 30.9738\nP\nAs\nIn Sn Sb\nBi",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "In",
+      "Sn",
+      "Sb",
+      "P",
+      "As",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "In",
+      "Sn",
+      "Sb",
+      "P",
+      "As",
+      "Total (g)"
+    ]
+  },
+  "samples": [],
+  "unassigned_rows": {
+    "Calculated": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "InAs",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": "3.0257"
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": "1.9743"
+            },
+            {
+              "column": "Total (g)",
+              "value": "~5g"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "SnAs",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": "3.0654"
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": "1.9347"
+            },
+            {
+              "column": "Total (g)",
+              "value": "~5g"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "SnP",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": "3.9564"
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": "1.02[illegible]"
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": "~5g"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "SbP",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": "[overwritten]3.9859"
+            },
+            {
+              "column": "P",
+              "value": "[overwritten]"
+            },
+            {
+              "column": "As",
+              "value": "[overwritten]1.014[illegible]"
+            },
+            {
+              "column": "Total (g)",
+              "value": "~5g"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": "3.9859"
+            },
+            {
+              "column": "Sb",
+              "value": "[overwritten]3.9853"
+            },
+            {
+              "column": "P",
+              "value": "1.0140"
+            },
+            {
+              "column": "As",
+              "value": "[overwritten]"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "In",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

@@ -1,0 +1,390 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 35,
+  "review_status": "unvalidated",
+  "top_annotations": "I₂ 15mg = 0.0150g\nCo = 0.0160g\nNi = 0.0160g\nRu = 0.0275g",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Fe",
+      "P",
+      "S",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Fe",
+      "P",
+      "S",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC728",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC728",
+            "Compound": {
+              "formula": "FePS₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": "0.00136"
+              },
+              {
+                "column": "Fe",
+                "value": "0.0760"
+              },
+              {
+                "column": "P",
+                "value": "0.0421"
+              },
+              {
+                "column": "S",
+                "value": "0.1308"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~0.25"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC729",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC729",
+            "Compound": {
+              "formula": "Fe₁₋ₓCoₓPS₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "20%"
+              },
+              {
+                "column": "n",
+                "value": "0.00136"
+              },
+              {
+                "column": "Fe",
+                "value": "0.0608"
+              },
+              {
+                "column": "P",
+                "value": "0.0421"
+              },
+              {
+                "column": "S",
+                "value": "0.1308"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC730",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "JC730",
+            "Compound": {
+              "formula": "Fe₁₋ₓNiₓPS₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "20%"
+              },
+              {
+                "column": "n",
+                "value": "0.00136"
+              },
+              {
+                "column": "Fe",
+                "value": "0.0608"
+              },
+              {
+                "column": "P",
+                "value": "0.0421"
+              },
+              {
+                "column": "S",
+                "value": "0.1308"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC763",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "JC763",
+            "Compound": {
+              "formula": "Fe₁₋ₓRuₓPS₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "20%"
+              },
+              {
+                "column": "n",
+                "value": "0.00136"
+              },
+              {
+                "column": "Fe",
+                "value": "0.0608"
+              },
+              {
+                "column": "P",
+                "value": "0.0421"
+              },
+              {
+                "column": "S",
+                "value": "0.1308"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.0760"
+            },
+            {
+              "column": "P",
+              "value": "0.0421"
+            },
+            {
+              "column": "S",
+              "value": "0.1307"
+            },
+            {
+              "column": "Total (g)",
+              "value": "15mg"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC728",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.0609"
+            },
+            {
+              "column": "P",
+              "value": "0.0418"
+            },
+            {
+              "column": "S",
+              "value": "0.1308"
+            },
+            {
+              "column": "Total (g)",
+              "value": "15mg"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC729",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.0633"
+            },
+            {
+              "column": "P",
+              "value": "0.0427"
+            },
+            {
+              "column": "S",
+              "value": "0.1312"
+            },
+            {
+              "column": "Total (g)",
+              "value": "0.015[overwritten]g"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC730",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.0637"
+            },
+            {
+              "column": "P",
+              "value": "0.0419"
+            },
+            {
+              "column": "S",
+              "value": "0.1306"
+            },
+            {
+              "column": "Total (g)",
+              "value": "0.0152g"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC763",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "0.638/8.05\nCo = 0.0162g\nNi = 0.0162g\nRu = 0.0279g\nCo: 58.9332\nNi: 58.6934\nRu 101.07\n= 183.01532",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "Fe",
+      "55.847"
+    ],
+    [
+      "P",
+      "30.973762"
+    ],
+    [
+      "S",
+      "32.066"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}
