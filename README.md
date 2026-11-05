@@ -2,11 +2,12 @@
 
 An AI-assisted archival system to organize research data from Dropbox, paper growth records, and files shared through Slack. Some sources overlap, so part of the project will be identifying duplicates and connecting related records. The goal is to make the data easier to search, sort, and use.
 
-The planned system will use AI to extract crystal-growth data into structured JSON, compare outputs across models, and flag discrepancies for human review. A web interface will support photo and file uploads across devices, with a Python/FastAPI backend and SQLite database for searchable storage, filtering, and CSV export.
+The broader vision includes AI-assisted extraction and comparison of model outputs, with discrepancies flagged for human review. The **MVP** is a Python/FastAPI + SQLite web application for importing **human-verified JSON**, searching, filtering, source references, and CSV export. Extraction and human verification happen outside the archive interface. No AI API integration or automatic PDF/photo conversion is included in the MVP.
 
 We’ll start with a small pilot to test different AI models and prompts before expanding to the full dataset.
 
 - **[Start with the pilot](pilot/README.md)**
+- **[Design document and MVP scope](docs/design-document.md)** — proposed architecture, import workflow, data model, acceptance criteria, and decisions for lab review.
 - **[Questions for the research team](researcher-questions/README.md)**
 - [View the first ChatGPT result](pilot/runs/chatgpt/pdf-to-json/run01/output.json)
 - [See its prompt](pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text)
