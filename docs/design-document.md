@@ -10,7 +10,9 @@ A researcher looking for a past crystal growth run may have to open several hand
 
 The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and trace it back to the exact scan page and row.
 
-**The first architecture question** is whether one approved extractor saves time after review. Manual entry can support the full workflow on its own.
+**After the MVP, the scientist's job is to take and submit a photo of the paper log.** The archive should save the photo, check that the page is readable, draft the growth records, and send unclear entries to a designated reviewer. Once reviewed, the records become searchable with a link back to the photo.
+
+The MVP tests the record format, review, and search on existing scans. Manual entry gives the pilot a baseline for measuring how much time photo extraction could save, including the time spent correcting its output.
 
 ## 2. Current evidence
 
@@ -67,6 +69,8 @@ The MVP is ready for a lab walkthrough when a reviewer can:
 - Keep a missing or partial JC exactly as recorded.
 - Retry the same import without duplicating records and see a clear error for an invalid or conflicting packet.
 
-## 8. Decisions after the MVP
+## 8. Photo capture after the MVP
 
-Confirm the required fields, notation rules, and designated reviewer with the lab before expanding the sample. A second extractor is a follow-up experiment if the first exposes a recurring gap worth testing. A web interface, shared hosting, a review queue, CSV export, full archive ingestion, and Dropbox or Slack integration can each be considered once the local workflow has been demonstrated.
+Add a phone-friendly capture screen where a scientist takes and submits a photo. If the photo is blurry or cuts off part of the sheet, ask for a retake. Otherwise, preserve the original, draft the fields using the same record format tested in the MVP, and make the scan available to the reviewer. The scientist enters additional information only when a reviewer needs their help resolving something the photo cannot establish.
+
+Before rolling this out, confirm who handles exceptions and which fields need review on every record. Test on actual phone photos, including pages with several runs and notes in the margins. Measure both the time scientists spend submitting a log and the time reviewers spend checking it. Use those results to decide which fields can move to spot checks.
