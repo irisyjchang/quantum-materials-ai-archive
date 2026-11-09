@@ -8,7 +8,7 @@
 
 A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. JC numbers were introduced later, so some older log runs lack one. Some numbers are partial or appear on more than one run.
 
-The MVP succeeds when a researcher can look up an imported log run by name, date, JC number, or a recorded timestamp and open the original log at the relevant page and row while offline. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
+The MVP succeeds when a researcher can look up an imported log run by name, date, or JC number and open the original log at the relevant page and row while offline. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
@@ -57,51 +57,61 @@ flowchart TD
 2. **Codex assesses each log's risk with the `import-lab-records` skill.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
 3. **Codex extracts values with the `extract-lab-records` skill.** Use the skill on eligible logs to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
 4. **Human reviewer checks each draft.** Compare the extracted runs and values with the original log. Approve a run if the essential values can be confirmed. Leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
-5. **App saves approved log runs to SQLite.** Researchers can search by name, date, JC number, or a recorded timestamp, filter by growth process, and open the original log at the relevant page and row.
+5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC number, filter by growth process, and open the original log at the relevant page and row.
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
 
 ## 5. Log run fields and scientific boundaries
 
-**Required for lookup.** Each log run needs at least one searchable value: researcher name, recorded date, JC number, or a start or end timestamp. Capture stoichiometry separately, including written ratios.
+**Required for lookup.** Each log run needs at least one searchable value from the researcher name, date, or JC number. Start and end timestamps are optional and serve only as a fallback when the log has no recorded date. Stoichiometry, including written ratios, is a core field separate from lookup. Flag missing stoichiometry for the human reviewer. Whether it blocks import when a searchable value is available is open.
 
 | Field group | Capture | Critical |
 | --- | --- | --- |
-| Lookup | Researcher name, date at its written precision, and JC as written. Check the start and end timestamps if both date and JC are missing. | No searchable value can be established, or an ambiguous value could link the data to the wrong run |
+| Lookup | Researcher name, date at its written precision, and JC as written. If the date is missing, check any available start or end timestamp for date evidence. | No searchable value can be established, or an ambiguous value could link the data to the wrong run |
 | Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. | An overwritten digit, unclear element symbol, or unknown ratio basis changes how the stoichiometry could be read |
-| Furnace program | Optional source note for the written program or a pointer to the graph | — |
-| Growth process and layout | Categorize the run as chemical vapor transport (CVT), flux growth, or unclear. Keep any transport-agent or layout notes. | — |
+| Furnace cycle | Capture the written cycle or graph when present, including the starting temperature, ramps, dwells, and decant temperatures. | — |
+| Furnace layout | Mark whether a sketch is present, absent, or unclear. When present, keep an image of the sketch with its location in the original log. | — |
+| Growth process | Categorize the run as CVT (chemical vapor transport) or Flux Growth. Mark the method unclear when the evidence is inconclusive. Keep the evidence for the classification. | — |
 
 **Dates and JC numbers.** Month and year are the minimum precision for placing a log run in chronological order. Group runs by month and preserve the exact day when it is recorded. For runs on the same date without JC numbers, sort alphabetically by researcher name, then by log run ID if names match. Where both a date and a full JC number are present, check that the JC sequence follows date order at the precision available. Flag discrepancies for review and keep both values as written. Return every match for a duplicate JC number and distinguish the runs by their original log, page, and row.
 
-Start and end timestamps are optional and can be used for lookup when the date and JC number are missing. If a timestamp establishes the month, retain it as evidence. If the month cannot be established, flag it for review and keep the run searchable by any other available lookup value.
+If a fallback timestamp establishes a date or month, keep it as evidence and use the supported date precision for search and sorting. If the month cannot be established, flag it for review and keep the run searchable by any other available lookup value.
+
+Some logs show only the last two digits of the JC number. Preserve them as written, including leading zeros.
 
 **Compound carry-down.** When a compound is written once for consecutive runs in the same column, carry it down through the following blank compound cells until another compound is written or the table ends. Mark the value as carried down and point to the cell where it was written. Flag unclear boundaries for review.
 
-**Why `x` is optional.** The log's stoichiometry can be used to calculate `x` when the composition or substitution basis is known. If the log gives elemental masses, use periodic-table atomic weights to convert the masses to moles and find the atomic ratios. Use melting points separately as a clue when assessing possible flux growth.
+**Why `x` is optional.** The log's stoichiometry can be used to calculate `x` when the composition or substitution basis is known. If the log gives elemental masses, use periodic-table atomic weights to convert the masses to moles and find the atomic ratios. When the log explicitly gives 5% substitution on the relevant site, the equivalent fraction is `x = 0.05`. Use melting points separately as a clue when assessing possible flux growth.
 
-Display the raw composition with search results. Capture measurements when recorded and leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor.
+Display the raw composition with search results. Capture measurements when recorded. Leave load out of the MVP. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor.
+
+In the JSON draft, list missing or unclear values with the page and row or annotation in the original log so the human reviewer can check them. Check sticky notes and margins for relevant information. If a mark such as `n` is unexplained or composition notation appears in an unexpected column, preserve the written value and its location. Propose an interpretation only when the surrounding context supports it, and flag it for review.
 
 ### Furnace cycle
 
 - **Dwell (stay)** means hold at the same temperature for a period of time. A constant temperature over an interval can indicate a dwell even if the log leaves the word out.
-- **Ramp** means change from a starting temperature to a target temperature over a stated time or at a stated rate. Record the starting temperature, such as room temperature, when the log gives it. Leave unspecified temperatures and units blank.
+- **Ramp** means change from a starting temperature to a target temperature over a stated time or at a stated rate. The lab notes use room temperature as the starting condition for the first ramp. When the log says “room temperature,” keep that wording and leave the numeric value blank unless the log gives one. Leave an unstated starting condition blank.
 
-“Ramp to 850 in 24 hours, dwell for 4 hours” means reach 850 over 24 hours, then stay at 850 for four hours.
+“Ramp to 850 in 24 hours, dwell for 4 hours” means reach 850 over 24 hours, then stay at 850 for four hours. If the log gives no unit for 850, keep the value, leave its unit blank, and flag it for review. Apply the same rule to other temperatures without a stated unit.
+
+If a log lists multiple decant temperatures, capture each one with its unit in the order written.
 
 **Reading a furnace graph.** For a time–temperature graph, read time on the x-axis and temperature on the y-axis. Record rising segments as heating, flat segments as holds, and falling segments as cooling. If the graph shows separate left and right furnace temperatures, keep both traces and their labels. Flag unclear axes, units, or zone labels.
 
-### CVT and flux growth
+### CVT or Flux Growth
 
-- **Chemical vapor transport (CVT).** Look for a transport agent and two temperatures listed for the left and right sides of the furnace during the same hold. If the log lists two temperatures without zone labels, check whether they describe opposite sides or successive steps in the cycle. A log may show a heat-up and high-temperature hold, then a sustained temperature difference between the two zones. Record how the run ended if written, such as shutdown, slow cooldown, or crystal removal while the furnace remained on. [CVT growth example](https://link.springer.com/article/10.1007/s13538-024-01554-3)
-- **Flux growth.** Look for heating to melt and dissolve the charge, a high-temperature hold, and slow cooling that allows crystals to form. A lower-temperature hold or a final decant is another clue. A high ratio such as 100:1 or 200:1 between two elements in the charge supports the classification when the rest of the log shows a plausible liquid flux. Record which element each side of the ratio refers to and whether the ratio is given by atoms, moles, or mass when stated. [Solution growth and decanting study](https://doi.org/10.1002/zaac.202500007)
+1. **Check for an explicit method.** Use the growth method named for that run when the rest of the log supports it or gives no conflicting evidence. If the evidence conflicts, preserve the written label and flag the classification for review.
+2. **Check the table, margins, and sticky notes.** Look for a named transport agent or a note about vapor transport as CVT evidence. The lab notes give small amounts of iodine, such as 10 or 15 mg, as clues to check in context. A note about decanting residual liquid from the crystals supports flux growth. [CVT growth example](https://link.springer.com/article/10.1007/s13538-024-01554-3) · [Solution growth and decanting study](https://onlinelibrary.wiley.com/doi/10.1002/zaac.202500007)
+3. **Check the furnace cycle, graph, and layout.** Two different temperatures held at the same time on opposite sides support CVT. If two temperatures have no labels, use the rest of the page to distinguish simultaneous zones from successive steps. Heating to melt the charge, holding at high temperature, and slowly cooling toward a lower hold or decant support flux growth. Heating, holding, and cooling alone are shared clues. [CVT temperature profile](https://link.springer.com/article/10.1007/s13538-024-01554-3) · [Solution growth examples](https://onlinelibrary.wiley.com/doi/10.1002/zaac.202500007)
+4. **Check the ratio and whether the mixture could stay liquid.** Treat ratios such as 100:1 or 200:1 as supporting flux clues. Preserve the component order and ratio basis when stated. If the basis is known, identify the element with the largest atomic share and compare its pure melting point with the decant temperature or last recorded growth temperature. For a borderline case, check the phase diagram for the recorded mixture. A liquid phase at that temperature supports flux growth when the rest of the log fits. [Solution growth phase diagram examples](https://onlinelibrary.wiley.com/doi/10.1002/zaac.202500007)
+5. **Keep uncertain cases unclear.** If the clues conflict or only weak clues are available, mark the method unclear. In the draft, point the human reviewer to the relevant parts of the original log and explain which clue is missing or conflicts.
 
-**Borderline high ratios.** Identify the element with the largest atomic share and compare its pure melting point with the last growth temperature or the decant temperature when recorded. If that temperature is below the pure element's melting point, check the phase diagram for the recorded mixture to see whether a liquid phase could still be present. Liquid at that stage supports a flux interpretation, especially if the cycle includes slow cooling or a decant. Record the evidence and leave the process unclear if the phase state or the log does not support a classification. [Solution growth phase diagram examples](https://doi.org/10.1002/zaac.202500007)
+Record how the run ended when the log gives that detail, such as shutdown, slow cooldown, crystal removal while the furnace remained on, or decanting.
 
 ### Risk tiers before extraction
 
 - **Critical · Review before extraction.** Use this tier when a run has no searchable value or when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row or an ambiguous compound, ratio, or unit. A human must clear the log before extraction. If a critical issue first appears in the draft, resolve it before importing the affected run. An absent or duplicate JC number is valid when the run still has a searchable value and a clear location in the original log.
-- **Non-critical · Send to extraction.** Use this tier for optional details that can remain unknown without changing the core values for that log run, such as a missing layout note or an unclear optional timestamp. Keep the uncertainty visible in the draft. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
+- **Non-critical · Send to extraction.** Use this tier for optional details that can remain unknown without changing the core values for that log run, such as a missing layout note or an unclear timestamp when another searchable value is available. Keep the uncertainty visible in the draft.
 
 The human reviewer confirms the proposed risk tiers using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block AI evaluation or import, and use those decisions in the pilot review rules.
 
@@ -124,9 +134,10 @@ For the first walkthrough, use saved JSON to test human review and SQLite import
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to extraction. Verify that a critical or uncertain log is held until a human clears it.
 - Confirm that every extraction draft waits for human approval before it enters SQLite, including drafts from non-critical logs.
-- Find a known run by name, date or month, JC number, or a fallback timestamp and open the original log at the relevant page and row. Confirm a month-only date is shown without an invented day.
+- Find a known run by name, date or month, or JC number and open the original log at the relevant page and row. Verify that a timestamp can establish a searchable month when the date is missing. Confirm a month-only date is shown without an invented day.
 - Keep missing and partial JC numbers as recorded, return all runs that share a JC number, and sort same-date runs without JC numbers alphabetically by researcher name.
-- Verify a carried-down compound against its original cell and filter reviewed runs by CVT or flux growth.
+- Verify a carried-down compound against its original cell and filter reviewed runs by CVT or Flux Growth.
+- Check that a furnace layout image opens from its log run and that the draft points the reviewer to unclear notation in the original log.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
 - Retry the same import without duplicating database entries and see a clear error for an invalid or conflicting packet.
 - Disconnect the laptop and reopen the local tools. Search the pilot log runs and verify that every original log PDF in the pilot collection opens without a connection.
