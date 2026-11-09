@@ -133,9 +133,11 @@ Record how the run ended when the log gives that detail, such as shutdown, slow 
 
 Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, the source log with the relevant row locations in the measurement table, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
-**Shared host for the MVP.** Run one app instance per environment with its SQLite database on persistent storage. Reviewers connect over HTTPS from their own devices. Each approval applies to the draft version the reviewer opened. If that version has changed or was already approved, show the latest state before allowing any further approval. Back up the database and review workspace to approved lab storage, and test restoring them with their linked PDFs. The number of PDFs required for MVP acceptance is still to be decided.
+**Shared host for the MVP.** Run one app instance per environment with its SQLite database on persistent storage. Reviewers connect over HTTPS from their own devices. Each approval applies to the draft version the reviewer opened. If that version has changed or was already approved, show the latest state before allowing any further approval. The number of PDFs required for MVP acceptance is still to be decided.
 
 **Test and Archive environments.** Use the same app code and SQLite schema with separate databases and review workspaces. Label each environment clearly. Test uses `test.sqlite` and its own drafts, approvals, and processing status. Save the test results before resetting Test. The reset clears only Test data and leaves the source PDFs in Drive. Archive uses `archive.sqlite` for official records. The same source logs can be processed there and require fresh approval. Keep Archive data and its review history when expanding to larger batches.
+
+**MVP backups and recovery.** Back up Archive nightly and before database migrations. Save a consistent SQLite snapshot, the review workspace, and the retained source PDF versions needed to reopen approvals. Keep backups in approved lab storage separate from the app host. The operator checks the latest successful backup and investigates failures. Proposed targets for lab confirmation are to lose at most one day of approval and correction history and restore access by the end of the next working day.
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
@@ -212,6 +214,6 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 - Load a saved Codex packet and an automated model packet through the same validator. Verify that an invalid packet stays out of review.
 - Have authorized reviewers sign in from two devices and approve separate drafts. Have both open the same draft and verify that a stale approval cannot overwrite a newer decision or create a duplicate revision.
 - Verify that a signed-out visitor can search approved runs and open their source PDFs. Verify that draft access requires an operator or reviewer account and that only a reviewer account can edit or approve a run.
-- Restore a backup and verify that the approved runs, their review history, and linked PDFs are available.
+- Restore an Archive backup in a separate environment. Verify that approved runs are searchable, review history is present, and source links open the exact PDF versions the reviewers saw. Record how long the restore took and how recent the restored approvals are. Compare the results with the proposed recovery targets.
 
 [After the MVP](pilot/DESIGN.md)
