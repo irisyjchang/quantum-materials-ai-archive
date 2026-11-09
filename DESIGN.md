@@ -30,7 +30,7 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 
 **First run without an API.** The project operator runs both skills in Codex and saves the model name, prompt version, and JSON output for each step. The operator loads the saved drafts and source PDFs into the review app. In both the walkthrough and the automated MVP, the reviewer's approval triggers the app to save that version to SQLite automatically.
 
-**Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The project has no confirmed model API credentials or budget. Confirm an approved endpoint, PDF support, and who pays for usage before adding unattended model calls. Keep the same risk and human review rules when moving from saved JSON to API responses.
+**Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The project has no confirmed model API credentials or budget. Before running the automated batch, confirm which endpoint may receive the lab PDFs, that it supports PDFs, and who owns the API account and pays for usage. Keep model and Drive credentials on the server. Measure usage on the test set, estimate the cost of the selected batch, and set a spending limit. Keep the same risk and human review rules when moving from saved JSON to API responses.
 
 ### JSON handoff
 
@@ -170,13 +170,17 @@ An authorized reviewer can revise an existing run through the same review workfl
 
 Show **Saved** only after the transaction commits. If the save fails, show the error and let the reviewer retry the same approval. A retry of an already committed approval returns the saved revision without adding another one.
 
-**`processing_status`** is a table in the same SQLite database, with one row per PDF version. Store `pdf_id`, `status`, `reason`, and `updated_at`. Distinguish PDFs held pending better evidence from technical failures that can be retried. A held PDF remains visible to the operator and can return to review when better evidence arrives. Keep pending drafts in the review workspace. Count every PDF in the MVP collection by its recorded outcome, including holds and failures.
+**`processing_status`** is a table in the same SQLite database, with one row per PDF version. Store `pdf_id`, `status`, `reason`, and `updated_at`. Distinguish PDFs held pending better evidence from technical failures that can be retried. A held PDF remains visible to the operator and can return to review when better evidence arrives. Keep pending drafts in the review workspace. Keep a PDF in review while any run still needs a decision. Approved runs from that PDF can be searchable while other runs remain pending after extraction. Report those partial outcomes alongside fully processed, held, and failed PDFs.
 
 ## 7. MVP acceptance checks
+
+**MVP collection.** Before the acceptance test, agree with the lab on a fixed list of PDFs from the Drive inventory. Record a processing outcome for every PDF on the list. A PDF can remain held with a documented reason. Check that technical failures are visible and can be retried.
 
 Use Run 01 as an extraction baseline. Before processing the wider batch, have a human reviewer check a small set of original PDFs and record the expected risk decisions, runs, field values, and source locations. Include both risk tiers, a PDF with multiple runs, a run spanning pages within one PDF, a missing JC number with another searchable value, missing stoichiometry, and an unresolved optional detail. Reserve some PDFs for the final check after the instructions are fixed.
 
 **Go/no-go for the wider batch.** Proceed once the human reviewer confirms that the final check caught every critical issue that should hold a PDF before extraction, included every expected run in the PDFs cleared for extraction, and linked each draft to the correct PDF and page or row. Also verify that every test run with missing stoichiometry or an unresolved critical issue stays out of SQLite and that every import has human approval. If any check fails, fix the issue and rerun the check before expanding. Track unnecessary review holds, other extraction errors, and reviewer correction time to guide improvements.
+
+**Researcher feedback.** Before expanding the batch, ask researchers to find an approved run and open its original log. Ask authorized reviewers to compare a draft with the PDF, correct a field, and approve it. Record where people get stuck and fix problems that prevent them from completing either task.
 
 For the first walkthrough, use saved JSON to verify that human approval automatically saves the approved version to SQLite. With approved model API access, the automated MVP is ready when the team can:
 
