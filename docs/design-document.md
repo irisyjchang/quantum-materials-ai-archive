@@ -10,7 +10,7 @@ A researcher looking for a past crystal growth run may have to open several hand
 
 The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and open the original log at the relevant page and row while offline. The MVP demonstrates this with the pilot collection. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
 
-**After the MVP, the researcher's job is to take and submit a photo of the paper log.** The archive should save the photo, check that the page is readable, extract the recorded values, and send unclear entries to a designated reviewer. Once reviewed, the records become searchable with a link back to the photo.
+**After the MVP, the researcher's job is to take and submit a photo of the paper log.** The archive converts the photo to a PDF, checks that the PDF opens and renders, and extracts the recorded values. Unclear entries go to a designated reviewer. Once reviewed, the records become searchable with a link back to the original log PDF.
 
 The MVP tests AI extraction, human review, and search on existing scans. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A reviewer checks and corrects the draft against the original log.
 
@@ -82,11 +82,11 @@ The MVP is ready for a lab walkthrough when a reviewer can:
 
 ## 8. Photo capture after the MVP
 
-Add a phone-friendly capture screen where a researcher takes and submits a photo. If the photo is blurry or cuts off part of the log, ask for a retake. Otherwise, preserve the original, extract the recorded values into the same format tested in the MVP, and make the scan available to the reviewer. The researcher enters additional information only when a reviewer needs their help resolving something the photo cannot establish.
+Add a phone-friendly capture screen where a researcher takes and submits a photo. If the photo is blurry or cuts off part of the log, ask for a retake. Otherwise, convert the photo to PDF and render every page to check that the conversion worked. Hold a failed PDF out of the archive and retry from the captured image. Use the verified PDF as the archive copy and make it available to the reviewer alongside the extracted values. The researcher enters additional information only when a reviewer needs their help resolving something the photo cannot establish.
 
 **Offline archive access.** Sync the full authorized archive to the device, including the searchable records and their source files. Show when the download is complete and when it last synced. Keep the last complete copy usable if a refresh is interrupted. A researcher can still browse and open the downloaded archive while new uploads and updates wait for a connection.
 
-**Offline photo capture.** Save the photo on the device when the connection drops and show it as pending. Upload and start extraction after reconnecting. Keep the pending copy until the server confirms receipt, and use the same submission ID for retries to avoid duplicate records. Test by taking a photo offline, reopening the capture screen, and reconnecting.
+**Offline photo capture.** Save the photo on the device when the connection drops and show it as pending. Upload and start extraction after reconnecting. Keep the pending photo until the archive confirms the PDF was saved and passed its rendering check. Use the same submission ID for retries to avoid duplicates. Test by taking a photo offline, reopening the capture screen, and reconnecting.
 
 Before rolling this out, confirm who handles exceptions and which fields need review on every record. Test on actual phone photos, including pages with several runs and notes in the margins. Measure both the time researchers spend submitting a log and the time reviewers spend checking it. Use those results to decide which fields can move to spot checks.
 
