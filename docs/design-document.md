@@ -31,6 +31,24 @@ The MVP tests photo upload, AI extraction, human review, and search. For each ru
 
 ## 4. Workflow and ownership
 
+```mermaid
+flowchart TD
+    A[Researcher uploads a photo in the app] --> B[App creates and checks the PDF]
+    B --> C{PDF renders and log is readable?}
+    C -->|Photo needs a retake| A
+    C -->|Conversion failed| B
+    C -->|Ready| D[Operator runs three models in UW Purple]
+    D --> E[Operator returns three JSON drafts to the app]
+    E --> F[App compares drafts and flags differences]
+    F --> G[Lab reviewer checks values against the original log]
+    G --> H{Any unresolved critical issue?}
+    H -->|Yes| I[Hold the affected log run]
+    I -->|Issue resolved| G
+    H -->|No| J[Reviewer approves the log run]
+    J --> K[App saves the reviewed values in SQLite]
+    K --> L[Researcher searches and opens the original log]
+```
+
 1. **Researcher uploads a photo in the app.** Take a photo showing the entire paper log, including any sticky notes and writing in the margins. The app saves the submission, converts it to PDF, and checks that every page renders. If the photo is unreadable or cropped, ask for a retake. Keep the photo available until the PDF has passed its checks and been saved.
 2. **Operator runs the three models in Purple.** Give each model the same PDF, instructions, and expected page and row list without the answers. Return the three JSON drafts to the app with their model names and versions. The app compares them by page and row and flags missing runs and conflicting values.
 3. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. Save the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
