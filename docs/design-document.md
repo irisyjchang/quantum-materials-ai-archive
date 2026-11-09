@@ -42,13 +42,13 @@ One person can prepare and operate the pilot. The lab designates who verifies th
 
 **Basic variables.** The lab confirmed the recorded date, JC number when present, and stoichiometry, including written ratios, before the pilot. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
 
-| Field group | Capture | Examples that need a closer look |
+| Field group | Capture | Critical |
 | --- | --- | --- |
 | Identity | Researcher name, written JC, and confirmed full JC where known | A suffix could match more than one run, or JC order conflicts with date order |
 | Date | Day or month precision as written. Keep timestamp evidence if used to infer a date | The header is blank and timestamps conflict or imply different months |
-| Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. Capture handwritten `x` or doping notation when present. | A digit is overwritten, an element symbol is unclear, or the ratio basis is unknown |
-| Furnace program | Optional source note for the written program or a pointer to the graph | Two temperatures lack labels, graph axes are unclear, or the timing of a step is ambiguous |
-| Technique and layout | Optional source note for the written technique, transport agent, or layout drawing | The technique is inferred from clues or the layout is unclear |
+| Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. Capture handwritten `x` or doping notation when present. | An overwritten digit, unclear element symbol, or unknown ratio basis changes how the stoichiometry could be read |
+| Furnace program | Optional source note for the written program or a pointer to the graph | — |
+| Technique and layout | Optional source note for the written technique, transport agent, or layout drawing | — |
 
 Search by name, date, and JC as written. Display the raw composition with the search result. Record furnace, technique, layout, measurements, and timestamps as source notes when present. Detailed furnace parsing and automated technique classification can wait. Leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor. A known partial JC remains searchable as written. For log runs with the same date and no confirmed JC, use researcher name and stable log run ID to break ties.
 
