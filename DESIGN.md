@@ -71,7 +71,7 @@ flowchart TD
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
 
-**Access.** Anyone can view the lab data, including approved runs and their source PDFs. The operator and authorized reviewers can view extraction drafts in the internal review workspace. Reviewers sign in with individual accounts. Only authorized reviewers can edit and approve runs. One authorized approval is required per run.
+**Access.** Anyone can search and view approved runs and open their source PDFs without signing in. The operator and authorized reviewers can view extraction drafts in the internal review workspace. Reviewers sign in with individual accounts. Only authorized reviewers can edit and approve runs. One authorized approval is required per run.
 
 ## 5. Log Run Review and Extraction
 
@@ -210,7 +210,8 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 - Simulate a failed approval save and verify that neither the searchable run nor its revision changes. Retry the same approval and verify that it saves exactly one revision, including when a previous save committed before the app could show confirmation.
 - Verify that a held PDF and a failed PDF appear as distinct outcomes and that every PDF in the MVP collection has a recorded outcome.
 - Load a saved Codex packet and an automated model packet through the same validator. Verify that an invalid packet stays out of review.
-- Have authorized reviewers sign in from two devices and approve separate drafts. Have both open the same draft and verify that a stale approval cannot overwrite a newer decision or create a duplicate revision. Verify that an account without reviewer access cannot edit or approve.
+- Have authorized reviewers sign in from two devices and approve separate drafts. Have both open the same draft and verify that a stale approval cannot overwrite a newer decision or create a duplicate revision.
+- Verify that a signed-out visitor can search approved runs and open their source PDFs. Verify that draft access requires an operator or reviewer account and that only a reviewer account can edit or approve a run.
 - Restore a backup and verify that the approved runs, their review history, and linked PDFs are available.
 
 [After the MVP](pilot/DESIGN.md)
