@@ -6,7 +6,7 @@
 
 ## 1. Problem and outcome
 
-A researcher looking for a past crystal growth run may have to open several handwritten worksheets and cross-reference a JC number, date, compound, or furnace cycle. Some sheets contain several runs. Some older records lack a JC number or use a short suffix. The first workflow covers the scanned growth sheets.
+A researcher looking for a past crystal growth run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. Some paper logs contain several runs. Some older records lack a JC number or use a short suffix. The first workflow covers the scanned growth logs.
 
 The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and open the original log at the relevant page and row while offline. The MVP demonstrates this with the pilot collection. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
 
@@ -17,7 +17,7 @@ The MVP tests AI extraction, human review, and search on existing scans. For eac
 ## 2. Current evidence
 
 - **Drive inventory.** Folder 1 has 152 prepared PDFs and folder 2 has 203, for 355 files. The archive addresses follow `log-1-###.pdf` and `log-2-###.pdf`. The filename index maps each address to its original file and Drive ID. A file address identifies a scan. A JC number is an optional identifier written on a run.
-- **How the paper logs were scanned.** We sorted the logs into two groups. Sheets that could feed safely through the UW paper scanner were scanned in batches, then split into one PDF per page. Sheets with tape or sticky notes that could catch in the scanner were photographed with Adobe Scan. The 30 repaired Adobe PDFs preserve 35 page images and rendered without the original decoding errors. Some sheets hold several runs, and a run may span several pages in the original log.
+- **How the paper logs were scanned.** We sorted the logs into two groups. Paper logs that could feed safely through the UW paper scanner were scanned in batches, then split into one PDF per page. Paper logs with tape or sticky notes that could catch in the scanner were photographed with Adobe Scan. The 30 repaired Adobe PDFs preserve 35 page images and rendered without the original decoding errors. Some logs contain several runs, and a run may span several pages in the original log.
 - **Extraction and storage.** [Run 01](../pilot/runs/chatgpt/pdf-to-json/run01/README.md) is an unvalidated ChatGPT transcription of JC1301–JC1303. A local SQLite walkthrough stages and searches those three rows and demonstrates a reversible correction. These artifacts provide a starting point for the pilot.
 
 ## 3. MVP decisions and trade-offs
@@ -67,7 +67,7 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. Pilot and acceptance checks
 
-Start with Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a sheet with several runs and a sheet with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
+Start with Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
 
 Compare the extractor's draft with the values and rows the lab reviewer confirms from the scan. Track missed rows, incorrect critical fields, and the time spent reviewing and correcting the draft. Reserve a few pages to check the result after the prompt is fixed. If extraction fails or the source cannot support a critical value, keep that record out of the import until the issue is resolved.
 
@@ -82,7 +82,7 @@ The MVP is ready for a lab walkthrough when a reviewer can:
 
 ## 8. Photo capture after the MVP
 
-Add a phone-friendly capture screen where a researcher takes and submits a photo. If the photo is blurry or cuts off part of the sheet, ask for a retake. Otherwise, preserve the original, extract the recorded values into the same format tested in the MVP, and make the scan available to the reviewer. The researcher enters additional information only when a reviewer needs their help resolving something the photo cannot establish.
+Add a phone-friendly capture screen where a researcher takes and submits a photo. If the photo is blurry or cuts off part of the log, ask for a retake. Otherwise, preserve the original, extract the recorded values into the same format tested in the MVP, and make the scan available to the reviewer. The researcher enters additional information only when a reviewer needs their help resolving something the photo cannot establish.
 
 **Offline archive access.** Sync the full authorized archive to the device, including the searchable records and their source files. Show when the download is complete and when it last synced. Keep the last complete copy usable if a refresh is interrupted. A researcher can still browse and open the downloaded archive while new uploads and updates wait for a connection.
 
