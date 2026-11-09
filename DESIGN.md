@@ -28,9 +28,9 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 
 **Keep the two skills focused.** Prototype `import-lab-records` outside the archive app for risk assessment. Use the [Run 01 prompt](pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for `extract-lab-records`, with the current field rules. Preserve the original PDF and save the draft separately. Convert the legacy Run 01 output to the draft format before using it in the walkthrough. The app records the human review decision and handles SQLite import.
 
-**First run without an API.** The project operator runs both skills in Codex and saves the model name, prompt version, and JSON output for each step. The operator loads the saved drafts and source PDFs into the review app. In both the walkthrough and the automated MVP, the reviewer's approval triggers the app to save that version to SQLite automatically.
+**First run without an API.** The project operator runs both skills in Codex using their own ChatGPT subscription and saves the model name, prompt version, and JSON output for each step. The operator loads the saved drafts and source PDFs into the review app. In both the walkthrough and the automated MVP, the reviewer's approval triggers the app to save that version to SQLite automatically.
 
-**Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The project has no confirmed model API credentials or budget. Before running the automated batch, confirm which endpoint may receive the lab PDFs, that it supports PDFs, and who owns the API account and pays for usage. Keep model and Drive credentials on the server. Measure usage on the test set, estimate the cost of the selected batch, and set a spending limit. Keep the same risk and human review rules when moving from saved JSON to API responses.
+**Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The walkthrough uses the operator’s ChatGPT subscription. The hosted app’s credentials and funding for unattended model calls are still open. Before running the automated batch, confirm which endpoint may receive the lab PDFs, that it supports PDFs, and who owns the API account and pays for usage. Keep model and Drive credentials on the server. Measure usage on the test set, estimate the cost of the selected batch, and set a spending limit. Keep the same risk and human review rules when moving from saved JSON to API responses.
 
 ### JSON handoff
 
@@ -170,6 +170,8 @@ An authorized reviewer can revise an existing run through the same review workfl
 
 Show **Saved** only after the transaction commits. If the save fails, show the error and let the reviewer retry the same approval. A retry of an already committed approval returns the saved revision without adding another one.
 
+**Run review status.** The internal review workspace labels drafts **Pending review**, **Held**, or **Approved**. When a run is held, record the reason and the source location when available so the reviewer knows what to resolve. Only approved runs enter `growth_runs` and appear in search. The associated `run_revisions` row records `approved_by` and `approved_at` and preserves any correction notes.
+
 **`processing_status`** is a table in the same SQLite database, with one row per PDF version. Store `pdf_id`, `status`, `reason`, and `updated_at`. Distinguish PDFs held pending better evidence from technical failures that can be retried. A held PDF remains visible to the operator and can return to review when better evidence arrives. Keep pending drafts in the review workspace. Keep a PDF in review while any run still needs a decision. Approved runs from that PDF can be searchable while other runs remain pending after extraction. Report those partial outcomes alongside fully processed, held, and failed PDFs.
 
 ## 7. MVP acceptance checks
@@ -186,7 +188,7 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to extraction. Verify that a critical or uncertain log is held until a human clears it.
-- Confirm that pending drafts stay out of SQLite, including drafts from non-critical logs, and that approval automatically saves the approved version and makes it searchable.
+- Confirm that pending and held drafts are visible in the review workspace, held drafts show their reason, and only approved runs enter `growth_runs` and become searchable. Verify that the saved revision identifies the approver and approval time.
 - Verify that the operator can inspect pending and approved drafts internally. Have an authorized reviewer correct a field against the original PDF, approve the revision, and verify that the approved value is searchable under the same run ID with the prior value and approval history preserved.
 - Find a known run by name, date or month, or JC number and open the original log at the relevant page and row. Verify that a timestamp can establish a searchable month when the date is missing. Confirm a month-only date is shown without an invented day.
 - Keep missing and partial JC numbers as recorded, return all runs that share a JC number, and sort same-date runs without JC numbers alphabetically by researcher name.
