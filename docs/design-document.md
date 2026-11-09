@@ -87,9 +87,14 @@ Display the raw composition with search results. Capture measurements when recor
 
 “Ramp to 850 in 24 hours, dwell for 4 hours” means reach 850 over 24 hours, then stay at 850 for four hours.
 
-### CVT
+**Reading a furnace graph.** For a time–temperature graph, read time on the x-axis and temperature on the y-axis. Record rising segments as heating, flat segments as holds, and falling segments as cooling. If the graph shows separate left and right furnace temperatures, keep both traces and their labels. Flag unclear axes, units, or zone labels.
 
-**Chemical vapor transport (CVT).** Look for a transport agent and separate furnace zones with temperatures held at the same time. Record those clues from the original log. For flux growth, look for a high charge ratio, cooling program, and final decant. Leave the growth process unclear when the evidence is insufficient.
+### CVT and flux growth
+
+- **Chemical vapor transport (CVT).** Look for a transport agent and left and right furnace zones held at different temperatures at the same time. A log may show a heat-up and high-temperature hold, then a sustained temperature difference between the two zones. Record how the run ended if written, such as shutdown, slow cooldown, or crystal removal while the furnace remained on. [CVT growth example](https://link.springer.com/article/10.1007/s13538-024-01554-3)
+- **Flux growth.** Look for heating to melt and dissolve the charge, a high-temperature hold, and slow cooling that allows crystals to form. A lower-temperature hold or a final decant is another clue. A high charge ratio supports the classification when the rest of the log shows a plausible liquid flux. [Solution growth and decanting study](https://doi.org/10.1002/zaac.202500007)
+
+**Borderline high ratios.** Identify the element with the largest atomic share and compare its pure melting point with the last growth temperature or the decant temperature when recorded. If that temperature is below the pure element's melting point, check the phase diagram for the recorded mixture to see whether a liquid phase could still be present. Liquid at that stage supports a flux interpretation, especially if the cycle includes slow cooling or a decant. Record the evidence and leave the process unclear if the phase state or the log does not support a classification. [Solution growth phase diagram examples](https://doi.org/10.1002/zaac.202500007)
 
 ### Risk tiers before extraction
 
