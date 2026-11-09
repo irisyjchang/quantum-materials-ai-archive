@@ -23,15 +23,26 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 ## 3. MVP decisions and trade-offs
 
 1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite for review and offline search.
-2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill checks whether the required fields are present and readable. It returns a risk tier, a reason, and the relevant location in the original log. Critical, uncertain, or failed assessments go to human review. Non-critical logs move directly to extraction.
+2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill checks whether the required fields are present and readable. It returns a risk tier, a reason, and the relevant location in the original log. Critical or uncertain assessments go to human review. The operator can retry a technical failure. Non-critical logs move directly to extraction.
 3. **Use Codex with the `extract-lab-records` skill for extraction.** Extract the values into a JSON draft and flag unclear handwriting or missing values. A human reviewer checks every draft against the original log. Their approval is required before import, regardless of the log's risk tier.
 4. **Preserve the draft and review decision.** Keep every original extraction draft, including drafts that remain pending, and make them available to the operator and authorized reviewers in the internal review workspace. Keep each approved version with its review decision. An identical retry can reuse the existing decision.
 
-**Keep the two skills focused.** Prototype `import-lab-records` outside the archive app for risk assessment. Use the [Run 01 prompt](pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for `extract-lab-records`, with the current field rules. Preserve the original PDF and save the draft separately. Treat the Run 01 output as an example while the JSON format is being confirmed. The app records the human review decision and handles SQLite import.
+**Keep the two skills focused.** Prototype `import-lab-records` outside the archive app for risk assessment. Use the [Run 01 prompt](pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for `extract-lab-records`, with the current field rules. Preserve the original PDF and save the draft separately. Convert the legacy Run 01 output to the draft format before using it in the walkthrough. The app records the human review decision and handles SQLite import.
 
 **First run without an API.** The project operator runs both skills in Codex and saves the model name, prompt version, and JSON output for each step. The operator loads the saved drafts and source PDFs into the local review workflow. In both the walkthrough and the automated MVP, the reviewer's approval triggers the app to save that version to SQLite automatically.
 
 **Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The project has no confirmed model API credentials or budget. Confirm an approved endpoint, PDF support, and who pays for usage before adding unattended model calls. Keep the same risk and human review rules when moving from saved JSON to API responses.
+
+### JSON handoff
+
+Use the same versioned JSON format for saved Codex results and automated model results. Each packet covers one PDF version. The operator or app adds the source and model metadata.
+
+- Every packet includes `schema_version` (initially `1`), `stage` (`risk` or `extraction`), `pdf_id`, `file_hash`, `model`, and `prompt_version`.
+- A risk packet includes `decision` (`critical`, `non_critical`, or `uncertain`) and an `issues` array. Each issue gives a reason and its source location when available. An empty array means the assessment found no issues.
+- An extraction packet includes a `runs` array. Each entry has a packet-local `draft_id`, `source_locations`, and a `fields` object. Use the field keys `researcher_name`, `growth_date`, `jc_number`, `composition`, `furnace_cycle`, `furnace_layout`, `growth_process`, `timestamps`, and `measurements`.
+- Each field includes `status`, `raw_value`, `value`, and `evidence`. Use `recorded`, `inferred`, `derived`, `missing`, `unreadable`, `ambiguous`, or `omitted`. Use JSON null for unknown values. Dates use `YYYY-MM` or `YYYY-MM-DD`, and JC numbers remain text as written. Evidence records a source location or explains why the value is unavailable. Locations use a page number starting at 1 and a row, section, or marked region when available.
+
+Validate the packet version, required keys, and source PDF before loading it for review. Invalid packets become technical failures. The app matches drafts to stable run IDs and records approvals separately from model output. Only a reviewer action can approve a run.
 
 ## 4. Workflow and ownership
 
@@ -121,7 +132,7 @@ Record how the run ended when the log gives that detail, such as shutdown, slow 
 
 Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, one source PDF with the relevant page and row locations, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
-**Offline use in the MVP.** Before disconnecting, put the SQLite database, the local search tools, and the original PDFs for the MVP collection on the laptop. Store a local file reference alongside the Drive reference so search results can open the source without a connection. Drafts already on the laptop can be reviewed and saved to SQLite on approval while offline. Drive retrieval and cloud extraction wait until the connection returns. The number of PDFs required for MVP acceptance is still to be decided.
+**Offline use in the MVP.** The designated review laptop holds the official SQLite database and is the only device where authorized reviewers can save approvals and corrections. Keep the review workspace and original PDFs for the MVP collection on that laptop so loaded drafts can be reviewed offline. Give other devices read-only copies of the approved records and PDFs for offline search. Drive retrieval and cloud extraction resume when the connection returns. Back up the official database and review workspace to approved lab storage, and test restoring them with their linked PDFs. The number of PDFs required for MVP acceptance is still to be decided.
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
@@ -183,6 +194,8 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 - Re-extract an unchanged PDF with different row labels and verify that the same runs keep their IDs. Replace a PDF and verify that a reviewer must confirm the matches before any approved records change.
 - Simulate a failed approval save and verify that neither the searchable run nor its revision changes. Retry the same approval and verify that it saves exactly one revision, including when a previous save committed before the app could show confirmation.
 - Verify that a held PDF and a failed PDF appear as distinct outcomes and that every PDF in the MVP collection has a recorded outcome.
+- Load a saved Codex packet and an automated model packet through the same validator. Verify that an invalid packet stays out of review.
+- Approve a loaded draft offline on the designated review laptop. Verify that reader copies allow search and source viewing, and that a backup restores the approved run and its review history.
 - Disconnect the laptop and reopen the local tools. Search the approved runs and verify that every original log PDF in the MVP collection opens without a connection.
 
 [After the MVP](pilot/DESIGN.md)
