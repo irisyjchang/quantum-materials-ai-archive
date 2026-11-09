@@ -63,7 +63,7 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 
 ## 5. Log run fields and scientific boundaries
 
-| Fields | Requirement | Capture | When to flag for review |
+| Fields | Requirement | What to extract | When to flag for review |
 | --- | --- | --- | --- |
 | Lookup | At least one of researcher name, date, or JC number is required. | Keep the date at its recorded precision and the JC number as written. Start and end timestamps are optional and serve only as a fallback when the date is missing. | No searchable value can be established, or an ambiguous value could link the data to the wrong run. |
 | Composition | Core field. Whether missing stoichiometry blocks import when a searchable value is available is open. | Keep the formula, written ratios in component order, weights and units, and separate calculated and measured values. | Flag missing stoichiometry or ambiguity that changes how it could be read, such as an overwritten digit, unclear element symbol, or unknown ratio basis. |
