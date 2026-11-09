@@ -23,7 +23,7 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 ## 3. MVP decisions and trade-offs
 
 1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite for review and offline search.
-2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill applies the lab's checklist and returns a risk tier, a reason, and the relevant location in the original log. Critical, uncertain, or failed assessments go to human review. Non-critical logs move directly to extraction.
+2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill checks whether the required fields are present and readable. It returns a risk tier, a reason, and the relevant location in the original log. Critical, uncertain, or failed assessments go to human review. Non-critical logs move directly to extraction.
 3. **Use a separate Codex skill for extraction.** Extract the values into a JSON draft and flag unclear handwriting or missing values. A human reviewer checks every draft against the original log. Their approval is required before import, regardless of the log's risk tier.
 4. **Preserve the draft and review decision.** Keep the original draft and the approved version. If a person changes a value, save the revision and review decision. An identical retry can reuse the existing decision.
 
@@ -39,7 +39,7 @@ This Mermaid flowchart shows the target automated Drive workflow and where a hum
 
 ```mermaid
 flowchart TD
-    A[App reads existing PDFs from Drive] --> T[Codex assesses risk with import-lab-records]
+    A[App reads existing PDFs from Drive] --> T[Codex checks required fields with import-lab-records]
     T --> R{Risk assessment result}
     R -->|Non-critical| D[Codex uses the extraction skill to draft JSON]
     R -->|Critical or uncertain| P[Human reviewer checks the original log]
@@ -54,7 +54,7 @@ flowchart TD
 ```
 
 1. **App reads the existing PDFs from Drive.** Use the inventory to find the logs and keep their Drive file IDs with the extracted data.
-2. **Codex assesses each log's risk with `import-lab-records`.** Apply the lab's checklist to the original log and save the tier and evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
+2. **Codex assesses each log's risk with `import-lab-records`.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
 3. **Codex uses the extraction skill on eligible logs.** Use the extraction skill's instructions to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
 4. **Human reviewer checks each draft.** Compare the extracted runs and values with the original log. Approve a run if the essential values can be confirmed. Leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
 5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC and open the original log at the relevant page and row.
@@ -63,7 +63,7 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 
 ## 5. Log run fields and scientific boundaries
 
-**Basic variables.** The lab confirmed the recorded date, JC number when present, and stoichiometry, including written ratios, before the pilot. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
+**Required fields.** The lab confirmed the recorded date, JC number when present, and stoichiometry, including written ratios, before the pilot. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
 
 | Field group | Capture | Critical |
 | --- | --- | --- |
@@ -82,7 +82,7 @@ A transport agent and labeled simultaneous furnace zones can support CVT. A high
 - **Critical · Review before extraction.** Use this tier when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A human must clear the log before extraction. If a critical issue first appears in the draft, resolve it before importing the affected run. A visibly absent JC number is valid if the original log identifies the run.
 - **Non-critical · Send to extraction.** Use this tier for optional details that can remain unknown without changing the core values for that log run, such as a missing layout note or an unclear optional timestamp. Keep the uncertainty visible in the draft. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
 
-These tiers are proposed for the lab to confirm using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block AI evaluation or import, and use those decisions in the pilot's review checklist.
+These tiers are proposed for the lab to confirm using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block AI evaluation or import, and use those decisions in the pilot review rules.
 
 ## 6. Local storage
 
