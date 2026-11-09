@@ -61,7 +61,7 @@ flowchart TD
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
 
-## 5. Log run fields and scientific boundaries
+## 5. Log Run Review and Extraction
 
 ### Risk tiers before extraction
 
