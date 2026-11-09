@@ -127,7 +127,13 @@ Keep the PDFs in approved Drive storage. The import packet carries a stable log 
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
-**Corrections after import.** An authorized reviewer can revise an existing run using the same review workflow. Keep the run ID and prior versions. Once the correction is approved, make the newly approved version searchable and retain the approval and correction history.
+### SQLite data model
+
+- **`source_pdfs`** has one row per growth log PDF. Store its archive filename, Drive file ID, and local path for offline access.
+- **`growth_runs`** has one row per approved experimental run. Store searchable fields such as researcher name, date at its recorded precision, JC number as written, and growth process. Each run points to its source PDF and the relevant page and row locations. Several runs can point to the same PDF.
+- **`run_revisions`** has one row per approved version of a run. Keep the same run ID across corrections and record the old and new values, the reason for the correction, who edited and approved it, and when.
+
+An authorized reviewer can revise an existing run through the same review workflow. When the reviewer approves a run or a correction, the app saves the approved revision and the searchable run together in one SQLite transaction. Search uses the latest approved version. The schema defines the exact column types and indexes.
 
 ## 7. MVP acceptance checks
 
