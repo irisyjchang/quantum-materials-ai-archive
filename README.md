@@ -6,6 +6,7 @@ The planned system will use AI to extract crystal-growth data into structured JS
 
 We’ll start with a small pilot to test different AI models and prompts before expanding to the full dataset.
 
+- **[Design document](DESIGN.md)**
 - **[Start with the pilot](pilot/README.md)**
 - **[Questions for the research team](researcher-questions/README.md)**
 - [View the first ChatGPT result](pilot/runs/chatgpt/pdf-to-json/run01/output.json)
