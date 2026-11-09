@@ -54,8 +54,8 @@ flowchart TD
 1. **App prepares the extraction inputs.** Gather the PDFs from the inventory and package them with the shared instructions and any expected log run locations established for the test.
 2. **Check each log's risk before AI evaluation.** Apply the lab's checklist to the original log. The app makes non-critical logs and logs cleared by a human available to the operator. A log with a critical issue or no risk classification stays on hold until a human reviewer clears it. If one log contains multiple runs and any run has a critical issue, hold the PDF until review.
 3. **Operator handles the Purple handoff.** Run the eligible inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
-4. **Human reviewer handles exceptions.** If the three drafts disagree, a model misses a log run, or a critical value is unresolved, check the original log PDF. The app saves the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue before import.
-5. **App imports accepted log runs.** Save a run directly to SQLite when all three models return the same values for it. Otherwise, save it after human approval. Store how it was accepted. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
+4. **Human reviewer checks flagged log runs.** If the models disagree or one misses a run, the reviewer checks the original log. They approve the run if they can confirm the values or leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
+5. **App saves log runs to SQLite.** When all three models return the same values for a run, the app saves it directly. A flagged run is saved once the human reviewer approves it. The app records how each run was accepted. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
 The operator's role is the browser handoff with Purple. The lab designates who verifies the science.
 
