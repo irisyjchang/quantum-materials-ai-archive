@@ -23,7 +23,7 @@ The MVP tests AI extraction, human review, and search on existing scans. For eac
 ## 3. MVP decisions and trade-offs
 
 1. **Reuse the local SQLite walkthrough.** Extend the existing import and search workflow for reviewed log runs. The operator can use local commands for the first demo. Add a web interface when lab users identify a task the local workflow makes difficult.
-2. **Use one approved extractor.** Start with the existing ChatGPT workflow if the lab approves it for these scans. Have it return a structured JSON draft with a source reference for each log run. One extractor is sufficient to test the MVP workflow.
+2. **Compare three approved extractors in the MVP pilot.** Run the same logs independently through three AI tools, using the same instructions and JSON format. Include ChatGPT if the lab approves it and confirm the other two tools before the pilot. Comparing drafts can expose disagreements and missed rows, but it adds processing time, possible cost, and work to align the outputs. The original log is the reference for resolving disagreements and checking values all three tools agree on.
 3. **Review outside the app.** A lab reviewer checks the packet against the scan in Drive and records their name and decision on the reviewed version. Code checks the packet and imports it. This keeps the human gate without building a review queue or approval service.
 4. **Preserve the source and corrections.** Keep the original draft alongside the reviewed packet. If a value changes, review the revised packet before importing it. An identical retry can reuse the existing review decision.
 
@@ -32,7 +32,7 @@ The MVP tests AI extraction, human review, and search on existing scans. For eac
 **Pilot intake for paper logs that cannot feed through the UW scanner.** Take a regular phone photo that shows the whole log, including tape, sticky notes, and writing in the margins. Attach it in ChatGPT with its log binder number. The assistant converts the photo to PDF, checks that the PDF opens and that the visible writing and notes are preserved, then uploads it to the matching Drive folder with the next available log number. If the photo is blurry or cropped, ask for a retake. This trial tests capture, PDF verification, and filing before those steps are built into the app.
 
 1. **Preparer selects a scan.** Record the Drive file ID, page, and worksheet row. Check the page is readable and account for every populated row.
-2. **AI extracts the recorded values.** The preparer submits the scan to the approved extractor. The draft preserves uncertain text and links each log run to the original log.
+2. **AI extracts and compares the recorded values.** The preparer submits the same scan to the three approved extractors independently. Each draft preserves uncertain text and links each log run to the original log. Compare the drafts by page and row before review, and flag missing rows and conflicting values.
 3. **Lab reviewer checks the draft.** Confirm or correct values using the original log. Record the reviewer, date, and reviewed version. Set aside rows with unresolved critical fields.
 4. **Operator imports and searches.** Validate the reviewed packet, import it into SQLite, and retrieve the log run by name, date, or JC. Confirm the result points to the relevant page and row in the original log.
 
@@ -73,7 +73,7 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 Start once the lab confirms the review tiers. Use Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
 
-Compare the extractor's draft with the values and rows the lab reviewer confirms from the scan. Track missed rows, incorrect critical fields, and the time spent reviewing and correcting the draft. Reserve a few pages to check the result after the prompt is fixed. If extraction fails or the source cannot support a critical value, keep that log run out of the import until the issue is resolved.
+Compare each extractor's draft with the values and rows the lab reviewer confirms from the original log. Track missed rows, incorrect critical fields, and the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
 The MVP is ready for a lab walkthrough when a reviewer can:
 
