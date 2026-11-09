@@ -11,4 +11,4 @@ Worksheet: JC1301–JC1303, dated January 16, 2020.
 
 Status: **unvalidated**. Run date is not recorded.
 
-[Questions for the research team](../../../../../researcher-questions/README.md) · [Pilot](../../../../README.md)
+[Pilot](../../../../README.md)
