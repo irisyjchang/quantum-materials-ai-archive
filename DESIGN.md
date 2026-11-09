@@ -141,7 +141,7 @@ These are the proposed MVP columns. The SQLite schema will define the final cons
 **`growth_runs`** has one row per approved experimental run.
 
 - `run_id` is the internal primary key. `pdf_id` links to `source_pdfs`. Several runs can point to the same PDF.
-- `researcher_name`, `growth_date`, and `jc_number_written` support lookup. At least one is required. Store JC numbers as text to preserve partial numbers and leading zeros. JC numbers can repeat across runs.
+- `researcher_name`, `growth_date`, and `jc_number` support lookup. At least one is required. Store the JC number exactly as written, using text to preserve partial numbers and leading zeros. JC numbers can repeat across runs.
 - `date_precision` records whether the date is known to the day or month. A month-only value such as `2020-01` stays at month precision.
 - `growth_process` stores CVT, Flux Growth, or unclear when a classification was attempted. It supports filtering and can be empty.
 - `composition_json` stores the confirmed stoichiometry, including the formula, ratios, weights, and units when available.
