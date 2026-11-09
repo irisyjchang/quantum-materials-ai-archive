@@ -6,7 +6,7 @@
 
 ## 1. Problem and outcome
 
-A researcher looking for a past crystal growth run may have to open several handwritten worksheets and cross-reference a JC number, date, compound, or furnace cycle. Some sheets contain several runs. Some older records lack a JC number or use a short suffix. Meanwhile, instrument data lives on lab computers and Dropbox, and some files are also shared in Slack. Those overlapping digital sources can be reconciled later. The first workflow covers the scanned growth sheets.
+A researcher looking for a past crystal growth run may have to open several handwritten worksheets and cross-reference a JC number, date, compound, or furnace cycle. Some sheets contain several runs. Some older records lack a JC number or use a short suffix. The first workflow covers the scanned growth sheets.
 
 The MVP succeeds when a physicist can look up a reviewed run by name, date, or JC number and open the exact source page and row while offline. The MVP demonstrates this with the pilot collection. The shared app should make the full archive the physicist is authorized to access available offline after a complete sync.
 
@@ -89,3 +89,5 @@ Add a phone-friendly capture screen where a scientist takes and submits a photo.
 **Offline photo capture.** Save the photo on the device when the connection drops and show it as pending. Upload and start extraction after reconnecting. Keep the pending copy until the server confirms receipt, and use the same submission ID for retries to avoid duplicate records. Test by taking a photo offline, reopening the capture screen, and reconnecting.
 
 Before rolling this out, confirm who handles exceptions and which fields need review on every record. Test on actual phone photos, including pages with several runs and notes in the margins. Measure both the time scientists spend submitting a log and the time reviewers spend checking it. Use those results to decide which fields can move to spot checks.
+
+Meanwhile, instrument data lives on lab computers and Dropbox, and some files are also shared in Slack. Those overlapping digital sources can be reconciled later.
