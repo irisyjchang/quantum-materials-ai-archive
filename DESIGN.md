@@ -129,11 +129,33 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ### SQLite data model
 
-- **`source_pdfs`** has one row per growth log PDF. Store its archive filename, Drive file ID, and local path for offline access.
-- **`growth_runs`** has one row per approved experimental run. Store searchable fields such as researcher name, date at its recorded precision, JC number as written, and growth process. Each run points to its source PDF and the relevant page and row locations. Several runs can point to the same PDF.
-- **`run_revisions`** has one row per approved version of a run. Keep the same run ID across corrections and record the old and new values, the reason for the correction, who edited and approved it, and when.
+These are the proposed MVP columns. The SQLite schema will define the final constraints and indexes.
 
-An authorized reviewer can revise an existing run through the same review workflow. When the reviewer approves a run or a correction, the app saves the approved revision and the searchable run together in one SQLite transaction. Search uses the latest approved version. The schema defines the exact column types and indexes.
+**`source_pdfs`** has one row per growth log PDF.
+
+- `pdf_id` is the internal primary key.
+- `archive_filename` is the name shown in the archive.
+- `drive_file_id` identifies the original PDF in Drive.
+- `local_path` locates the downloaded copy for offline access. It can be empty before the file is downloaded.
+
+**`growth_runs`** has one row per approved experimental run.
+
+- `run_id` is the internal primary key. `pdf_id` links to `source_pdfs`. Several runs can point to the same PDF.
+- `researcher_name`, `growth_date`, and `jc_number_written` support lookup. At least one is required. Store JC numbers as text to preserve partial numbers and leading zeros. JC numbers can repeat across runs.
+- `date_precision` records whether the date is known to the day or month. A month-only value such as `2020-01` stays at month precision.
+- `growth_process` stores CVT, Flux Growth, or unclear when a classification was attempted. It supports filtering and can be empty.
+- `composition_json` stores the confirmed stoichiometry, including the formula, ratios, weights, and units when available.
+- `source_locations_json` stores the relevant PDF page and row references. At least one source location is required.
+- `details_json` stores optional information such as furnace steps, sketch references, and evidence for the growth process.
+
+**`run_revisions`** has one row per approved version of a run.
+
+- `run_id` links to `growth_runs`. Together, `run_id` and `version` identify a revision.
+- `approved_values_json` stores a snapshot of the approved values. `changes_json` records the fields changed, their old and new values, and the reason for each correction.
+- `edited_by` and `edited_at` record who made the edit and when. These can be empty if the reviewer approved the draft as written.
+- `approved_by` and `approved_at` record who approved the version and when.
+
+An authorized reviewer can revise an existing run through the same review workflow. When the reviewer approves a run or a correction, the app saves the approved revision and the searchable run together in one SQLite transaction. Search uses the latest approved version.
 
 ## 7. MVP acceptance checks
 
