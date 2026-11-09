@@ -45,11 +45,9 @@ flowchart TD
     F --> V{Do all three models return the same values?}
     V -->|Yes| K[App saves the log run in SQLite]
     V -->|No| G[Human reviewer checks values against the original log]
-    G --> H{Any unresolved critical issue?}
-    H -->|Yes| I[Hold the affected log run]
-    I -->|Issue resolved| G
-    H -->|No| J[Reviewer approves the log run]
-    J --> K
+    G -->|Approved| K
+    G -->|Essential value unclear| I[Leave the log run pending]
+    I -->|More information available| G
     K --> L[Researcher searches and opens the original log]
 ```
 
