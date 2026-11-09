@@ -8,7 +8,7 @@
 
 A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. JC numbers were introduced later, so some older log runs lack one. Some numbers are partial or appear on more than one run.
 
-1. **Saved JSON walkthrough.** Run the two Codex steps and use their saved JSON to demonstrate human review, SQLite import, and local search.
+1. **Saved JSON walkthrough.** Run the two Codex steps and load their saved JSON for human review. Approval automatically saves the approved run to SQLite for local search.
 2. **Automated MVP with local offline search.** With approved model API access, automate processing of existing Drive PDFs. On a laptop with the local database and PDFs, a researcher can search approved runs by name, date, or JC number and open the original log at the relevant page and row while offline.
 3. **Full archive sync later.** The shared app syncs the full archive a researcher is authorized to access and makes that downloaded copy available offline.
 
@@ -31,7 +31,7 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 
 **Keep the two skills focused.** Prototype `import-lab-records` outside the archive app for risk assessment. Use the [Run 01 prompt](../pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for `extract-lab-records`, with the current field rules. Preserve the original PDF and save the draft separately. Treat the Run 01 output as an example while the JSON format is being confirmed. The app records the human review decision and handles SQLite import.
 
-**First run without an API.** The project operator runs both skills in Codex and saves the model name, prompt version, and JSON output for each step. Once the PDFs and drafts are downloaded, the operator can inspect the saved JSON locally and run the import after human approval. The import tool writes approved runs to SQLite. The automated MVP handles that write after approval using the same data format.
+**First run without an API.** The project operator runs both skills in Codex and saves the model name, prompt version, and JSON output for each step. The operator loads the saved drafts and source PDFs into the local review workflow. In both the walkthrough and the automated MVP, the reviewer's approval triggers the app to save that version to SQLite automatically.
 
 **Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The project has no confirmed model API credentials or budget. Confirm an approved endpoint, PDF support, and who pays for usage before adding unattended model calls. Keep the same risk and human review rules when moving from saved JSON to API responses.
 
@@ -59,7 +59,7 @@ flowchart TD
 2. **Codex assesses each log's risk with the `import-lab-records` skill.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. Hold the whole PDF if any run has a critical issue. For example, a readable row still waits if another row in the same growth log has an ambiguous compound.
 3. **Codex extracts values with the `extract-lab-records` skill.** Use the skill on eligible logs to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
 4. **Human reviewer checks each draft.** Give authorized reviewers access to open the original PDF alongside the extracted fields, manually correct individual fields, and approve the reviewed version. For each correction, save the old and new values, the reason, and the source location. Record who made the edit, who approved the version, and when. Approve a run when the reviewer can confirm a searchable value, the stoichiometry, and the source location. Hold the run before import if a required value is missing or a critical issue remains unresolved.
-5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC number, filter by growth process, and open the original log at the relevant page and row.
+5. **App saves approved log runs to SQLite automatically.** The reviewer's approval triggers the save. Researchers can then search by name, date, or JC number, filter by growth process, and open the original log at the relevant page and row.
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
 
@@ -121,7 +121,7 @@ Record how the run ended when the log gives that detail, such as shutdown, slow 
 
 Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, one source PDF with the relevant page and row locations, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
-**Offline use in the MVP.** Before disconnecting, put the SQLite database, the local search tools, and the original PDFs for the MVP collection on the laptop. Store a local file reference alongside the Drive reference so search results can open the source without a connection. The operator can also import a reviewed packet already on the laptop. Drive retrieval and cloud extraction wait until the connection returns. The number of PDFs required for MVP acceptance is still to be decided.
+**Offline use in the MVP.** Before disconnecting, put the SQLite database, the local search tools, and the original PDFs for the MVP collection on the laptop. Store a local file reference alongside the Drive reference so search results can open the source without a connection. Drafts already on the laptop can be reviewed and saved to SQLite on approval while offline. Drive retrieval and cloud extraction wait until the connection returns. The number of PDFs required for MVP acceptance is still to be decided.
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
@@ -133,11 +133,11 @@ Use Run 01 as an extraction baseline. Before processing the wider batch, have a 
 
 **Go/no-go for the wider batch.** Proceed once the human reviewer confirms that the final check caught every critical issue that should hold a PDF before extraction, included every expected run in the PDFs cleared for extraction, and linked each draft to the correct PDF and page or row. Also verify that every test run with missing stoichiometry or an unresolved critical issue stays out of SQLite and that every import has human approval. If any check fails, fix the issue and rerun the check before expanding. Track unnecessary review holds, other extraction errors, and reviewer correction time to guide improvements.
 
-For the first walkthrough, use saved JSON to test human review and SQLite import. With approved model API access, the automated MVP is ready when the team can:
+For the first walkthrough, use saved JSON to verify that human approval automatically saves the approved version to SQLite. With approved model API access, the automated MVP is ready when the team can:
 
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to extraction. Verify that a critical or uncertain log is held until a human clears it.
-- Confirm that every extraction draft waits for human approval before it enters SQLite, including drafts from non-critical logs.
+- Confirm that pending drafts stay out of SQLite, including drafts from non-critical logs, and that approval automatically saves the approved version and makes it searchable.
 - Verify that the operator can inspect pending and approved drafts internally. Have an authorized reviewer correct a field against the original PDF, approve the revision, and verify that the approved value is searchable under the same run ID with the prior value and approval history preserved.
 - Find a known run by name, date or month, or JC number and open the original log at the relevant page and row. Verify that a timestamp can establish a searchable month when the date is missing. Confirm a month-only date is shown without an invented day.
 - Keep missing and partial JC numbers as recorded, return all runs that share a JC number, and sort same-date runs without JC numbers alphabetically by researcher name.
