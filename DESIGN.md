@@ -12,8 +12,6 @@ A researcher looking for a past log run may have to open several handwritten gro
 2. **Automated MVP with local offline search.** With approved model API access, automate processing of existing Drive PDFs. On a laptop with the local database and PDFs, a researcher can search approved runs by name, date, or JC number and open the original log at the relevant page and row while offline.
 3. **Full archive sync later.** The shared app syncs the full archive and makes that downloaded copy available offline.
 
-**The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
-
 The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the `import-lab-records` skill to assess risk and the `extract-lab-records` skill to extract values from eligible logs. For each run, the extraction draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A human reviewer checks the draft against the original log and approves it before it goes into SQLite.
 
 ## 2. Status
@@ -177,16 +175,4 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 - Retry the same import without duplicating database entries and see a clear error for an invalid or conflicting packet.
 - Disconnect the laptop and reopen the local tools. Search the approved runs and verify that every original log PDF in the MVP collection opens without a connection.
 
-## 8. After the MVP
-
-**Researcher photo-upload pilot.** Researchers take a photo of a paper log and upload it in the app. The app checks that the whole log is readable, converts it to PDF, and verifies that every page renders. It asks for a retake if the photo is blurry or cropped. After upload, the app shows submission status and carries the PDF through the same extraction, review, and import workflow tested in the MVP.
-
-**Reuse the processing workflow.** Once an uploaded photo becomes a PDF, send it through the same risk assessment, extraction, human review, and import steps used for the existing Drive logs.
-
-**Offline archive access.** Sync the full archive to the device, including the searchable log runs and their original logs. Show when the download is complete and when it last synced. Keep the last complete copy usable if a refresh is interrupted. A researcher can still browse and open the downloaded archive while new uploads and updates wait for a connection.
-
-**Offline photo capture.** Save the photo on the device when the connection drops and show it as pending. Upload and start extraction after reconnecting. Keep the pending photo until the archive confirms the PDF was saved and passed its rendering check. Use the same submission ID for retries to avoid duplicates. Test by taking a photo offline, reopening the capture screen, and reconnecting.
-
-Before rolling this out, confirm who handles exceptions. Test on actual phone photos, including pages with several runs and notes in the margins. Measure both the time researchers spend submitting a log and the time reviewers spend checking it.
-
-Meanwhile, instrument data lives on lab computers and Dropbox, and some files are also shared in Slack. Those overlapping digital sources can be reconciled later.
+[After the MVP](pilot/DESIGN.md)
