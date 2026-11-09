@@ -6,7 +6,9 @@ This pilot builds on the archive workflow described in the [MVP design](../DESIG
 
 **Reuse the processing workflow.** Once an uploaded photo becomes a PDF, send it through the same risk assessment, extraction, human review, and import steps used for the existing Drive logs.
 
-**Shared review.** Use the shared review server and reviewer accounts from the MVP to process submissions from the pilot.
+**Shared review.** Reuse the MVP review workflow and reviewer accounts for pilot submissions.
+
+**Pilot hosting decision.** Before inviting pilot participants, choose where the shared app will run long term and confirm who will own the account, cover hosting costs, and maintain backups. Verify that the host provides persistent storage for SQLite and the review workspace. If the pilot uses a different host from the MVP, restore the database, review history, and source references there and verify that reviewers can sign in and open the linked PDFs.
 
 Before rolling out photo uploads, confirm who handles exceptions. Test on actual phone photos, including pages with several runs and notes in the margins. Measure both the time researchers spend submitting a log and the time reviewers spend checking it.
 
