@@ -27,11 +27,11 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite for review and offline search.
 2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill checks whether the required fields are present and readable. It returns a risk tier, a reason, and the relevant location in the original log. Critical, uncertain, or failed assessments go to human review. Non-critical logs move directly to extraction.
 3. **Use Codex with the `extract-lab-records` skill for extraction.** Extract the values into a JSON draft and flag unclear handwriting or missing values. A human reviewer checks every draft against the original log. Their approval is required before import, regardless of the log's risk tier.
-4. **Preserve the draft and review decision.** Keep the original draft and the approved version. If a person changes a value, save the revision and review decision. An identical retry can reuse the existing decision.
+4. **Preserve the draft and review decision.** Keep every original extraction draft, including drafts that remain pending, and make them available to the operator and authorized reviewers in the internal review workspace. Keep each approved version with its review decision. An identical retry can reuse the existing decision.
 
 **Keep the two skills focused.** Prototype `import-lab-records` outside the archive app for risk assessment. Use the [Run 01 prompt](../pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for `extract-lab-records`, with the current field rules. Preserve the original PDF and save the draft separately. Treat the Run 01 output as an example while the JSON format is being confirmed. The app records the human review decision and handles SQLite import.
 
-**First run without an API.** Run both skills in Codex. Save the model name, prompt version, and JSON output for each step. The local app accepts those outputs in the same format it will accept from an API later. Once the PDFs and drafts are downloaded, human review, import, and search can run locally.
+**First run without an API.** The project operator runs both skills in Codex and saves the model name, prompt version, and JSON output for each step. Once the PDFs and drafts are downloaded, the operator can inspect the saved JSON locally and run the import after human approval. The import tool writes approved runs to SQLite. The automated MVP handles that write after approval using the same data format.
 
 **Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The project has no confirmed model API credentials or budget. Confirm an approved endpoint, PDF support, and who pays for usage before adding unattended model calls. Keep the same risk and human review rules when moving from saved JSON to API responses.
 
@@ -56,9 +56,9 @@ flowchart TD
 ```
 
 1. **App reads the existing PDFs from Drive.** Use the inventory to find the logs and keep their Drive file IDs with the extracted data.
-2. **Codex assesses each log's risk with the `import-lab-records` skill.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
+2. **Codex assesses each log's risk with the `import-lab-records` skill.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. Hold the whole PDF if any run has a critical issue. For example, a readable row still waits if another row in the same growth log has an ambiguous compound.
 3. **Codex extracts values with the `extract-lab-records` skill.** Use the skill on eligible logs to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
-4. **Human reviewer checks each draft.** Compare the extracted runs and values with the original log. Approve a run when the reviewer can confirm a searchable value, the stoichiometry, and the source location. Hold the run before import if a required value is missing or a critical issue remains unresolved. The app saves the reviewer, date, and reviewed version.
+4. **Human reviewer checks each draft.** Give authorized reviewers access to open the original PDF alongside the extracted fields, manually correct individual fields, and approve the reviewed version. For each correction, save the old and new values, the reason, and the source location. Record who made the edit, who approved the version, and when. Approve a run when the reviewer can confirm a searchable value, the stoichiometry, and the source location. Hold the run before import if a required value is missing or a critical issue remains unresolved.
 5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC number, filter by growth process, and open the original log at the relevant page and row.
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
@@ -125,6 +125,8 @@ Keep the PDFs in approved Drive storage. The import packet carries a stable log 
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
+**Corrections after import.** An authorized reviewer can revise an existing run using the same review workflow. Keep the run ID and prior versions. Once the correction is approved, make the newly approved version searchable and retain the approval and correction history.
+
 ## 7. MVP acceptance checks
 
 Use Run 01 as an extraction baseline. Before processing the wider batch, have a human reviewer check a small set of original PDFs and record the expected risk decisions, runs, field values, and source locations. Include both risk tiers, a PDF with multiple runs, a run spanning pages within one PDF, a missing JC number with another searchable value, missing stoichiometry, and an unresolved optional detail. Reserve some PDFs for the final check after the instructions are fixed.
@@ -136,6 +138,7 @@ For the first walkthrough, use saved JSON to test human review and SQLite import
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to extraction. Verify that a critical or uncertain log is held until a human clears it.
 - Confirm that every extraction draft waits for human approval before it enters SQLite, including drafts from non-critical logs.
+- Verify that the operator can inspect pending and approved drafts internally. Have an authorized reviewer correct a field against the original PDF, approve the revision, and verify that the approved value is searchable under the same run ID with the prior value and approval history preserved.
 - Find a known run by name, date or month, or JC number and open the original log at the relevant page and row. Verify that a timestamp can establish a searchable month when the date is missing. Confirm a month-only date is shown without an invented day.
 - Keep missing and partial JC numbers as recorded, return all runs that share a JC number, and sort same-date runs without JC numbers alphabetically by researcher name.
 - Verify a carried-down compound against its original cell and filter reviewed runs by CVT or Flux Growth.
