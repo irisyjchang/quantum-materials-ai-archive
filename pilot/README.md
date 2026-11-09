@@ -9,7 +9,4 @@
 ## Add another test
 Keep each test together under `runs/<ai>/pdf-to-json/run01/`: README, source PDF, prompt file, metadata, and output. Use `run02` for another attempt. Compare the same worksheet across tools.
 
-## Questions for the team
-- **[Questions for the research team](../researcher-questions/README.md)**
-
 Original JSON values are preserved. Matching AI outputs still need researcher validation.
