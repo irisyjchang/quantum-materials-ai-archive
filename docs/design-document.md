@@ -12,7 +12,7 @@ The MVP succeeds when a researcher can look up a reviewed run by name, date, or 
 
 **After the MVP, the scientist's job is to take and submit a photo of the paper log.** The archive should save the photo, check that the page is readable, draft the growth records, and send unclear entries to a designated reviewer. Once reviewed, the records become searchable with a link back to the photo.
 
-The MVP tests the record format, review, and search on existing scans. Manual entry gives the pilot a baseline for measuring how much time photo extraction could save, including the time spent correcting its output.
+The MVP tests AI extraction, human review, and search on existing scans. The extractor drafts the fields. A reviewer checks the draft against the source page and corrects values where the scan supports a clear reading.
 
 ## 2. Current evidence
 
@@ -23,14 +23,14 @@ The MVP tests the record format, review, and search on existing scans. Manual en
 ## 3. MVP decisions and trade-offs
 
 1. **Reuse the local SQLite walkthrough.** Extend the existing import and search workflow for reviewed records. The operator can use local commands for the first demo. Add a web interface when lab users identify a task the local workflow makes difficult.
-2. **Use one record format for manual and AI drafts.** Start with manual entry and optionally test the existing ChatGPT workflow if the lab approves it. Both routes produce the same JSON packet. A single tool is enough to test whether extraction saves time.
+2. **Use one approved extractor.** Start with the existing ChatGPT workflow if the lab approves it for these scans. Have it return a structured JSON draft with a source reference for each record. One extractor is sufficient to test the MVP workflow.
 3. **Review outside the app.** A lab reviewer checks the packet against the scan in Drive and records their name and decision on the reviewed version. Code checks the packet and imports it. This keeps the human gate without building a review queue or approval service.
 4. **Preserve the source and corrections.** Keep the original draft alongside the reviewed packet. If a value changes, review the revised packet before importing it. An identical retry can reuse the existing review decision.
 
 ## 4. Workflow and ownership
 
 1. **Preparer selects a scan.** Record the Drive file ID, page, and worksheet row. Check the page is readable and account for every populated row.
-2. **Preparer creates a draft.** Enter fields manually or use the approved extractor. Preserve uncertain text and link each record to its source.
+2. **Extractor drafts the record.** The preparer submits the scan to the approved extractor. The draft preserves uncertain text and links each record to its source.
 3. **Lab reviewer checks the draft.** Confirm or correct values using the original page. Record the reviewer, date, and reviewed version. Set aside rows with unresolved critical fields.
 4. **Operator imports and searches.** Validate the reviewed packet, import it into SQLite, and retrieve the record by name, date, or JC. Confirm the result points to the source page and row.
 
@@ -60,7 +60,7 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 Start with Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a sheet with several runs and a sheet with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
 
-If testing an extractor, run manual entry and the extractor on the same pages. Track missed rows, wrong critical values, and total time including correction. Reserve a few pages to check the result after the prompt is fixed. Use AI for drafting only if the initial results justify the review effort. An extractor failure does not block the manual workflow.
+Compare the extractor's draft with the values and rows the lab reviewer confirms from the scan. Track missed rows, incorrect critical fields, and the time spent reviewing and correcting the draft. Reserve a few pages to check the result after the prompt is fixed. If extraction fails or the source cannot support a critical value, keep that record out of the import until the issue is resolved.
 
 The MVP is ready for a lab walkthrough when a reviewer can:
 
