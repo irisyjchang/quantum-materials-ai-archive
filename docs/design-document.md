@@ -40,7 +40,7 @@ One person can prepare and operate the pilot. The lab designates who verifies th
 
 ## 5. Log run fields and scientific boundaries
 
-**Confirm the basic fields with the lab before starting the pilot.** The notes identify the recorded date, JC number when present, and stoichiometry, including written ratios, as the starting set. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
+**Basic variables.** The lab confirmed the recorded date, JC number when present, and stoichiometry, including written ratios, before the pilot. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
 
 | Field group | Capture | Examples that need a closer look |
 | --- | --- | --- |
@@ -73,7 +73,7 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. Pilot and acceptance checks
 
-Start once the lab confirms the basic fields and review tiers. Use Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
+Start once the lab confirms the review tiers. Use Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
 
 Compare the extractor's draft with the values and rows the lab reviewer confirms from the scan. Track missed rows, incorrect critical fields, and the time spent reviewing and correcting the draft. Reserve a few pages to check the result after the prompt is fixed. If extraction fails or the source cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
