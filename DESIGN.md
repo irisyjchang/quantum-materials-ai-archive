@@ -125,15 +125,18 @@ Keep the PDFs in approved Drive storage. The import packet carries a stable log 
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
+**Match runs after re-extraction.** Match each new draft to an existing run using the exact PDF version and its physical location on the page. On an unchanged PDF, reuse the existing `run_id` when the match is unambiguous, even if the extractor changes its row labels. For a replaced PDF or an ambiguous location, have a reviewer compare the old and new sources and confirm whether the draft is an existing run or a new one. Keep the last approved version searchable while the match is pending.
+
 ### SQLite data model
 
 These are the proposed MVP columns. The SQLite schema will define the final constraints and indexes.
 
-**`source_pdfs`** has one row per growth log PDF.
+**`source_pdfs`** has one row per version of a growth log PDF.
 
 - `pdf_id` is the internal primary key.
 - `archive_filename` is the name shown in the archive.
 - `drive_file_id` identifies the original PDF in Drive.
+- `file_hash` identifies the exact PDF contents. If a Drive file is replaced, keep the previous version and its source references so earlier approvals still point to the PDF the reviewer saw.
 - `local_path` locates the downloaded copy for offline access. It can be empty before the file is downloaded.
 
 **`growth_runs`** has one row per approved experimental run.
@@ -155,6 +158,10 @@ These are the proposed MVP columns. The SQLite schema will define the final cons
 
 An authorized reviewer can revise an existing run through the same review workflow. When the reviewer approves a run or a correction, the app saves the approved revision and the searchable run together in one SQLite transaction. Search uses the latest approved version.
 
+Show **Saved** only after the transaction commits. If the save fails, show the error and let the reviewer retry the same approval. A retry of an already committed approval returns the saved revision without adding another one.
+
+**`processing_status`** is a table in the same SQLite database, with one row per PDF version. Store `pdf_id`, `status`, `reason`, and `updated_at`. Distinguish PDFs held pending better evidence from technical failures that can be retried. A held PDF remains visible to the operator and can return to review when better evidence arrives. Keep pending drafts in the review workspace. Count every PDF in the MVP collection by its recorded outcome, including holds and failures.
+
 ## 7. MVP acceptance checks
 
 Use Run 01 as an extraction baseline. Before processing the wider batch, have a human reviewer check a small set of original PDFs and record the expected risk decisions, runs, field values, and source locations. Include both risk tiers, a PDF with multiple runs, a run spanning pages within one PDF, a missing JC number with another searchable value, missing stoichiometry, and an unresolved optional detail. Reserve some PDFs for the final check after the instructions are fixed.
@@ -173,6 +180,9 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 - Check that a furnace layout image opens from its log run and that the draft points the reviewer to unclear notation in the original log.
 - Hold a searchable run before import if stoichiometry is missing or a critical issue remains unresolved. Import an approved run with an optional detail marked unresolved, such as a missing furnace temperature unit.
 - Retry the same import without duplicating database entries and see a clear error for an invalid or conflicting packet.
+- Re-extract an unchanged PDF with different row labels and verify that the same runs keep their IDs. Replace a PDF and verify that a reviewer must confirm the matches before any approved records change.
+- Simulate a failed approval save and verify that neither the searchable run nor its revision changes. Retry the same approval and verify that it saves exactly one revision, including when a previous save committed before the app could show confirmation.
+- Verify that a held PDF and a failed PDF appear as distinct outcomes and that every PDF in the MVP collection has a recorded outcome.
 - Disconnect the laptop and reopen the local tools. Search the approved runs and verify that every original log PDF in the MVP collection opens without a connection.
 
 [After the MVP](pilot/DESIGN.md)
