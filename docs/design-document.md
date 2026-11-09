@@ -17,7 +17,6 @@ The MVP succeeds when a researcher can look up a reviewed run by name, date, or 
 - **Drive inventory.** Folder 1 has 152 prepared PDFs and folder 2 has 203, for 355 files. The archive addresses follow `log-1-###.pdf` and `log-2-###.pdf`. The filename index maps each address to its original file and Drive ID. A file address identifies a scan. A JC number is an optional identifier written on a run.
 - **Scan quality.** The UW batches were split into individual pages. Thirty repaired Adobe PDFs preserve 35 page images. The repaired copies rendered without the original decoding errors and require image-based extraction. Some sheets hold several runs, and a run may use several source pages.
 - **Extraction and storage.** [Run 01](../pilot/runs/chatgpt/pdf-to-json/run01/README.md) is an unvalidated ChatGPT transcription of JC1301–JC1303. A local SQLite walkthrough stages and searches those three rows and demonstrates a reversible correction. These artifacts provide a starting point for the pilot.
-- **Open scientific questions.** The [researcher questions](../researcher-questions/README.md) cover overwritten values, partial identifiers, composition notation, and units. The lab needs to confirm the conventions before the archive normalizes those fields.
 
 ## 3. MVP decisions and trade-offs
 
