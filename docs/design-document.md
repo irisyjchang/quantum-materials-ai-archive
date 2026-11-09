@@ -12,7 +12,7 @@ The MVP succeeds when a researcher can look up an imported log run by name, date
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
-The MVP uses the existing Drive PDFs. One AI assesses risk and one AI extracts values from eligible logs. For each run, the extraction draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A human reviewer checks the draft against the original log and approves it before it goes into SQLite.
+The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the `import-lab-records` skill to assess risk and a separate Codex skill to extract values from eligible logs. For each run, the extraction draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A human reviewer checks the draft against the original log and approves it before it goes into SQLite.
 
 ## 2. Status
 
@@ -23,8 +23,8 @@ The MVP uses the existing Drive PDFs. One AI assesses risk and one AI extracts v
 ## 3. MVP decisions and trade-offs
 
 1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite for review and offline search.
-2. **Use `import-lab-records` for risk assessment.** For the first walkthrough, one model applies the lab's checklist through this Codex skill and returns a risk tier, a reason, and the relevant location in the original log. Critical, uncertain, or failed assessments go to human review. Non-critical logs move directly to extraction.
-3. **Use a separate extraction skill with one model.** Extract the values into a JSON draft and flag unclear handwriting or missing values. A human reviewer checks every draft against the original log. Their approval is required before import, regardless of the log's risk tier.
+2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill applies the lab's checklist and returns a risk tier, a reason, and the relevant location in the original log. Critical, uncertain, or failed assessments go to human review. Non-critical logs move directly to extraction.
+3. **Use a separate Codex skill for extraction.** Extract the values into a JSON draft and flag unclear handwriting or missing values. A human reviewer checks every draft against the original log. Their approval is required before import, regardless of the log's risk tier.
 4. **Preserve the draft and review decision.** Keep the original draft and the approved version. If a person changes a value, save the revision and review decision. An identical retry can reuse the existing decision.
 
 **Keep the two skills focused.** Prototype `import-lab-records` outside the archive app for risk assessment. Use the [Run 01 prompt](../pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for the separate extraction skill, with the current field rules. Preserve the original PDF and save the draft separately. Treat the Run 01 output as an example while the JSON format is being confirmed. The app records the human review decision and handles SQLite import.
@@ -35,13 +35,13 @@ The MVP uses the existing Drive PDFs. One AI assesses risk and one AI extracts v
 
 ## 4. Workflow and ownership
 
-This Mermaid flowchart shows the target automated Drive workflow and where a human reviewer makes a decision. The first version can test the same decisions with saved JSON from the two skills. SQLite and downloaded copies of the original logs stay available offline.
+This Mermaid flowchart shows the target automated Drive workflow and where a human reviewer makes a decision. The model steps are labeled with the Codex skills used in the first walkthrough. The automated app reuses their instructions once API access is available. SQLite and downloaded copies of the original logs stay available offline.
 
 ```mermaid
 flowchart TD
-    A[App reads existing PDFs from Drive] --> T[One AI assesses risk using the lab checklist]
+    A[App reads existing PDFs from Drive] --> T[Codex assesses risk with import-lab-records]
     T --> R{Risk assessment result}
-    R -->|Non-critical| D[One AI extracts values into a JSON draft]
+    R -->|Non-critical| D[Codex uses the extraction skill to draft JSON]
     R -->|Critical or uncertain| P[Human reviewer checks the original log]
     P -->|Cleared for extraction| D
     P -->|Needs resolution| Q[Hold the log before extraction]
@@ -54,8 +54,8 @@ flowchart TD
 ```
 
 1. **App reads the existing PDFs from Drive.** Use the inventory to find the logs and keep their Drive file IDs with the extracted data.
-2. **One AI assesses each log's risk.** Apply the lab's checklist to the original log and save the tier and evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
-3. **One AI extracts values from eligible logs.** Use the extraction skill's instructions to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
+2. **Codex assesses each log's risk with `import-lab-records`.** Apply the lab's checklist to the original log and save the tier and evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
+3. **Codex uses the extraction skill on eligible logs.** Use the extraction skill's instructions to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
 4. **Human reviewer checks each draft.** Compare the extracted runs and values with the original log. Approve a run if the essential values can be confirmed. Leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
 5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
