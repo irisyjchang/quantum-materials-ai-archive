@@ -63,7 +63,7 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 
 ## 5. Log run fields and scientific boundaries
 
-**Required fields.** The lab confirmed the recorded date, JC number when present, and stoichiometry, including written ratios, before the pilot. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
+**Required fields.** Date, JC number when present, and stoichiometry, including written ratios.
 
 | Field group | Capture | Critical |
 | --- | --- | --- |
