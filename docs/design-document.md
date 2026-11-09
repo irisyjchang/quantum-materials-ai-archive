@@ -40,6 +40,8 @@ One person can prepare and operate the pilot. The lab designates who verifies th
 
 ## 5. Record contract and scientific boundaries
 
+**Confirm the basic fields with the lab before starting the pilot.** The notes identify the recorded date, JC number when present, and stoichiometry, including written ratios, as the starting set. Researcher name is proposed for search. Capture measurements when they are recorded, and use start or end timestamps as supporting evidence when the date is missing. Ask the lab to confirm which missing or ambiguous values block import and which can remain unresolved.
+
 | Record area | Capture | Examples that need a closer look |
 | --- | --- | --- |
 | Identity | Researcher name, written JC, and confirmed full JC where known | A suffix could match more than one run, or JC order conflicts with date order |
@@ -57,7 +59,7 @@ For derived values, store the original text, inputs, units, reference, and calcu
 - **Critical · Hold the record.** Use this tier when an unresolved issue could attach the data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain source row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A reviewer must resolve the issue before the record enters the searchable archive. A JC number that is visibly absent is valid if the source identifies the run.
 - **Non-critical · Keep the uncertainty visible.** Use this tier for optional details that can remain unknown without changing the reviewed core record, such as a missing layout note or an unclear optional timestamp. A reviewer can accept the record with that field marked unresolved. If a timestamp is the only evidence for a date the record depends on, review it as a critical issue.
 
-These are proposed rules for lab review. Every MVP record receives human review. The tier determines whether an unresolved issue blocks import.
+These tiers are proposed for the lab to confirm using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block import and use those decisions in the pilot's review checklist. Every MVP record receives human review.
 
 ## 6. Local storage
 
@@ -69,7 +71,7 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. Pilot and acceptance checks
 
-Start with Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
+Start once the lab confirms the basic fields and review tiers. Use Run 01 and a few representative pages. A proposed first set is 5–10 pages, including a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
 
 Compare the extractor's draft with the values and rows the lab reviewer confirms from the scan. Track missed rows, incorrect critical fields, and the time spent reviewing and correcting the draft. Reserve a few pages to check the result after the prompt is fixed. If extraction fails or the source cannot support a critical value, keep that record out of the import until the issue is resolved.
 
