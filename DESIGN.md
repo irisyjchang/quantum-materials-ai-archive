@@ -58,7 +58,7 @@ flowchart TD
     Q -->|Issue resolved| P
     D --> G[Pending review - human reviewer checks the draft against the source log]
     G -->|Approved| K[App saves the log run in SQLite]
-    G -->|Essential value unclear| I[Held - record the blocker]
+    G -->|Essential value unclear| I[Held - record the reason for the hold]
     I -->|More information available| G
     K --> L[Researcher searches and opens the original log]
 ```
@@ -174,7 +174,7 @@ An authorized reviewer can revise an existing run through the same review workfl
 
 Show **Saved** only after the transaction commits. If the save fails, show the error and let the reviewer retry the same approval. A retry of an already committed approval returns the saved revision without adding another one.
 
-**Run review status.** Use **Pending review** while a draft awaits a reviewer decision. Use **Held** when a reviewer identifies a blocker that must be resolved before approval. Record the reason and the source location when available. Use **Approved** once the approved version is saved. Only approved runs enter `growth_runs` and appear in search. The associated `run_revisions` row records `approved_by` and `approved_at` and preserves any correction notes.
+**Run review status.** Use **Pending review** while a draft awaits a reviewer decision. Use **Held** when a reviewer identifies an issue that must be resolved before approval. Record the reason for the hold and include the source location when available. Use **Approved** once the approved version is saved. Only approved runs enter `growth_runs` and appear in search. The associated `run_revisions` row records `approved_by` and `approved_at` and preserves any correction notes.
 
 **`processing_status`** is a table in the same SQLite database, with one row per PDF version. Store `pdf_id`, `status`, `reason`, and `updated_at`. Distinguish PDFs held pending better evidence from technical failures that can be retried. A held PDF remains visible to the operator and can return to review when better evidence arrives. Keep pending drafts in the review workspace. Keep a PDF in review while any run still needs a decision. Approved runs from that PDF can be searchable while other runs remain pending after extraction. Report those partial outcomes alongside fully processed, held, and failed PDFs.
 
