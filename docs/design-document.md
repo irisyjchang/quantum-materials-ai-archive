@@ -24,7 +24,7 @@ The MVP tests AI extraction, human review, and search using existing PDFs. For e
 
 1. **Use the organized collection.** The filename index covers all 355 PDFs across the two Drive folders. Keep the log name, binder, and Drive file ID together. Build the local app around the existing SQLite workflow for review and offline search.
 2. **Compare three models on the same logs.** Give each model the same PDFs, instructions, and JSON format. Comparing drafts can expose disagreements and missed rows, but it adds processing time and work to align the outputs. The original log is the reference for resolving disagreements and checking values all three models agree on.
-3. **Keep human review in the workflow.** A designated reviewer checks the draft against the original log in the app and records their decision. The app validates and imports the reviewed values into SQLite.
+3. **Check risk before sending a log to AI.** Non-critical logs can go to Purple directly. A designated reviewer must clear a critical log before it goes to Purple. The reviewer also checks extracted values against the original log before the app imports them into SQLite.
 4. **Preserve the source and corrections.** Keep the original draft alongside the reviewed packet. If a value changes, review the revised packet before importing it. An identical retry can reuse the existing review decision.
 
 **UW Purple for extraction.** Run the extraction tests in Purple ONEchat. UW lists GPT-6 Sol, Claude Sonnet 5, and Grok 4.6 in Purple. Confirm the model versions and scan upload support before testing. Purple access is provided at no additional cost with UW sign-in, subject to a usage allowance. Purple currently provides no API keys, so an operator runs the models in the browser and returns the JSON drafts to the local app. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
@@ -35,11 +35,14 @@ This Mermaid flowchart shows the order of the MVP steps and where a person makes
 
 ```mermaid
 flowchart TD
-    R[Lab confirms critical and non-critical rules] --> A
-    A[App prepares PDFs and shared instructions] --> D[Operator runs Purple and returns the drafts]
+    A[App prepares logs and shared instructions] --> R{Risk assigned before AI evaluation}
+    R -->|Non-critical| D[Operator runs AI evaluation in Purple]
+    R -->|Critical or unclassified| P[Human reviews the original log]
+    P -->|Cleared for AI evaluation| D
+    P -->|Needs resolution| Q[Hold the log before AI evaluation]
+    Q -->|Issue resolved| P
     D --> F[App validates and compares drafts]
     F --> G[Lab reviewer checks values against the original log]
-    G -.-> M[Evaluate drafts against confirmed values by risk tier]
     G --> H{Any unresolved critical issue?}
     H -->|Yes| I[Hold the affected log run]
     I -->|Issue resolved| G
@@ -49,9 +52,10 @@ flowchart TD
 ```
 
 1. **App prepares the extraction inputs.** Gather the PDFs from the inventory and package them with the shared instructions and any expected log run locations established for the test.
-2. **Operator handles the Purple handoff.** Run the prepared inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version, validates it, and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
-3. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. The app saves the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
-4. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
+2. **Check each log's risk before AI evaluation.** Apply the lab's checklist to the original log. The app makes non-critical logs and logs cleared by a human available to the operator. A log with a critical issue or no risk classification stays on hold until a designated reviewer clears it. If one log contains multiple runs and any run has a critical issue, hold the PDF until review.
+3. **Operator handles the Purple handoff.** Run the eligible inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version, validates it, and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
+4. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. The app saves the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue before import.
+5. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
 The operator's role is the browser handoff with Purple. The lab designates who verifies the science.
 
@@ -73,8 +77,8 @@ A transport agent and labeled simultaneous furnace zones can support CVT. A high
 
 ### Risk tiers for human review
 
-- **Critical · Hold the log run.** Use this tier when an unresolved issue could attach the data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain source row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A reviewer must resolve the issue before the log run enters the searchable archive. A JC number that is visibly absent is valid if the source identifies the run.
-- **Non-critical · Keep the uncertainty visible.** Use this tier for optional details that can remain unknown without changing the reviewed values for that log run, such as a missing layout note or an unclear optional timestamp. A reviewer can accept the log run with that field marked unresolved. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
+- **Critical · Review before AI evaluation.** Use this tier when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A human must clear the log before it goes to Purple. If a critical issue first appears in an AI draft, resolve it before importing the affected run. A visibly absent JC number is valid if the original log identifies the run.
+- **Non-critical · Send to AI evaluation.** Use this tier for optional details that can remain unknown without changing the reviewed values for that log run, such as a missing layout note or an unclear optional timestamp. Keep the uncertainty visible in the draft and at review. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
 
 These tiers are proposed for the lab to confirm using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block import and use those decisions in the pilot's review checklist. Every log run in the MVP receives human review.
 
@@ -88,13 +92,14 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. MVP acceptance checks
 
-Before evaluating the AI, have the lab confirm which issues are critical and which are non-critical. Use Run 01 as a baseline and have a lab reviewer establish the expected rows and values for the logs used in testing.
+Use the lab's risk checklist to decide which logs can go to AI evaluation and which need human clearance first. Use Run 01 as a baseline and have a lab reviewer establish the expected rows and values for the logs used in testing.
 
 Once the lab has confirmed the review rules and checked the expected values against the original logs, compare each extractor's draft against those values. Report critical and non-critical errors separately, including missed rows, and track the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
 The MVP is ready for a lab walkthrough when the team can:
 
 - Return the three drafts from Purple, review the flagged values, and verify that approval makes the log runs searchable.
+- Send a non-critical log directly to Purple. Verify that a critical log is held until a human clears it.
 - Find a known run by name, date, or JC and open the original log at the relevant page and row.
 - Keep a missing or partial JC exactly as recorded.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
