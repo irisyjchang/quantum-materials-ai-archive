@@ -2,17 +2,17 @@
 
 **Draft for lab review** · Version 0.5 · November 8, 2026
 
-**Scope** · Pilot app for photo upload, review, and offline lookup
+**Scope** · Local MVP using existing scans, followed by a pilot with in-app photo uploads
 
 ## 1. Problem and outcome
 
 A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. Some older log runs lack a JC number or use a short suffix.
 
-The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and open the original log at the relevant page and row while offline. The MVP demonstrates this with the pilot collection. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
+The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and open the original log at the relevant page and row while offline. The MVP demonstrates this with a sample of the existing scans. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
 
-**In the pilot, the researcher takes a photo of a paper log and uploads it in the app.** The app handles PDF conversion, file checks, and tracking the submission through extraction and review. Once approved, the log runs become searchable with a link back to the original log PDF.
+**The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
-The MVP tests photo upload, AI extraction, human review, and search. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A reviewer checks and corrects the draft against the original log.
+The MVP tests AI extraction, human review, and search using existing PDFs. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A reviewer checks and corrects the draft against the original log.
 
 ## 2. Status
 
@@ -22,22 +22,22 @@ The MVP tests photo upload, AI extraction, human review, and search. For each ru
 
 ## 3. MVP decisions and trade-offs
 
-1. **Build a small app around the existing SQLite workflow.** The pilot needs a phone-friendly photo upload, submission status, a review view, and search. Reuse the local import and search prototype for reviewed log runs.
-2. **Compare three approved models in the MVP pilot.** Run the same logs independently through three models, using the same instructions and JSON format. Comparing drafts can expose disagreements and missed rows, but it adds processing time and work to align the outputs. The original log is the reference for resolving disagreements and checking values all three models agree on.
+1. **Build a small local app around the existing SQLite workflow.** Use existing PDFs to test review and offline search. Keep validation, comparison, and import in the same local workflow.
+2. **Compare three approved models on existing PDFs.** Run the same logs independently through three models, using the same instructions and JSON format. Comparing drafts can expose disagreements and missed rows, but it adds processing time and work to align the outputs. The original log is the reference for resolving disagreements and checking values all three models agree on.
 3. **Keep human review in the workflow.** A designated reviewer checks the draft against the original log in the app and records their decision. The app validates and imports the reviewed values into SQLite.
 4. **Preserve the source and corrections.** Keep the original draft alongside the reviewed packet. If a value changes, review the revised packet before importing it. An identical retry can reuse the existing review decision.
 
-**UW Purple for the pilot.** Run the extraction tests in Purple ONEchat. UW lists GPT-6 Sol, Claude Sonnet 5, and Grok 4.6 in Purple. Confirm the model versions and scan upload support before the pilot. Purple access is provided at no additional cost with UW sign-in, subject to a usage allowance. Purple currently provides no API keys, so an operator takes pending PDFs from the app, runs the models in the browser, and returns the JSON drafts to the app. The researcher who uploaded the log can track its status in the app. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
+**UW Purple for extraction.** Run the extraction tests in Purple ONEchat. UW lists GPT-6 Sol, Claude Sonnet 5, and Grok 4.6 in Purple. Confirm the model versions and scan upload support before testing. Purple access is provided at no additional cost with UW sign-in, subject to a usage allowance. Purple currently provides no API keys, so an operator runs the models in the browser and returns the JSON drafts to the local app. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
 
 ## 4. Workflow and ownership
 
+This Mermaid flowchart shows the order of the MVP steps and where a person makes a decision. SQLite and the original PDFs stay available locally. UW Purple handles extraction in the browser.
+
 ```mermaid
 flowchart TD
-    A[Researcher uploads a photo in the app] --> B[App creates and checks the PDF]
-    B --> C{PDF renders and log is readable?}
-    C -->|Photo needs a retake| A
-    C -->|Conversion failed| B
-    C -->|Ready| D[Operator runs three models in UW Purple]
+    A[Operator selects an existing log PDF] --> B{PDF renders and log is readable?}
+    B -->|Needs a clearer copy| C[Set the log aside]
+    B -->|Ready| D[Operator runs three models in UW Purple]
     D --> E[Operator returns three JSON drafts to the app]
     E --> F[App compares drafts and flags differences]
     F --> G[Lab reviewer checks values against the original log]
@@ -49,7 +49,7 @@ flowchart TD
     K --> L[Researcher searches and opens the original log]
 ```
 
-1. **Researcher uploads a photo in the app.** Take a photo showing the entire paper log, including any sticky notes and writing in the margins. The app saves the submission, converts it to PDF, and checks that every page renders. If the photo is unreadable or cropped, ask for a retake. Keep the photo available until the PDF has passed its checks and been saved.
+1. **Operator selects an existing log PDF.** Check that every page renders and that the writing is readable. Set aside logs that need a clearer copy.
 2. **Operator runs the three models in Purple.** Give each model the same PDF, instructions, and expected page and row list without the answers. Return the three JSON drafts to the app with their model names and versions. The app compares them by page and row and flags missing runs and conflicting values.
 3. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. Save the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
 4. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
@@ -87,16 +87,15 @@ Keep the PDFs in approved Drive storage. The reviewed JSON packet carries a stab
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
-## 7. Pilot and acceptance checks
+## 7. MVP acceptance checks
 
-Start once the lab confirms the review tiers. Use Run 01 as a baseline and have researchers photograph and upload a proposed set of 5–10 representative pages in the app. Include a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
+Start once the lab confirms the review tiers. Use Run 01 as a baseline and select a proposed set of 5–10 pages from existing PDFs. Include a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values.
 
 Compare each extractor's draft with the values and rows the lab reviewer confirms from the original log. Track missed rows, incorrect critical fields, and the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
 The MVP is ready for a lab walkthrough when the team can:
 
-- Take a phone photo and upload it in the app. Verify that the app saves a readable PDF, shows the submission status, and asks for a retake when needed.
-- Return the three drafts from Purple, review the flagged values, and verify that approval makes the log runs searchable without a separate import by the researcher.
+- Return the three drafts from Purple, review the flagged values, and verify that approval makes the log runs searchable.
 - Find a known run by name, date, or JC and open the original log at the relevant page and row.
 - Keep a missing or partial JC exactly as recorded.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
@@ -104,6 +103,8 @@ The MVP is ready for a lab walkthrough when the team can:
 - Disconnect the laptop and reopen the local tools. Search the pilot log runs and verify that every original log PDF in the pilot collection opens without a connection.
 
 ## 8. After the MVP
+
+**Researcher photo-upload pilot.** Researchers take a photo of a paper log and upload it in the app. The app checks that the whole log is readable, converts it to PDF, and verifies that every page renders. It asks for a retake if the photo is blurry or cropped. After upload, the app shows submission status and carries the PDF through the same extraction, review, and import workflow tested in the MVP.
 
 **Automatic extraction.** Once the pilot identifies which model setup works on the logs, evaluate an approved service with API access so the app can start extraction without the operator transferring files through the browser. Keep the same review and import checks.
 
