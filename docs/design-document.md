@@ -67,7 +67,7 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 | --- | --- | --- |
 | Lookup | Each run needs at least one searchable value from the researcher name, date, or JC number. Keep the date at its recorded precision and the JC number as written. Start and end timestamps are optional and serve only as a fallback when the date is missing. | No searchable value can be established, or an ambiguous value could link the data to the wrong run. |
 | Composition | Stoichiometry is a core field. Keep the formula, written ratios in component order, weights and units, and separate calculated and measured values. | Flag ambiguity that changes how the stoichiometry could be read, such as an overwritten digit, unclear element symbol, or unknown ratio basis. Flag missing stoichiometry for human review. Whether it blocks import when a searchable value is available is open. |
-| Furnace cycle | Capture the written cycle or graph when present, including the starting temperature, ramps, dwells, and decant temperatures. | — |
+| Furnace cycle (optional) | Capture the written cycle or graph when present, including the starting temperature, ramps, dwells, and decant temperatures. | — |
 | Furnace layout | Mark whether a sketch is present, absent, or unclear. When present, keep an image of the sketch with its location in the original log. | — |
 | Growth process | Categorize the run as CVT (chemical vapor transport) or Flux Growth. Mark the method unclear when the evidence is inconclusive. Keep the evidence for the classification. | — |
 
