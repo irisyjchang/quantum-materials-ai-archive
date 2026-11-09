@@ -35,9 +35,8 @@ This Mermaid flowchart shows the order of the MVP steps and where a person makes
 
 ```mermaid
 flowchart TD
-    A[Use the inventory of prepared PDFs] --> D[Operator runs the same logs through three models in UW Purple]
-    D --> E[Operator returns three JSON drafts to the app]
-    E --> F[App compares drafts and flags differences]
+    A[App prepares PDFs and shared instructions] --> D[Operator runs Purple and returns the drafts]
+    D --> F[App validates and compares drafts]
     F --> G[Lab reviewer checks values against the original log]
     G --> H{Any unresolved critical issue?}
     H -->|Yes| I[Hold the affected log run]
@@ -47,11 +46,12 @@ flowchart TD
     K --> L[Researcher searches and opens the original log]
 ```
 
-1. **Operator runs the prepared logs in Purple.** Give each model the same PDFs, instructions, and expected log run locations without the answers. Return the three sets of JSON drafts to the app with their model names and versions. Compare drafts by log file, page, and row so rows from different PDFs stay distinct. Flag missing runs and conflicting values.
-2. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. Save the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
-3. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
+1. **App prepares the extraction inputs.** Gather the PDFs from the inventory and package them with the shared instructions and any expected log run locations established for the test.
+2. **Operator handles the Purple handoff.** Run the prepared inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version, validates it, and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
+3. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. The app saves the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
+4. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
-One person can prepare and operate the pilot. The lab designates who verifies the science.
+The operator's role is the browser handoff with Purple. The lab designates who verifies the science.
 
 ## 5. Log run fields and scientific boundaries
 
