@@ -35,9 +35,8 @@ This Mermaid flowchart shows the order of the MVP steps and where a person makes
 
 ```mermaid
 flowchart TD
-    A[Prepare the full inventory of existing PDFs] --> B[Select and check a sample batch]
-    B -->|Unreadable logs| C[Set aside affected logs]
-    B -->|Readable logs| D[Operator runs the same batch through three models in UW Purple]
+    A[Use the inventory of prepared PDFs] --> B[Select a sample batch]
+    B --> D[Operator runs the same batch through three models in UW Purple]
     D --> E[Operator returns three JSON drafts to the app]
     E --> F[App compares drafts and flags differences]
     F --> G[Lab reviewer checks values against the original log]
@@ -49,7 +48,7 @@ flowchart TD
     K --> L[Researcher searches and opens the original log]
 ```
 
-1. **Prepare the existing PDFs as a collection.** Use the full inventory to select a sample batch. Check that its pages render and that the writing is readable. Set aside logs that need a clearer copy.
+1. **Select a sample batch.** Use the inventory of prepared PDFs to choose the logs for the first extraction run.
 2. **Operator runs the batch in Purple.** Give each model the same group of PDFs, instructions, and expected log run locations without the answers. Return the three sets of JSON drafts to the app with their model names and versions. Compare drafts by log file, page, and row so rows from different PDFs stay distinct. Flag missing runs and conflicting values.
 3. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. Save the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
 4. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
