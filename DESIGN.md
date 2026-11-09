@@ -9,7 +9,7 @@
 A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. JC numbers were introduced later, so some older log runs lack one. Some numbers are partial or appear on more than one run.
 
 1. **Saved JSON walkthrough.** Run the two Codex steps and load their saved JSON for human review. Approval automatically saves the approved run to SQLite for search.
-2. **Shared online MVP.** Authorized reviewers sign in from their own devices to review and approve runs. Researchers can search approved runs by name, date, or JC number and open the source log at the relevant row in the measurement table. With approved model API access, the app automates processing of existing Drive PDFs.
+2. **Local MVP.** Run the app on the project operator’s laptop. One lab-authorized reviewer checks and approves runs on that laptop. The operator can serve as reviewer if the lab authorizes them. The app can search approved runs and open the source log at the relevant row in the measurement table. With approved model API access, it can automate processing of existing Drive PDFs.
 
 The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the `import-lab-records` skill to assess risk and the `extract-lab-records` skill to extract values from eligible logs. For each run, the extraction draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the source log and row in the measurement table and marks anything missing or unclear. A human reviewer checks the draft against the original log and approves it before it goes into SQLite.
 
@@ -21,7 +21,7 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 
 ## 3. MVP decisions and trade-offs
 
-1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite on the shared server for review and search.
+1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite on the operator’s laptop for review and search.
 2. **Use Codex with the `import-lab-records` skill for risk assessment.** For the first walkthrough, the skill checks whether the required fields are present and readable. It returns a risk tier, a reason, and the relevant location in the original log. Critical or uncertain assessments go to human review. The operator can retry a technical failure. Non-critical logs move directly to extraction.
 3. **Use Codex with the `extract-lab-records` skill for extraction.** Extract the values into a JSON draft and flag unclear handwriting or missing values. A human reviewer checks every draft against the original log. Their approval is required before import, regardless of the log's risk tier.
 4. **Preserve the draft and review decision.** Keep every original extraction draft, including drafts that remain pending, and make them available to the operator and authorized reviewers in the internal review workspace. Keep each approved version with its review decision. An identical retry can reuse the existing decision.
@@ -30,7 +30,7 @@ The MVP uses the existing Drive PDFs. For the first walkthrough, Codex uses the 
 
 **First run without an API.** The project operator runs both skills in Codex using their own ChatGPT subscription and saves the model name, prompt version, and JSON output for each step. The operator loads the saved drafts and source PDFs into the review app. In both the walkthrough and the automated MVP, the reviewer's approval triggers the app to save that version to SQLite automatically.
 
-**Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The walkthrough uses the operator’s ChatGPT subscription. The hosted app’s credentials and funding for unattended model calls are still open. Before running the automated batch, confirm which endpoint may receive the lab PDFs, that it supports PDFs, and who owns the API account and pays for usage. Keep model and Drive credentials on the server. Measure usage on the test set, estimate the cost of the selected batch, and set a spending limit. Keep the same risk and human review rules when moving from saved JSON to API responses.
+**Model access for automation.** The target is for the app to read Drive and start the two AI steps automatically. The walkthrough uses the operator’s ChatGPT subscription. The app’s credentials and funding for unattended model calls are still open. Before running the automated batch, confirm which endpoint may receive the lab PDFs, that it supports PDFs, and who owns the API account and pays for usage. Keep model and Drive credentials in the app’s local configuration outside the repository. Measure usage on the test set, estimate the cost of the selected batch, and set a spending limit. Keep the same risk and human review rules when moving from saved JSON to API responses.
 
 ### JSON handoff
 
@@ -45,7 +45,7 @@ Validate the packet version, required keys, and source PDF before loading it for
 
 ## 4. Workflow and ownership
 
-This Mermaid flowchart shows the target automated Drive workflow and where a human reviewer makes a decision. The model steps are labeled with the Codex skills used in the first walkthrough. The automated app reuses their instructions once API access is available. The shared server stores the official SQLite database.
+This Mermaid flowchart shows the target automated Drive workflow and where a human reviewer makes a decision. The model steps are labeled with the Codex skills used in the first walkthrough. The automated app reuses their instructions once API access is available. The operator’s laptop stores the official SQLite database.
 
 ```mermaid
 flowchart TD
@@ -71,7 +71,7 @@ flowchart TD
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
 
-**Access.** Anyone can search and view approved runs and open their source PDFs without signing in. The operator and authorized reviewers can view extraction drafts in the internal review workspace. Reviewers sign in with individual accounts. Only authorized reviewers can edit and approve runs. One authorized approval is required per run.
+**Access.** Run the MVP app on the operator’s laptop. The operator and designated reviewer can inspect drafts there. Only the designated lab-authorized reviewer can edit and approve runs. One authorized approval is required per run. Researchers can try search and source viewing during a walkthrough on the same laptop. The [pilot design](pilot/DESIGN.md) covers access from other devices.
 
 ## 5. Log Run Review and Extraction
 
@@ -129,15 +129,15 @@ If a log lists multiple decant temperatures, capture each one with its unit in t
 
 Record how the run ended when the log gives that detail, such as shutdown, slow cooldown, crystal removal while the furnace remained on, or decanting.
 
-## 6. Server storage
+## 6. Local storage
 
 Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, the source log with the relevant row locations in the measurement table, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
-**Shared host for the MVP.** Run one app instance per environment with its SQLite database on persistent storage. Reviewers connect over HTTPS from their own devices. Each approval applies to the draft version the reviewer opened. If that version has changed or was already approved, show the latest state before allowing any further approval. The number of PDFs required for MVP acceptance is still to be decided.
+**MVP laptop.** Run the app locally and keep the SQLite databases and review workspaces on the operator’s laptop. Each approval applies to the draft version the reviewer opened. If that version has changed or was already approved, show the latest state before allowing any further approval. The number of PDFs required for MVP acceptance is still to be decided.
 
 **Test and Archive environments.** Use the same app code and SQLite schema with separate databases and review workspaces. Label each environment clearly. Test uses `test.sqlite` and its own drafts, approvals, and processing status. Save the test results before resetting Test. The reset clears only Test data and leaves the source PDFs in Drive. Archive uses `archive.sqlite` for official records. The same source logs can be processed there and require fresh approval. Keep Archive data and its review history when expanding to larger batches.
 
-**MVP backups and recovery.** Back up Archive nightly and before database migrations. Save a consistent SQLite snapshot, the review workspace, and the retained source PDF versions needed to reopen approvals. Keep backups in approved lab storage separate from the app host. The operator checks the latest successful backup and investigates failures. Proposed targets for lab confirmation are to lose at most one day of approval and correction history and restore access by the end of the next working day.
+**MVP backups and recovery.** Back up Archive at the end of each day with archive changes and before database migrations. Save a consistent SQLite snapshot, the review workspace, and the retained source PDF versions needed to reopen approvals. Keep backups in approved lab storage separate from the laptop. The operator checks the latest successful backup and investigates failures. Proposed targets for lab confirmation are to lose at most one day of approval and correction history and restore access by the end of the next working day.
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
@@ -153,7 +153,7 @@ These are the proposed MVP columns. The SQLite schema will define the final cons
 - `archive_filename` is the name shown in the archive.
 - `drive_file_id` identifies the original PDF in Drive.
 - `file_hash` identifies the exact PDF contents. If a Drive file is replaced, keep the previous version and its source references so earlier approvals still point to the PDF the reviewer saw.
-- `storage_path` locates the retained copy on the server when one is needed to preserve the exact PDF version.
+- `storage_path` locates the retained copy on the laptop when one is needed to preserve the exact PDF version.
 
 **`growth_runs`** has one row per approved experimental run.
 
@@ -212,8 +212,7 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 - Simulate a failed approval save and verify that neither the searchable run nor its revision changes. Retry the same approval and verify that it saves exactly one revision, including when a previous save committed before the app could show confirmation.
 - Verify that a held PDF and a failed PDF appear as distinct outcomes and that every PDF in the MVP collection has a recorded outcome.
 - Load a saved Codex packet and an automated model packet through the same validator. Verify that an invalid packet stays out of review.
-- Have authorized reviewers sign in from two devices and approve separate drafts. Have both open the same draft and verify that a stale approval cannot overwrite a newer decision or create a duplicate revision.
-- Verify that a signed-out visitor can search approved runs and open their source PDFs. Verify that draft access requires an operator or reviewer account and that only a reviewer account can edit or approve a run.
+- Have the designated reviewer correct and approve a draft on the MVP laptop. Verify that a stale approval cannot overwrite a newer decision or create a duplicate revision.
 - Restore an Archive backup in a separate environment. Verify that approved runs are searchable, review history is present, and source links open the exact PDF versions the reviewers saw. Record how long the restore took and how recent the restored approvals are. Compare the results with the proposed recovery targets.
 
 [After the MVP](pilot/DESIGN.md)
