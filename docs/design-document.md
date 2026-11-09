@@ -8,7 +8,9 @@
 
 A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. JC numbers were introduced later, so some older log runs lack one. Some numbers are partial or appear on more than one run.
 
-The MVP succeeds when a researcher can look up an imported log run by name, date, or JC number and open the original log at the relevant page and row while offline. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
+1. **Saved JSON walkthrough.** Run the two Codex steps and use their saved JSON to demonstrate human review, SQLite import, and local search.
+2. **Automated MVP with local offline search.** With approved model API access, automate processing of existing Drive PDFs. On a laptop with the local database and PDFs, a researcher can search approved runs by name, date, or JC number and open the original log at the relevant page and row while offline.
+3. **Full archive sync later.** The shared app syncs the full archive a researcher is authorized to access and makes that downloaded copy available offline.
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
@@ -119,7 +121,7 @@ Record how the run ended when the log gives that detail, such as shutdown, slow 
 
 Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, one source PDF with the relevant page and row locations, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
-**Offline use in the MVP.** Before disconnecting, put the SQLite database, the local search tools, and every original log PDF in the pilot collection on the laptop. Store a local file reference alongside the Drive reference so search results can open the source without a connection. The operator can also import a reviewed packet already on the laptop. Drive retrieval and cloud extraction wait until the connection returns.
+**Offline use in the MVP.** Before disconnecting, put the SQLite database, the local search tools, and the original PDFs for the MVP collection on the laptop. Store a local file reference alongside the Drive reference so search results can open the source without a connection. The operator can also import a reviewed packet already on the laptop. Drive retrieval and cloud extraction wait until the connection returns. The number of PDFs required for MVP acceptance is still to be decided.
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
@@ -140,7 +142,7 @@ For the first walkthrough, use saved JSON to test human review and SQLite import
 - Check that a furnace layout image opens from its log run and that the draft points the reviewer to unclear notation in the original log.
 - Hold a searchable run before import if stoichiometry is missing or a critical issue remains unresolved. Import an approved run with an optional detail marked unresolved, such as a missing furnace temperature unit.
 - Retry the same import without duplicating database entries and see a clear error for an invalid or conflicting packet.
-- Disconnect the laptop and reopen the local tools. Search the pilot log runs and verify that every original log PDF in the pilot collection opens without a connection.
+- Disconnect the laptop and reopen the local tools. Search the approved runs and verify that every original log PDF in the MVP collection opens without a connection.
 
 ## 8. After the MVP
 
