@@ -35,9 +35,11 @@ This Mermaid flowchart shows the order of the MVP steps and where a person makes
 
 ```mermaid
 flowchart TD
+    R[Lab confirms critical and non-critical rules] --> A
     A[App prepares PDFs and shared instructions] --> D[Operator runs Purple and returns the drafts]
     D --> F[App validates and compares drafts]
     F --> G[Lab reviewer checks values against the original log]
+    G -.-> M[Evaluate drafts against confirmed values by risk tier]
     G --> H{Any unresolved critical issue?}
     H -->|Yes| I[Hold the affected log run]
     I -->|Issue resolved| G
@@ -86,9 +88,9 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. MVP acceptance checks
 
-Start once the lab confirms the review tiers. Use Run 01 as a baseline and have a lab reviewer establish the expected rows and values for the logs used in testing.
+Before evaluating the AI, have the lab confirm which issues are critical and which are non-critical. Use Run 01 as a baseline and have a lab reviewer establish the expected rows and values for the logs used in testing.
 
-Compare each extractor's draft with the values and rows the lab reviewer confirms from the original log. Track missed rows, incorrect critical fields, and the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
+Once the lab has confirmed the review rules and checked the expected values against the original logs, compare each extractor's draft against those values. Report critical and non-critical errors separately, including missed rows, and track the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
 The MVP is ready for a lab walkthrough when the team can:
 
