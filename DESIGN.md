@@ -133,7 +133,9 @@ Record how the run ended when the log gives that detail, such as shutdown, slow 
 
 Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, the source log with the relevant top-table row locations, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
-**Shared test host for the MVP.** Run one app instance with the official SQLite database on persistent storage. Reviewers connect over HTTPS from their own devices. Each approval applies to the draft version the reviewer opened. If that version has changed or was already approved, show the latest state before allowing any further approval. Back up the database and review workspace to approved lab storage, and test restoring them with their linked PDFs. The number of PDFs required for MVP acceptance is still to be decided.
+**Shared host for the MVP.** Run one app instance per environment with its SQLite database on persistent storage. Reviewers connect over HTTPS from their own devices. Each approval applies to the draft version the reviewer opened. If that version has changed or was already approved, show the latest state before allowing any further approval. Back up the database and review workspace to approved lab storage, and test restoring them with their linked PDFs. The number of PDFs required for MVP acceptance is still to be decided.
+
+**Test and Archive environments.** Use the same app code with separate databases and review workspaces. Label each environment clearly. Test uses `test.sqlite` and its own drafts, approvals, and processing status. Save the test results before resetting Test. The reset clears only Test data and leaves the source PDFs in Drive. Archive uses `archive.sqlite` for official records. The same source logs can be processed there and require fresh approval. Keep Archive data and its review history when expanding to larger batches.
 
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing log run should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
@@ -181,6 +183,11 @@ Show **Saved** only after the transaction commits. If the save fails, show the e
 **MVP collection.** Before the acceptance test, agree with the lab on a fixed list of PDFs from the Drive inventory. Record a processing outcome for every PDF on the list. A PDF can remain held with a documented reason. Check that technical failures are visible and can be retried.
 
 Use Run 01 as an extraction baseline. Before processing the wider batch, have a human reviewer check a small set of original PDFs and record the expected risk decisions, runs, field values, and source locations. Include both risk tiers, a PDF with multiple runs, a run continuing across multiple scans in one source log, a missing JC number with another searchable value, missing stoichiometry, and an unresolved optional detail. Reserve some PDFs for the final check after the instructions are fixed.
+
+Plan two test rounds in Test.
+
+1. **Walkthrough.** Load saved JSON for a small set of logs. Check the source links, corrections, approvals, and search. Record the issues and fix them.
+2. **Acceptance run.** Start with a clean Test workspace and use the reserved PDFs. Have an authorized reviewer verify the expected outcomes and complete the review tasks. Run the automated Drive and model checks here once API access is available. Save the results before starting the wider batch in Archive. If a check fails, fix the issue and rerun the affected checks before expanding.
 
 **Go/no-go for the wider batch.** Proceed once the human reviewer confirms that the final check caught every critical issue that should hold a PDF before extraction, included every expected run in the PDFs cleared for extraction, and linked each draft to the correct source log and top-table row. Also verify that every test run with missing stoichiometry or an unresolved critical issue stays out of SQLite and that every import has human approval. If any check fails, fix the issue and rerun the check before expanding. Track unnecessary review holds, other extraction errors, and reviewer correction time to guide improvements.
 
