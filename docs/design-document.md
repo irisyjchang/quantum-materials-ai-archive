@@ -72,7 +72,9 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 | Furnace program | Optional source note for the written program or a pointer to the graph | — |
 | Growth process and layout | Categorize the run as chemical vapor transport (CVT), flux growth, or unclear. Keep any transport-agent or layout notes. | — |
 
-**Dates and JC numbers.** Sort by recorded date when available, including older runs without JC numbers. For runs on the same date without JC numbers, sort alphabetically by researcher name, then by log run ID if names match. Where both a date and a full JC number are present, check that the JC sequence follows date order. Flag discrepancies for review and keep both values as written. Return every match for a duplicate JC number and distinguish the runs by their original log, page, and row. Start and end timestamps are optional and can be used for lookup when the date and JC number are missing. If a timestamp supports a date, retain it as evidence.
+**Dates and JC numbers.** Month and year are the minimum precision for placing a log run in chronological order. Group runs by month and preserve the exact day when it is recorded. For runs on the same date without JC numbers, sort alphabetically by researcher name, then by log run ID if names match. Where both a date and a full JC number are present, check that the JC sequence follows date order at the precision available. Flag discrepancies for review and keep both values as written. Return every match for a duplicate JC number and distinguish the runs by their original log, page, and row.
+
+Start and end timestamps are optional and can be used for lookup when the date and JC number are missing. If a timestamp establishes the month, retain it as evidence. If the month cannot be established, flag it for review and keep the run searchable by any other available lookup value.
 
 **Compound carry-down.** When a compound is written once for consecutive runs in the same column, carry it down through the following blank compound cells until another compound is written or the table ends. Mark the value as carried down and point to the cell where it was written. Flag unclear boundaries for review.
 
@@ -115,7 +117,7 @@ For the first walkthrough, use saved JSON to test human review and SQLite import
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to extraction. Verify that a critical or uncertain log is held until a human clears it.
 - Confirm that every extraction draft waits for human approval before it enters SQLite, including drafts from non-critical logs.
-- Find a known run by name, date, JC number, or a fallback timestamp and open the original log at the relevant page and row.
+- Find a known run by name, date or month, JC number, or a fallback timestamp and open the original log at the relevant page and row. Confirm a month-only date is shown without an invented day.
 - Keep missing and partial JC numbers as recorded, return all runs that share a JC number, and sort same-date runs without JC numbers alphabetically by researcher name.
 - Verify a carried-down compound against its original cell and filter reviewed runs by CVT or flux growth.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
