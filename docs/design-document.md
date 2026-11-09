@@ -78,6 +78,8 @@ Start and end timestamps are optional and can be used for lookup when the date a
 
 **Compound carry-down.** When a compound is written once for consecutive runs in the same column, carry it down through the following blank compound cells until another compound is written or the table ends. Mark the value as carried down and point to the cell where it was written. Flag unclear boundaries for review.
 
+**Why `x` is optional.** The log's stoichiometry can be used to calculate `x` when the composition or substitution basis is known. If the log gives elemental masses, use periodic-table atomic weights to convert the masses to moles and find the atomic ratios. Use melting points separately as a clue when assessing possible flux growth.
+
 Display the raw composition with search results. Capture measurements when recorded and leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor.
 
 ### Furnace cycle
