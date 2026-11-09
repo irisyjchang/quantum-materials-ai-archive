@@ -12,7 +12,7 @@ The MVP succeeds when a researcher can look up an imported log run by name, date
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
-The MVP tests AI extraction, comparison, and search using existing PDFs. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. Unanimous drafts that pass validation go straight into SQLite. A human reviewer checks disagreements and unresolved issues against the original log.
+The MVP tests AI extraction, comparison, and search using existing PDFs. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. When all three models return the same values for a log run, it goes straight into SQLite. A human reviewer checks disagreements and unresolved issues against the original log.
 
 ## 2. Status
 
@@ -23,7 +23,7 @@ The MVP tests AI extraction, comparison, and search using existing PDFs. For eac
 ## 3. MVP decisions and trade-offs
 
 1. **Use the organized collection.** The filename index covers all 355 PDFs across the two Drive folders. Keep the log name, binder, and Drive file ID together. Build the local app around the existing SQLite workflow for review and offline search.
-2. **Compare three models on the same logs.** Give each model the same PDFs, instructions, and JSON format. Import log runs directly when all three models return the same values and the run passes validation. Route disagreements, missing runs, and unresolved critical issues to a human reviewer.
+2. **Compare three models on the same logs.** Give each model the same PDFs, instructions, and JSON format. Import log runs directly when all three models return the same values for the same log run. Route disagreements, missing runs, and unresolved critical issues to a human reviewer.
 3. **Check risk before sending a log to AI.** Non-critical logs can go to Purple directly. A human reviewer must clear a critical log before it goes to Purple. Clearance to run AI is separate from the decision to import the extracted values.
 4. **Preserve the drafts and import decision.** Keep the three drafts and record whether import followed model agreement or human review. If a person changes a value, save the revision and review decision. An identical retry can reuse the existing decision.
 
@@ -41,8 +41,8 @@ flowchart TD
     P -->|Cleared for AI evaluation| D
     P -->|Needs resolution| Q[Hold the log before AI evaluation]
     Q -->|Issue resolved| P
-    D --> F[App validates and compares drafts]
-    F --> V{All three agree and validation passes?}
+    D --> F[App compares drafts by log, page, and row]
+    F --> V{Do all three models return the same values?}
     V -->|Yes| K[App saves the log run in SQLite]
     V -->|No| G[Human reviewer checks values against the original log]
     G --> H{Any unresolved critical issue?}
@@ -55,9 +55,9 @@ flowchart TD
 
 1. **App prepares the extraction inputs.** Gather the PDFs from the inventory and package them with the shared instructions and any expected log run locations established for the test.
 2. **Check each log's risk before AI evaluation.** Apply the lab's checklist to the original log. The app makes non-critical logs and logs cleared by a human available to the operator. A log with a critical issue or no risk classification stays on hold until a human reviewer clears it. If one log contains multiple runs and any run has a critical issue, hold the PDF until review.
-3. **Operator handles the Purple handoff.** Run the eligible inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version, validates it, and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
-4. **Human reviewer handles exceptions.** If the three drafts disagree, a model misses a log run, or validation flags an unresolved issue, check the original log PDF. The app saves the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue before import.
-5. **App imports accepted log runs.** Save a run directly to SQLite if all three drafts agree and validation passes. Otherwise, save it after human approval. Store how it was accepted. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
+3. **Operator handles the Purple handoff.** Run the eligible inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
+4. **Human reviewer handles exceptions.** If the three drafts disagree, a model misses a log run, or a critical value is unresolved, check the original log PDF. The app saves the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue before import.
+5. **App imports accepted log runs.** Save a run directly to SQLite when all three models return the same values for it. Otherwise, save it after human approval. Store how it was accepted. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
 The operator's role is the browser handoff with Purple. The lab designates who verifies the science.
 
@@ -100,7 +100,7 @@ Once the lab has confirmed the review rules and checked the expected values agai
 
 The MVP is ready for a lab walkthrough when the team can:
 
-- Return three matching drafts from Purple and verify that a valid log run goes straight into SQLite. Return conflicting drafts or omit a run in one draft and verify that the app sends the affected run to human review before import.
+- Return three matching drafts from Purple and verify that the matching log run goes straight into SQLite. Return conflicting drafts or omit a run in one draft and verify that the app sends the affected run to human review before import.
 - Send a non-critical log directly to Purple. Verify that a critical log is held until a human clears it.
 - Find a known run by name, date, or JC and open the original log at the relevant page and row.
 - Keep a missing or partial JC exactly as recorded.
