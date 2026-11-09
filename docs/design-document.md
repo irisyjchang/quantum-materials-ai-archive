@@ -71,7 +71,3 @@ The MVP is ready for a lab walkthrough when a reviewer can:
 ## 8. Decisions after the MVP
 
 Confirm the required fields, notation rules, and designated reviewer with the lab before expanding the sample. A second extractor is a follow-up experiment if the first exposes a recurring gap worth testing. A web interface, shared hosting, a review queue, CSV export, full archive ingestion, and Dropbox or Slack integration can each be considered once the local workflow has been demonstrated.
-
-## Design reference
-
-This draft adapts the Medic Mobile solution design's decision log, workflow gates, and distinction between retries and changes that require renewed approval. The lab's architecture is sized for scanned records, a local database, and the people who will verify the data. [Medic Mobile solution design](https://github.com/NirmalKumarMari/medic-no-code-cht/blob/4ffd04ef17e7fba1a659966e6ac399a1c495156b/Medic%20Mobile%20-%20FINAL%20Solution%20Design%20%28Open%20Path%29.md)
