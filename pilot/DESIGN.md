@@ -6,12 +6,18 @@ This pilot builds on the archive workflow described in the [MVP design](../DESIG
 
 **Reuse the processing workflow.** Once an uploaded photo becomes a PDF, send it through the same risk assessment, extraction, human review, and import steps used for the existing Drive logs.
 
-**Shared review.** Deploy the MVP review app on a shared host. Lab-authorized reviewers sign in with individual accounts and review and approve runs online from their own devices. Anyone can search approved runs and open their source PDFs without signing in. Drafts are limited to the operator and authorized reviewers. Only authorized reviewers can edit and approve runs. Test access from two reviewer devices and a signed-out browser.
+**Shared review.** Deploy the MVP review app on a shared host. Lab-authorized reviewers sign in with individual accounts and review and approve runs online from their own devices. Anyone can search approved runs and open their source PDFs without signing in. Drafts are limited to the operator and authorized reviewers. Only authorized reviewers can edit and approve runs.
 
-**Pilot hosting decision.** Before inviting pilot participants, choose where the shared app will run long term and confirm who will own the account, cover hosting costs, and maintain backups. Verify that the host provides persistent storage for SQLite and the review workspace. Restore the MVP database, review history, and source references from the laptop to the pilot host and verify that reviewers can sign in and open the linked PDFs.
+**Pilot hosting decision.** Before inviting pilot participants, choose where the shared app will run long term and confirm who will own the account, cover hosting costs, and maintain backups. Verify that the host provides persistent storage for SQLite and the review workspace.
 
 - Ask the lab lead whether the lab already has a server or UW cloud account. If so, request one small instance with persistent storage for SQLite and a place to keep backups. Otherwise, ask UW-IT about a hosted server or a research AWS account and confirm who will own the account and pay for usage. [UW hosting options](https://www.washington.edu/docs/web-at-uw/getting-started/web-hosting-options/) · [UW AWS request process](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0036595)
 - If the lab is comfortable with external hosting, consider a paid Render web service with a persistent disk so the SQLite database survives deploys and restarts. [Render persistent disks](https://render.com/docs/disks)
+
+### MVP to pilot handoff
+
+1. Pause changes on the MVP laptop and back up the official Archive database, review workspace, and retained source PDF versions. Restore them on the shared host and configure the source paths for that host. Verify that a migrated run keeps its ID and approval history and opens the exact PDF version the reviewer saw.
+2. Set up individual reviewer accounts. Verify that two authorized reviewers can sign in and approve from separate devices. Check that a signed-out visitor can search approved runs and open their source PDFs and that draft access and approval require the appropriate roles.
+3. Submit a growth log through photo upload. Verify that the resulting PDF follows the same risk assessment, extraction, and human approval workflow as the existing Drive logs. Confirm that the run appears in search after approval.
 
 Before rolling out photo uploads, confirm who handles exceptions. Test with actual phone photos. Include a multi-page log with several runs and margin notes, a retake of one page, and an interrupted upload. Verify the saved PDF preserves page order and that the retry creates one submission. Measure both the time researchers spend submitting a log and the time reviewers spend checking it.
 
