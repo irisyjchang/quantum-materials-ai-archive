@@ -2,7 +2,7 @@
 
 **Draft for lab review** · Version 0.5 · November 8, 2026
 
-**Scope** · Local MVP using existing scans, followed by a pilot with in-app photo uploads
+**Scope** · Automated processing of existing Drive logs, followed by a pilot with in-app photo uploads
 
 ## 1. Problem and outcome
 
@@ -12,7 +12,7 @@ The MVP succeeds when a researcher can look up an imported log run by name, date
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
-The MVP tests AI extraction, comparison, and search using existing PDFs. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. When all three models return the same values for a log run, it goes straight into SQLite. A human reviewer checks disagreements and unresolved issues against the original log.
+The MVP uses the existing Drive PDFs. The app reads the logs from Drive, uses one AI to assess risk, and sends eligible logs to three extraction models. For each run, the extraction draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. When all three models return the same values for a log run, it goes straight into SQLite. A human reviewer checks disagreements and unresolved issues against the original log.
 
 ## 2. Status
 
@@ -22,24 +22,25 @@ The MVP tests AI extraction, comparison, and search using existing PDFs. For eac
 
 ## 3. MVP decisions and trade-offs
 
-1. **Use the organized collection.** The filename index covers all 355 PDFs across the two Drive folders. Keep the log name, binder, and Drive file ID together. Build the local app around the existing SQLite workflow for review and offline search.
-2. **Compare three models on the same logs.** Give each model the same PDFs, instructions, and JSON format. Import log runs directly when all three models return the same values for the same log run. Route disagreements, missing runs, and unresolved critical issues to a human reviewer.
-3. **Check risk before sending a log to AI.** Non-critical logs can go to Purple directly. A human reviewer must clear a critical log before it goes to Purple. Clearance to run AI is separate from the decision to import the extracted values.
+1. **Read the organized collection directly from Drive.** Connect the app to the two archive folders with read access. Use the filename index and Drive file IDs to track what has already been processed. Keep the original PDFs in Drive and use SQLite for review and offline search.
+2. **Use one AI for risk assessment.** Keep the lab's checklist in a reusable skill or versioned prompt. The model returns a risk tier, a reason, and the relevant location in the original log. The app sends critical, uncertain, or failed assessments to human review. Non-critical logs move to extraction. Start with one model and measure how often it misses critical issues before considering another.
+3. **Use three models for extraction.** Give each model the same eligible PDFs, instructions, and JSON format. Import log runs directly when all three models return the same values for the same log run. Route disagreements, missing runs, and unresolved critical issues to a human reviewer.
 4. **Preserve the drafts and import decision.** Keep the three drafts and record whether import followed model agreement or human review. If a person changes a value, save the revision and review decision. An identical retry can reuse the existing decision.
 
-**UW Purple for extraction.** Run the extraction tests in Purple ONEchat. UW lists GPT-6 Sol, Claude Sonnet 5, and Grok 4.6 in Purple. Confirm the model versions and scan upload support before testing. Purple access is provided at no additional cost with UW sign-in, subject to a usage allowance. Purple currently provides no API keys, so an operator runs the models in the browser and returns the JSON drafts to the local app. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
+**Model access.** Purple ONEchat can be used to test the risk checklist and compare GPT-6 Sol, Claude Sonnet 5, and Grok 4.6. UW Purple currently provides no API keys. Automatic processing from Drive therefore depends on approved API access for the risk model and the three extractors. The skill supplies instructions that can be reused across these runs. Confirm model access and PDF support before building the automated connection. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
 
 ## 4. Workflow and ownership
 
-This Mermaid flowchart shows the order of the MVP steps and where a person makes a decision. SQLite and the original PDFs stay available locally. UW Purple handles extraction in the browser.
+This Mermaid flowchart shows the automated Drive workflow and where a human reviewer makes a decision. SQLite and downloaded copies of the original logs stay available offline.
 
 ```mermaid
 flowchart TD
-    A[App prepares logs and shared instructions] --> R{Risk assigned before AI evaluation}
-    R -->|Non-critical| D[Operator runs AI evaluation in Purple]
-    R -->|Critical or unclassified| P[Human reviewer checks the original log]
-    P -->|Cleared for AI evaluation| D
-    P -->|Needs resolution| Q[Hold the log before AI evaluation]
+    A[App reads existing PDFs from Drive] --> T[One AI assesses risk using the lab checklist]
+    T --> R{Risk assessment result}
+    R -->|Non-critical| D[App sends the log to three extraction models]
+    R -->|Critical or uncertain| P[Human reviewer checks the original log]
+    P -->|Cleared for extraction| D
+    P -->|Needs resolution| Q[Hold the log before extraction]
     Q -->|Issue resolved| P
     D --> F[App compares drafts by log, page, and row]
     F --> V{Do all three models return the same values?}
@@ -51,13 +52,13 @@ flowchart TD
     K --> L[Researcher searches and opens the original log]
 ```
 
-1. **App prepares the extraction inputs.** Gather the PDFs from the inventory and package them with the shared instructions and any expected log run locations established for the test.
-2. **Check each log's risk before AI evaluation.** Apply the lab's checklist to the original log. The app makes non-critical logs and logs cleared by a human available to the operator. A log with a critical issue or no risk classification stays on hold until a human reviewer clears it. If one log contains multiple runs and any run has a critical issue, hold the PDF until review.
-3. **Operator handles the Purple handoff.** Run the eligible inputs in three separate model chats and return the JSON drafts to the app. The app labels each draft by model and version and compares results by log file, page, and row. It flags missing runs and conflicting values for review.
+1. **App reads the existing PDFs from Drive.** Use the inventory to find the logs and keep their Drive file IDs with the extracted data.
+2. **One AI assesses each log's risk.** Apply the lab's checklist to the original log and save the tier and evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
+3. **App runs three extractors on eligible logs.** Submit the same PDF and instructions to all three models. Save each JSON draft with its model and version. Compare by log file, page, and row to flag missing runs and conflicting values.
 4. **Human reviewer checks flagged log runs.** If the models disagree or one misses a run, the reviewer checks the original log. They approve the run if they can confirm the values or leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
 5. **App saves log runs to SQLite.** When all three models return the same values for a run, the app saves it directly. A flagged run is saved once the human reviewer approves it. The app records how each run was accepted. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
-The operator's role is the browser handoff with Purple. The lab designates who verifies the science.
+The app handles Drive intake, model calls, comparison, and import. The human reviewer handles risk clearance and extraction disagreements.
 
 ## 5. Log run fields and scientific boundaries
 
@@ -77,8 +78,8 @@ A transport agent and labeled simultaneous furnace zones can support CVT. A high
 
 ### Risk tiers for human review
 
-- **Critical · Review before AI evaluation.** Use this tier when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A human must clear the log before it goes to Purple. If a critical issue first appears in an AI draft, resolve it before importing the affected run. A visibly absent JC number is valid if the original log identifies the run.
-- **Non-critical · Send to AI evaluation.** Use this tier for optional details that can remain unknown without changing the reviewed values for that log run, such as a missing layout note or an unclear optional timestamp. Keep the uncertainty visible in the draft and at review. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
+- **Critical · Review before extraction.** Use this tier when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A human must clear the log before the app sends it to the three extractors. If a critical issue first appears in an extraction draft, resolve it before importing the affected run. A visibly absent JC number is valid if the original log identifies the run.
+- **Non-critical · Send to extraction.** Use this tier for optional details that can remain unknown without changing the core values for that log run, such as a missing layout note or an unclear optional timestamp. Keep the uncertainty visible in the draft. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
 
 These tiers are proposed for the lab to confirm using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block AI evaluation or import, and use those decisions in the pilot's review checklist.
 
@@ -92,14 +93,15 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. MVP acceptance checks
 
-Use the lab's risk checklist to decide which logs can go to AI evaluation and which need human clearance first. Use Run 01 as a baseline and have a human reviewer establish the expected rows and values for the logs used in testing.
+Check the risk model's decisions against a human reviewer's decisions on the same logs. Track critical logs the model incorrectly marks non-critical and non-critical logs it unnecessarily sends to review. Use Run 01 as an extraction baseline and have a human reviewer establish the expected rows and values for the logs used in testing.
 
 Once the lab has confirmed the review rules and checked the expected values against the original logs, compare each extractor's draft against those values. Report critical and non-critical errors separately, including missed rows, and track the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
 The MVP is ready for a lab walkthrough when the team can:
 
-- Return three matching drafts from Purple and verify that the matching log run goes straight into SQLite. Return conflicting drafts or omit a run in one draft and verify that the app sends the affected run to human review before import.
-- Send a non-critical log directly to Purple. Verify that a critical log is held until a human clears it.
+- Read existing PDFs from Drive and assess risk without someone uploading each log.
+- Send a non-critical log directly to the three extractors. Verify that a critical or uncertain log is held until a human clears it.
+- Verify that three matching drafts go straight into SQLite. Return conflicting drafts or omit a run in one draft and verify that the affected run goes to human review.
 - Find a known run by name, date, or JC and open the original log at the relevant page and row.
 - Keep a missing or partial JC exactly as recorded.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
@@ -110,7 +112,7 @@ The MVP is ready for a lab walkthrough when the team can:
 
 **Researcher photo-upload pilot.** Researchers take a photo of a paper log and upload it in the app. The app checks that the whole log is readable, converts it to PDF, and verifies that every page renders. It asks for a retake if the photo is blurry or cropped. After upload, the app shows submission status and carries the PDF through the same extraction, review, and import workflow tested in the MVP.
 
-**Automatic extraction.** Once the pilot identifies which model setup works on the logs, evaluate an approved service with API access so the app can start extraction without the operator transferring files through the browser. Keep the same review and import checks.
+**Reuse the processing workflow.** Once an uploaded photo becomes a PDF, send it through the same risk assessment, extraction, comparison, review, and import steps used for the existing Drive logs.
 
 **Offline archive access.** Sync the full authorized archive to the device, including the searchable log runs and their original logs. Show when the download is complete and when it last synced. Keep the last complete copy usable if a refresh is interrupted. A researcher can still browse and open the downloaded archive while new uploads and updates wait for a connection.
 
