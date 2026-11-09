@@ -78,6 +78,8 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 
 Display the raw composition with search results. Capture measurements when recorded and leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor.
 
+**Furnace cycle terms.** A ramp moves from a starting temperature to a target temperature over a stated time or at a stated rate. Capture the starting temperature if the log gives it, including “room temperature” if written. A dwell holds the temperature steady. If the log shows a constant temperature over an interval, record that interval as an inferred dwell even if the word “dwell” is missing. For “ramp to 850 in 24 hours, dwell for 4 hours,” record a 24-hour ramp to 850 followed by a four-hour hold at 850. Leave the starting temperature or unit unspecified if the log does not give it.
+
 For growth process, a transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Keep the evidence, and leave the category unclear if the original log and human review cannot establish the process.
 
 ### Risk tiers before extraction
