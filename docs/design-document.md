@@ -27,11 +27,15 @@ The MVP uses the existing Drive PDFs. The app reads the logs from Drive, uses on
 3. **Use three models for extraction.** Give each model the same eligible PDFs, instructions, and JSON format. Import log runs directly when all three models return the same values for the same log run. Route disagreements, missing runs, and unresolved critical issues to a human reviewer.
 4. **Preserve the drafts and import decision.** Keep the three drafts and record whether import followed model agreement or human review. If a person changes a value, save the revision and review decision. An identical retry can reuse the existing decision.
 
-**Model access.** Purple ONEchat can be used to test the risk checklist and compare GPT-6 Sol, Claude Sonnet 5, and Grok 4.6. UW Purple currently provides no API keys. Automatic processing from Drive therefore depends on approved API access for the risk model and the three extractors. The skill supplies instructions that can be reused across these runs. Confirm model access and PDF support before building the automated connection. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
+**Start with a reusable Codex skill.** Prototype `import-lab-records` outside the archive app. Give it the lab's risk checklist and use the [Run 01 prompt](../pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) as the starting point for the extraction instructions. The skill reads a supplied PDF, writes the risk decision and evidence, and can produce a separate JSON draft for an eligible log. Preserve the original PDF and flag unclear values. Use the lab's current field rules for the new drafts, and treat the Run 01 output as an example while the JSON format is being confirmed. The app owns comparison, review decisions, and SQLite import.
+
+**First run without an API.** Use the skill to test risk assessment and use Purple ONEchat to compare GPT-6 Sol, Claude Sonnet 5, and Grok 4.6 on eligible logs. Save the model name, prompt version, and JSON from each run. The local app accepts those outputs in the same format it will accept from an API later. The skill and Purple run outside the app and use an internet connection. Once the PDFs and outputs are downloaded, comparison, review, import, and search can run locally.
+
+**Model access for automation.** The target is for the app to read Drive and start the model runs automatically. Purple currently provides no API keys, and the project has no confirmed model API credentials or budget. Confirm an approved endpoint, PDF support, and who pays for usage before adding unattended model calls. Keep the same risk, comparison, and review rules when moving from saved JSON to API responses. [UW Purple release notes](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0037881) · [UW Purple FAQ](https://uwconnect.uw.edu/it?id=kb_article_view&sysparm_article=KB0035982)
 
 ## 4. Workflow and ownership
 
-This Mermaid flowchart shows the automated Drive workflow and where a human reviewer makes a decision. SQLite and downloaded copies of the original logs stay available offline.
+This Mermaid flowchart shows the target automated Drive workflow and where a human reviewer makes a decision. The first version can test the same decisions with saved JSON from the skill and Purple. SQLite and downloaded copies of the original logs stay available offline.
 
 ```mermaid
 flowchart TD
@@ -97,7 +101,7 @@ Check the risk model's decisions against a human reviewer's decisions on the sam
 
 Once the lab has confirmed the review rules and checked the expected values against the original logs, compare each extractor's draft against those values. Report critical and non-critical errors separately, including missed rows, and track the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
-The MVP is ready for a lab walkthrough when the team can:
+For the first walkthrough, use saved JSON to test model agreement, disagreements, and the SQLite import. With approved model API access, the automated MVP is ready when the team can:
 
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to the three extractors. Verify that a critical or uncertain log is held until a human clears it.
