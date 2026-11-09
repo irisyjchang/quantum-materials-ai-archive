@@ -29,6 +29,8 @@ The MVP tests AI extraction, human review, and search on existing scans. For eac
 
 ## 4. Workflow and ownership
 
+**Pilot intake for paper logs that cannot feed through the UW scanner.** Take a regular phone photo that shows the whole log, including tape, sticky notes, and writing in the margins. Attach it in ChatGPT with its log binder number. The assistant converts the photo to PDF, checks that the PDF opens and that the visible writing and notes are preserved, then uploads it to the matching Drive folder with the next available log number. If the photo is blurry or cropped, ask for a retake. This trial tests capture, PDF verification, and filing before those steps are built into the app.
+
 1. **Preparer selects a scan.** Record the Drive file ID, page, and worksheet row. Check the page is readable and account for every populated row.
 2. **AI extracts the recorded values.** The preparer submits the scan to the approved extractor. The draft preserves uncertain text and links each record to its source.
 3. **Lab reviewer checks the draft.** Confirm or correct values using the original log. Record the reviewer, date, and reviewed version. Set aside rows with unresolved critical fields.
