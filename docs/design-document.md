@@ -6,9 +6,9 @@
 
 ## 1. Problem and outcome
 
-A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. Some older log runs lack a JC number or use a short suffix.
+A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. JC numbers were introduced later, so some older log runs lack one. Some numbers are partial or appear on more than one run.
 
-The MVP succeeds when a researcher can look up an imported log run by name, date, or JC number and open the original log at the relevant page and row while offline. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
+The MVP succeeds when a researcher can look up an imported log run by name, date, JC number, or a recorded timestamp and open the original log at the relevant page and row while offline. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
@@ -57,36 +57,39 @@ flowchart TD
 2. **Codex assesses each log's risk with the `import-lab-records` skill.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
 3. **Codex extracts values with the `extract-lab-records` skill.** Use the skill on eligible logs to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
 4. **Human reviewer checks each draft.** Compare the extracted runs and values with the original log. Approve a run if the essential values can be confirmed. Leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
-5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC and open the original log at the relevant page and row.
+5. **App saves approved log runs to SQLite.** Researchers can search by name, date, JC number, or a recorded timestamp, filter by growth process, and open the original log at the relevant page and row.
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
 
 ## 5. Log run fields and scientific boundaries
 
-**Required fields.** Date, JC number when present, and stoichiometry, including written ratios.
+**Required for lookup.** Each log run needs at least one searchable value: researcher name, recorded date, JC number, or a start or end timestamp. Capture stoichiometry separately, including written ratios.
 
 | Field group | Capture | Critical |
 | --- | --- | --- |
-| Identity | Researcher name, written JC, and confirmed full JC where known | A suffix could match more than one run, or JC order conflicts with date order |
-| Date | Day or month precision as written. Keep timestamp evidence if used to infer a date | The header is blank and timestamps conflict or imply different months |
+| Lookup | Researcher name, date at its written precision, and JC as written. Check the start and end timestamps if both date and JC are missing. | No searchable value can be established, or an ambiguous value could link the data to the wrong run |
 | Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. | An overwritten digit, unclear element symbol, or unknown ratio basis changes how the stoichiometry could be read |
 | Furnace program | Optional source note for the written program or a pointer to the graph | — |
-| Technique and layout | Optional source note for the written technique, transport agent, or layout drawing | — |
+| Growth process and layout | Categorize the run as chemical vapor transport (CVT), flux growth, or unclear. Keep any transport-agent or layout notes. | — |
 
-Search by name, date, and JC as written. Display the raw composition with the search result. Record furnace, technique, layout, measurements, and timestamps as source notes when present. Detailed furnace parsing and automated technique classification can wait. Leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor. A known partial JC remains searchable as written. For log runs with the same date and no confirmed JC, use researcher name and stable log run ID to break ties.
+**Dates and JC numbers.** Sort by recorded date when available, including older runs without JC numbers. For runs on the same date without JC numbers, sort alphabetically by researcher name, then by log run ID if names match. Where both a date and a full JC number are present, check that the JC sequence follows date order. Flag discrepancies for review and keep both values as written. Return every match for a duplicate JC number and distinguish the runs by their original log, page, and row. Start and end timestamps are optional and can be used for lookup when the date and JC number are missing. If a timestamp supports a date, retain it as evidence.
 
-A transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Record the evidence and route ambiguous cases to a researcher.
+**Compound carry-down.** When a compound is written once for consecutive runs in the same column, carry it down through the following blank compound cells until another compound is written or the table ends. Mark the value as carried down and point to the cell where it was written. Flag unclear boundaries for review.
+
+Display the raw composition with search results. Capture measurements when recorded and leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor.
+
+For growth process, a transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Keep the evidence, and leave the category unclear if the original log and human review cannot establish the process.
 
 ### Risk tiers for human review
 
-- **Critical · Review before extraction.** Use this tier when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A human must clear the log before extraction. If a critical issue first appears in the draft, resolve it before importing the affected run. A visibly absent JC number is valid if the original log identifies the run.
+- **Critical · Review before extraction.** Use this tier when a run has no searchable value or when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row or an ambiguous compound, ratio, or unit. A human must clear the log before extraction. If a critical issue first appears in the draft, resolve it before importing the affected run. An absent or duplicate JC number is valid when the run still has a searchable value and a clear location in the original log.
 - **Non-critical · Send to extraction.** Use this tier for optional details that can remain unknown without changing the core values for that log run, such as a missing layout note or an unclear optional timestamp. Keep the uncertainty visible in the draft. If a timestamp is the only evidence for a date the log run depends on, review it as a critical issue.
 
 These tiers are proposed for the lab to confirm using real logs before the pilot. Review a missing JC number, an ambiguous composition or unit, and a missing optional measurement together. Record which cases block AI evaluation or import, and use those decisions in the pilot review rules.
 
 ## 6. Local storage
 
-Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, source file/page/row, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, source reference, and review details. A JC number may be missing or partial, so use the internal log run ID as the key.
+Keep the PDFs in approved Drive storage. The import packet carries a stable log run ID, source file/page/row, written values, any confirmed normalized values, and the human review decision. SQLite stores the searchable fields, growth process, source reference, and review details. Use the internal log run ID as the key so duplicate, missing, or partial JC numbers can be preserved.
 
 **Offline use in the MVP.** Before disconnecting, put the SQLite database, the local search tools, and every original log PDF in the pilot collection on the laptop. Store a local file reference alongside the Drive reference so search results can open the source without a connection. The operator can also import a reviewed packet already on the laptop. Drive retrieval and cloud extraction wait until the connection returns.
 
@@ -103,8 +106,9 @@ For the first walkthrough, use saved JSON to test human review and SQLite import
 - Read existing PDFs from Drive and assess risk without someone uploading each log.
 - Send a non-critical log directly to extraction. Verify that a critical or uncertain log is held until a human clears it.
 - Confirm that every extraction draft waits for human approval before it enters SQLite, including drafts from non-critical logs.
-- Find a known run by name, date, or JC and open the original log at the relevant page and row.
-- Keep a missing or partial JC exactly as recorded.
+- Find a known run by name, date, JC number, or a fallback timestamp and open the original log at the relevant page and row.
+- Keep missing and partial JC numbers as recorded, return all runs that share a JC number, and sort same-date runs without JC numbers alphabetically by researcher name.
+- Verify a carried-down compound against its original cell and filter reviewed runs by CVT or flux growth.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
 - Retry the same import without duplicating database entries and see a clear error for an invalid or conflicting packet.
 - Disconnect the laptop and reopen the local tools. Search the pilot log runs and verify that every original log PDF in the pilot collection opens without a connection.
