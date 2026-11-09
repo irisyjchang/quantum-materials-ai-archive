@@ -52,7 +52,9 @@ One person can prepare and operate the pilot. The lab designates who verifies th
 
 Search by name, date, and JC as written. Display the raw composition with the search result. Record furnace, technique, layout, measurements, and timestamps as source notes when present. Detailed furnace parsing and automated technique classification can wait. Leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor. A known partial JC remains searchable as written. For log runs with the same date and no confirmed JC, use researcher name and stable log run ID to break ties.
 
-For derived values, store the original text, inputs, units, reference, and calculation. A note such as “5% doped” supports `x = 0.05` only when the lab confirms that `x` represents that site's fraction. A transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Record the evidence and route ambiguous cases to a researcher.
+**Calculating `x`.** When the log gives reagent masses, convert grams to moles using the relevant molar masses. For a compound reagent, use its formula to account for how many atoms of the relevant element it contributes. Then calculate `x` from the molar ratio for the site or composition the lab specifies. For example, if `x` is the fraction of a site occupied by the dopant, divide the dopant moles assigned to that site by the total moles assigned to it. On that basis, “5% doped” means `x = 0.05`. Keep the calculated value separate from any handwritten `x`, along with the masses, units, molar mass reference, and calculation. If the basis is unclear or the recipe includes excess flux, flag the calculation for review before using it.
+
+A transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Record the evidence and route ambiguous cases to a researcher.
 
 ### Risk tiers for human review
 
