@@ -61,6 +61,8 @@ These are proposed rules for lab review. Every MVP record receives human review.
 
 Keep the PDFs in approved Drive storage. The reviewed JSON packet carries a stable record ID, source file/page/row, written values, any confirmed normalized values, and review evidence. SQLite stores the searchable fields and source reference. A JC number may be missing or partial, so use the internal record ID as the key.
 
+**Offline use in the MVP.** The operator can import a reviewed packet already on the laptop and search the local SQLite database without a connection. A source PDF can be opened offline if an approved local copy is available. Drive retrieval and cloud extraction need a connection.
+
 Import a batch in one transaction. A malformed packet should leave the database unchanged. An identical reimport should create zero new rows. A changed packet for an existing record should surface a conflict for the operator. Keep scans, private links, imported research data, and database files out of Git.
 
 ## 7. Pilot and acceptance checks
@@ -76,9 +78,12 @@ The MVP is ready for a lab walkthrough when a reviewer can:
 - Keep a missing or partial JC exactly as recorded.
 - Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
 - Retry the same import without duplicating records and see a clear error for an invalid or conflicting packet.
+- Disconnect the laptop and search an imported record. If the source PDF is only in Drive, the source reference remains visible until the connection returns.
 
 ## 8. Photo capture after the MVP
 
 Add a phone-friendly capture screen where a scientist takes and submits a photo. If the photo is blurry or cuts off part of the sheet, ask for a retake. Otherwise, preserve the original, draft the fields using the same record format tested in the MVP, and make the scan available to the reviewer. The scientist enters additional information only when a reviewer needs their help resolving something the photo cannot establish.
+
+**Proposed offline capture.** Save the photo on the device when the connection drops and show it as pending. Upload and start extraction after reconnecting. Keep the pending copy until the server confirms receipt, and use the same submission ID for retries to avoid duplicate records. Test by taking a photo offline, reopening the capture screen, and reconnecting.
 
 Before rolling this out, confirm who handles exceptions and which fields need review on every record. Test on actual phone photos, including pages with several runs and notes in the margins. Measure both the time scientists spend submitting a log and the time reviewers spend checking it. Use those results to decide which fields can move to spot checks.
