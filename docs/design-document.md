@@ -46,13 +46,11 @@ One person can prepare and operate the pilot. The lab designates who verifies th
 | --- | --- | --- |
 | Identity | Researcher name, written JC, and confirmed full JC where known | A suffix could match more than one run, or JC order conflicts with date order |
 | Date | Day or month precision as written. Keep timestamp evidence if used to infer a date | The header is blank and timestamps conflict or imply different months |
-| Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. Capture handwritten `x` or doping notation when present. | An overwritten digit, unclear element symbol, or unknown ratio basis changes how the stoichiometry could be read |
+| Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. | An overwritten digit, unclear element symbol, or unknown ratio basis changes how the stoichiometry could be read |
 | Furnace program | Optional source note for the written program or a pointer to the graph | — |
 | Technique and layout | Optional source note for the written technique, transport agent, or layout drawing | — |
 
 Search by name, date, and JC as written. Display the raw composition with the search result. Record furnace, technique, layout, measurements, and timestamps as source notes when present. Detailed furnace parsing and automated technique classification can wait. Leave load outside the required pilot fields. Preserve the difference between an inspected blank, an unreadable entry, an ambiguous reading, an inferred value, and a value omitted by the extractor. A known partial JC remains searchable as written. For log runs with the same date and no confirmed JC, use researcher name and stable log run ID to break ties.
-
-**Optional `x` column and calculated `x`.** Capture the handwritten `x` when present. A blank `x` column is valid and does not block import. When the log gives reagent masses, convert grams to moles using the relevant molar masses. For a compound reagent, use its formula to account for how many atoms of the relevant element it contributes. Then calculate `x` from the molar ratio for the site or composition the lab specifies. For example, if `x` is the fraction of a site occupied by the dopant, divide the dopant moles assigned to that site by the total moles assigned to it. On that basis, “5% doped” means `x = 0.05`. Keep the calculated value separate from any handwritten `x`, along with the masses, units, molar mass reference, and calculation. If the basis is unclear or the recipe includes excess flux, flag the calculation for review before using it.
 
 A transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Record the evidence and route ambiguous cases to a researcher.
 
