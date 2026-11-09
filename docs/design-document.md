@@ -39,7 +39,7 @@ This Mermaid flowchart shows the target automated Drive workflow and where a hum
 
 ```mermaid
 flowchart TD
-    A[App reads existing PDFs from Drive] --> T[Codex checks required fields with import-lab-records]
+    A[App reads existing PDFs from Drive] --> T[Codex checks required fields with the import-lab-records skill]
     T --> R{Risk assessment result}
     R -->|Non-critical| D[Codex uses the extraction skill to draft JSON]
     R -->|Critical or uncertain| P[Human reviewer checks the original log]
@@ -54,7 +54,7 @@ flowchart TD
 ```
 
 1. **App reads the existing PDFs from Drive.** Use the inventory to find the logs and keep their Drive file IDs with the extracted data.
-2. **Codex assesses each log's risk with `import-lab-records`.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
+2. **Codex assesses each log's risk with the `import-lab-records` skill.** Check the required fields in the original log for missing, unreadable, or ambiguous values. Save the risk tier and the evidence. Critical or uncertain logs stay on hold until a human reviewer clears them for extraction. If any run in a PDF has a critical issue, hold the PDF for review.
 3. **Codex uses the extraction skill on eligible logs.** Use the extraction skill's instructions to produce a JSON draft. Save the draft and its model version. Flag unclear or missing values and identify the page and row for each run.
 4. **Human reviewer checks each draft.** Compare the extracted runs and values with the original log. Approve a run if the essential values can be confirmed. Leave it pending if an essential value is unclear. The app saves the reviewer, date, and reviewed version.
 5. **App saves approved log runs to SQLite.** Researchers can search by name, date, or JC and open the original log at the relevant page and row.
