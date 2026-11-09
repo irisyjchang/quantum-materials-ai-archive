@@ -10,7 +10,7 @@ A researcher looking for a past log run may have to open several handwritten gro
 
 1. **Saved JSON walkthrough.** Run the two Codex steps and load their saved JSON for human review. Approval automatically saves the approved run to SQLite for local search.
 2. **Automated MVP with local offline search.** With approved model API access, automate processing of existing Drive PDFs. On a laptop with the local database and PDFs, a researcher can search approved runs by name, date, or JC number and open the original log at the relevant page and row while offline.
-3. **Full archive sync later.** The shared app syncs the full archive a researcher is authorized to access and makes that downloaded copy available offline.
+3. **Full archive sync later.** The shared app syncs the full archive and makes that downloaded copy available offline.
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
@@ -62,6 +62,8 @@ flowchart TD
 5. **App saves approved log runs to SQLite automatically.** The reviewer's approval triggers the save. Researchers can then search by name, date, or JC number, filter by growth process, and open the original log at the relevant page and row.
 
 In the automated workflow, the app handles Drive intake, model calls, and import. The human reviewer handles risk clearance and checks the extracted values.
+
+**Access.** Anyone can view the lab data, including approved runs and their source PDFs. The operator and authorized reviewers can view extraction drafts in the internal review workspace. Only authorized reviewers can edit and approve runs.
 
 ## 5. Log Run Review and Extraction
 
@@ -153,7 +155,7 @@ For the first walkthrough, use saved JSON to verify that human approval automati
 
 **Reuse the processing workflow.** Once an uploaded photo becomes a PDF, send it through the same risk assessment, extraction, human review, and import steps used for the existing Drive logs.
 
-**Offline archive access.** Sync the full authorized archive to the device, including the searchable log runs and their original logs. Show when the download is complete and when it last synced. Keep the last complete copy usable if a refresh is interrupted. A researcher can still browse and open the downloaded archive while new uploads and updates wait for a connection.
+**Offline archive access.** Sync the full archive to the device, including the searchable log runs and their original logs. Show when the download is complete and when it last synced. Keep the last complete copy usable if a refresh is interrupted. A researcher can still browse and open the downloaded archive while new uploads and updates wait for a connection.
 
 **Offline photo capture.** Save the photo on the device when the connection drops and show it as pending. Upload and start extraction after reconnecting. Keep the pending photo until the archive confirms the PDF was saved and passed its rendering check. Use the same submission ID for retries to avoid duplicates. Test by taking a photo offline, reopening the capture screen, and reconnecting.
 
