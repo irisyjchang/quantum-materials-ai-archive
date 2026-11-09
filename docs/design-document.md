@@ -8,7 +8,7 @@
 
 A researcher looking for a past log run may have to open several handwritten growth logs and cross-reference a JC number, date, compound, or furnace cycle. A log run is one crystal growth experiment documented in a paper log. One log can contain several log runs. Some older log runs lack a JC number or use a short suffix.
 
-The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and open the original log at the relevant page and row while offline. The MVP demonstrates this with a sample of the existing scans. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
+The MVP succeeds when a researcher can look up a reviewed run by name, date, or JC number and open the original log at the relevant page and row while offline. The shared app should make the full archive the researcher is authorized to access available offline after a complete sync.
 
 **The later pilot adds photo uploads.** Researchers take a photo of a paper log and submit it in the app. The app handles PDF conversion, file checks, and submission tracking through extraction and review.
 
@@ -22,8 +22,8 @@ The MVP tests AI extraction, human review, and search using existing PDFs. For e
 
 ## 3. MVP decisions and trade-offs
 
-1. **Organize the full collection before extraction.** Use the existing filename index to prepare one inventory of all 355 PDFs across the two Drive folders. Keep the log name, binder, and Drive file ID together. Build the local app around the existing SQLite workflow and use a sample of these PDFs to test review and offline search.
-2. **Compare three models on the same sample batch.** Give each model the same batch, instructions, and JSON format. Split the batch into smaller groups if Purple's limits require it. Comparing drafts can expose disagreements and missed rows, but it adds processing time and work to align the outputs. The original log is the reference for resolving disagreements and checking values all three models agree on.
+1. **Use the organized collection.** The filename index covers all 355 PDFs across the two Drive folders. Keep the log name, binder, and Drive file ID together. Build the local app around the existing SQLite workflow for review and offline search.
+2. **Compare three models on the same logs.** Give each model the same PDFs, instructions, and JSON format. Comparing drafts can expose disagreements and missed rows, but it adds processing time and work to align the outputs. The original log is the reference for resolving disagreements and checking values all three models agree on.
 3. **Keep human review in the workflow.** A designated reviewer checks the draft against the original log in the app and records their decision. The app validates and imports the reviewed values into SQLite.
 4. **Preserve the source and corrections.** Keep the original draft alongside the reviewed packet. If a value changes, review the revised packet before importing it. An identical retry can reuse the existing review decision.
 
@@ -35,8 +35,7 @@ This Mermaid flowchart shows the order of the MVP steps and where a person makes
 
 ```mermaid
 flowchart TD
-    A[Use the inventory of prepared PDFs] --> B[Select a sample batch]
-    B --> D[Operator runs the same batch through three models in UW Purple]
+    A[Use the inventory of prepared PDFs] --> D[Operator runs the same logs through three models in UW Purple]
     D --> E[Operator returns three JSON drafts to the app]
     E --> F[App compares drafts and flags differences]
     F --> G[Lab reviewer checks values against the original log]
@@ -48,10 +47,9 @@ flowchart TD
     K --> L[Researcher searches and opens the original log]
 ```
 
-1. **Select a sample batch.** Use the inventory of prepared PDFs to choose the logs for the first extraction run.
-2. **Operator runs the batch in Purple.** Give each model the same group of PDFs, instructions, and expected log run locations without the answers. Return the three sets of JSON drafts to the app with their model names and versions. Compare drafts by log file, page, and row so rows from different PDFs stay distinct. Flag missing runs and conflicting values.
-3. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. Save the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
-4. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
+1. **Operator runs the prepared logs in Purple.** Give each model the same PDFs, instructions, and expected log run locations without the answers. Return the three sets of JSON drafts to the app with their model names and versions. Compare drafts by log file, page, and row so rows from different PDFs stay distinct. Flag missing runs and conflicting values.
+2. **Lab reviewer checks the drafts in the app.** Confirm or correct values against the original log PDF. Save the reviewer, date, and reviewed version. Hold any log run with an unresolved critical issue.
+3. **App imports the reviewed log runs.** Validate and save them to SQLite. Researchers can search by name, date, or JC and open the original log at the relevant page and row.
 
 One person can prepare and operate the pilot. The lab designates who verifies the science.
 
@@ -88,7 +86,7 @@ Import a batch in one transaction. A malformed packet should leave the database 
 
 ## 7. MVP acceptance checks
 
-Start once the lab confirms the review tiers. Use Run 01 as a baseline and select a proposed set of 5–10 pages from the full inventory. Include a log with several runs and a log with a partial or missing JC number. Have a lab reviewer establish the expected rows and values. Expand extraction to the rest of the collection in batches once the sample passes the review and import checks below.
+Start once the lab confirms the review tiers. Use Run 01 as a baseline and have a lab reviewer establish the expected rows and values for the logs used in testing.
 
 Compare each extractor's draft with the values and rows the lab reviewer confirms from the original log. Track missed rows, incorrect critical fields, and the time spent preparing, comparing, and reviewing the drafts. On the same logs, check which additional errors the three-tool comparison flags compared with reviewing one draft. Reserve a few pages to check the result after the instructions are fixed. If extraction fails or the original log cannot support a critical value, keep that log run out of the import until the issue is resolved.
 
