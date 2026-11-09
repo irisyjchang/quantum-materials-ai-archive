@@ -65,7 +65,7 @@ In the automated workflow, the app handles Drive intake, model calls, and import
 
 **Required for lookup.** Each log run needs at least one searchable value from the researcher name, date, or JC number. Start and end timestamps are optional and serve only as a fallback when the log has no recorded date. Stoichiometry, including written ratios, is a core field separate from lookup. Flag missing stoichiometry for the human reviewer. Whether it blocks import when a searchable value is available is open.
 
-| Field group | Capture | Critical |
+| Field requirements | Capture | Critical |
 | --- | --- | --- |
 | Lookup | Researcher name, date at its written precision, and JC as written. If the date is missing, check any available start or end timestamp for date evidence. | No searchable value can be established, or an ambiguous value could link the data to the wrong run |
 | Composition | Formula, ratios with component order, weights and units, and separate calculated and measured values. | An overwritten digit, unclear element symbol, or unknown ratio basis changes how the stoichiometry could be read |
