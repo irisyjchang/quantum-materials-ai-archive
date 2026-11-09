@@ -50,6 +50,13 @@ Search by name, date, and JC as written. Display the raw composition with the se
 
 For derived values, store the original text, inputs, units, reference, and calculation. A note such as “5% doped” supports `x = 0.05` only when the lab confirms that `x` represents that site's fraction. A transport agent and labeled simultaneous furnace zones can support CVT. A high charge ratio, cooling program, and terminal decant can support flux growth. Record the evidence and route ambiguous cases to a researcher.
 
+### Risk tiers for human review
+
+- **Critical · Hold the record.** Use this tier when an unresolved issue could attach the data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain source row, a conflicting JC number, or an ambiguous compound, ratio, or unit. A reviewer must resolve the issue before the record enters the searchable archive. A JC number that is visibly absent is valid if the source identifies the run.
+- **Non-critical · Keep the uncertainty visible.** Use this tier for optional details that can remain unknown without changing the reviewed core record, such as a missing layout note or an unclear optional timestamp. A reviewer can accept the record with that field marked unresolved. If a timestamp is the only evidence for a date the record depends on, review it as a critical issue.
+
+These are proposed rules for lab review. Every MVP record receives human review. The tier determines whether an unresolved issue blocks import.
+
 ## 6. Local storage
 
 Keep the PDFs in approved Drive storage. The reviewed JSON packet carries a stable record ID, source file/page/row, written values, any confirmed normalized values, and review evidence. SQLite stores the searchable fields and source reference. A JC number may be missing or partial, so use the internal record ID as the key.
@@ -67,6 +74,7 @@ The MVP is ready for a lab walkthrough when a reviewer can:
 - Approve a packet for the sample records and import it successfully.
 - Find a known run by name, date, or JC and open its source page and row.
 - Keep a missing or partial JC exactly as recorded.
+- Hold a row with an unresolved critical issue and import a reviewed row with an optional detail marked unresolved.
 - Retry the same import without duplicating records and see a clear error for an invalid or conflicting packet.
 
 ## 8. Photo capture after the MVP
