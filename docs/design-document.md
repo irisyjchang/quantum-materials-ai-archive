@@ -12,7 +12,7 @@ The MVP succeeds when a researcher can look up a reviewed run by name, date, or 
 
 **After the MVP, the researcher's job is to take and submit a photo of the paper log.** The archive should save the photo, check that the page is readable, extract the recorded values, and send unclear entries to a designated reviewer. Once reviewed, the records become searchable with a link back to the photo.
 
-The MVP tests AI extraction, human review, and search on existing scans. The AI reads values such as the date, JC number, and composition from the log and puts them in a draft for review. A reviewer checks those values against the original log and corrects them where the handwriting is clear.
+The MVP tests AI extraction, human review, and search on existing scans. For each run, the AI draft includes the researcher’s name, date, JC number if present, and composition as written, including any recorded ratios or weights. It points to the page and row in the original log and marks anything missing or unclear. A reviewer checks and corrects the draft against the original log.
 
 ## 2. Current evidence
 
