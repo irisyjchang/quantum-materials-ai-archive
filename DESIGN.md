@@ -11,7 +11,7 @@ A researcher looking for a past log run may have to open several handwritten gro
 1. **Skill walkthrough.** Run the Codex skill on a few source logs and verify that eligible runs appear in the review app as Pending review. Approve a run and find it in archive search.
 2. **Local MVP.** Run the app on the project operator’s laptop. One lab-authorized reviewer checks and approves runs on that laptop. The operator can serve as reviewer if the lab authorizes them. The app can search approved runs and open the source log at the relevant row in the measurement table.
 
-The MVP uses existing Drive PDFs. The operator runs one Codex skill, `stage-growth-runs`, which checks risk before extraction. The skill calls an importer to validate JSON and stage eligible runs in SQLite. A separate review app displays the drafts alongside the source logs and records human corrections and approvals.
+The MVP uses existing Drive PDFs. The operator runs one Codex skill, `stage-log-runs`, which checks risk before extraction. The skill calls an importer to validate JSON and stage eligible runs in SQLite. A separate review app displays the drafts alongside the source logs and records human corrections and approvals.
 
 ## 2. Status
 
@@ -22,7 +22,7 @@ The MVP uses existing Drive PDFs. The operator runs one Codex skill, `stage-grow
 ## 3. MVP decisions and trade-offs
 
 1. **Use the organized collection from Drive.** The operator uses the filename index to select existing PDFs for the skill. Preserve the originals in Drive and track each processed PDF version by its Drive file ID and file hash.
-2. **Run one Codex skill for risk assessment and extraction.** The `stage-growth-runs` skill checks whether the required fields are present and readable. Critical or uncertain logs wait for human clearance before extraction. The operator can retry a technical failure. The same skill extracts the measurement table once the log is eligible.
+2. **Run one Codex skill for risk assessment and extraction.** The `stage-log-runs` skill checks whether the required fields are present and readable. Critical or uncertain logs wait for human clearance before extraction. The operator can retry a technical failure. The same skill extracts the measurement table once the log is eligible.
 3. **Stage drafts for human review.** The skill calls the importer with its JSON output. The importer validates it and saves each draft as Pending review. A reviewer checks every draft against the source log and approves it before it enters archive search.
 4. **Preserve the draft and review decision.** Keep every original extraction draft, including drafts that remain pending, and make them available to the operator and authorized reviewers in the internal review workspace. Keep each approved version with its review decision. An identical retry can reuse the existing decision.
 

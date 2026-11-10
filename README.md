@@ -2,7 +2,7 @@
 
 An AI-assisted archival system to organize research data from Dropbox, paper growth records, and files shared through Slack. Some sources overlap, so part of the project will be identifying duplicates and connecting related records. The goal is to make the data easier to search, sort, and use.
 
-The MVP uses one Codex skill, `stage-growth-runs`, to check risk, extract the measurement table from existing growth log PDFs, and stage validated drafts in SQLite. A separate review app on the project operator’s laptop lets a lab-authorized reviewer inspect the source log, correct fields, and approve runs for search. The MVP workflow uses the operator’s ChatGPT subscription and requires no API key.
+The MVP uses one Codex skill, `stage-log-runs`, to check risk, extract the measurement table from existing growth log PDFs, and stage validated drafts in SQLite. A separate review app on the project operator’s laptop lets a lab-authorized reviewer inspect the source log, correct fields, and approve runs for search. The MVP workflow uses the operator’s ChatGPT subscription and requires no API key.
 
 The pilot adds photo uploads and moves the app to a shared host so authorized reviewers can review and approve runs online from their own devices.
 
