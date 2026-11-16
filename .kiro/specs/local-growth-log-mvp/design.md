@@ -370,13 +370,67 @@ When a changed extraction packet references an existing `draft_id` for the same 
 
 The staging tool protects the PDFs reserved for the acceptance run from being recorded during walkthrough tuning (Requirements 30.1 to 30.5).
 
-- **Reserved list.** The reserved list is the `drive_file_id` of every `acceptance` entry in `test_checklist.json`. The tool finds that file through `checklist_path` in `config.json`.
+- **Reserved list.** The reserved list is the `drive_file_id` of every `acceptance` entry in the local checklist, `test_checklist.local.json`, whether the entry is provisional or confirmed (see [Test checklist](#test-checklist)). The tool finds that file through `checklist_path` in `config.json`.
 - **Scope.** The guard applies only when the database is the Test database. It is never applied to the Archive database, and never to `check-gate`, which is read-only.
 - **Without the flag.** When `risk-assess` or `stage-drafts` runs without `--acceptance-run` and the packet's `drive_file_id` is on the reserved list, the tool exits with code `1`, prints a message that the PDF is reserved for the acceptance run, and writes no rows.
 - **With the flag.** When `--acceptance-run` is supplied, the tool processes a reserved PDF as it would any other PDF.
-- **No reserved list.** If the checklist file is missing or has no `acceptance` entries, the tool applies no guard and prints a notice that no reserved list was found.
+- **No reserved list.** If the local checklist file is missing or has no `acceptance` entries, the tool applies no guard and prints a notice that no reserved list was found.
 
 **Limits.** The guard stops recording only. It does not stop the skill from reading the scan in Codex. A person who passes `--acceptance-run` can bypass it. The guard prevents mistakes, not misuse.
+
+### Test checklist
+
+The Test checklist records the walkthrough PDFs, the reserved acceptance PDFs, and the reviewer's expected outcomes. `tools/check_checklist.py` validates it. DESIGN-MVP.md is the source of truth for the cases and the procedure. This section covers checklist readiness only (Tasks 24, 26.1, and 27.1).
+
+**Files and location.**
+
+- `test_checklist.template.json` is committed. It names no PDFs, Drive IDs, hashes, or reviewer observations. It carries the entry shapes, the allowed values, and a reference list of the candidate filenames from DESIGN-MVP.md with their candidate notes. The reference list sits under the key `design_mvp_candidates_not_reserved`, which the guard and the validator never read, so listing a candidate there reserves nothing.
+- `test_checklist.local.json` is git-ignored. It holds the real filenames, Drive IDs, file hashes, evidence, and reviewer observations. The operator creates it with `cp test_checklist.template.json test_checklist.local.json`.
+- `checklist_path` in `config.json` points at `test_checklist.local.json`, which is also the default in `common/config.py`. The reserved-PDF guard (`risk-assess` and `stage-drafts`), the status view's "Reserved (acceptance)" labels, and `python tools/check_checklist.py` with no path argument all read the same file through `checklist_path`. If the local file is missing, the guard prints its "no reserved list" notice, and the validator fails with a message telling the operator to create the file from the template.
+
+**Walkthrough entries.** Each entry keeps its existing keys: `filename`, `drive_file_id`, `file_hash`, `binder`, `missing_information_cases`, `structural_cases`, `has_furnace_layout_sketch`, `critical_case`, `expected_tier`, `one_critical_run`, and the waiver keys `no_example_found` and `waiver_reason`. A new `case_evidence` list shows why the entry counts for each case it claims. Each item has:
+
+- `case`: a case name the entry claims. The furnace layout sketch uses `furnace_layout_sketch`, and the multi-run flag uses `one_critical_run`.
+- `source_locations`: a non-empty list of `{pdf_index, row}`. `pdf_index` is at least 1. `row` is at least 1, or null with a required `area` text such as "shared header" or "Furnace Layout box".
+- `observation`: what the reviewer saw.
+- `observed_by`: the reviewer who saw it.
+
+The validator fails an entry when:
+
+- a case it claims has no evidence item;
+- an evidence item names a case the entry does not claim;
+- `run_spans_pages` evidence cites fewer than two different `pdf_index` values;
+- its `filename` or `drive_file_id` matches any acceptance entry, provisional or confirmed.
+
+Waivers need no evidence.
+
+**Acceptance entries.** Each entry has a `reservation_status` of `provisional` or `confirmed`.
+
+- A provisional entry needs only `filename` and `drive_file_id`. `file_hash` is optional until confirmation. It may carry `candidate_outcome`, a free-text note. For example, `log-2-199.pdf` may carry "possible hold if the reviewer confirms the upper-table values cannot be tied to runs". A candidate outcome is never an expected outcome.
+- Provisional entries are already reserved. The guard reserves every acceptance `drive_file_id`, so they stay out of the walkthrough.
+- Acceptance readiness (the validator without `--walkthrough-only`) fails while any entry is provisional. Confirming an entry means the reviewer checked the scan, recorded `file_hash`, and recorded every expected outcome with `expected_recorded_by` and `expected_recorded_at`. `expected_recorded_at` must not be later than `first_run_at`, so the outcomes exist before the skill runs.
+
+Each expected run has these keys:
+
+- `source_locations` replaces `source_page` and `source_row`. It is an ordered, non-empty list of `{pdf_index, row}` positive integers with no duplicates, so a run that spans pages lists each page and row. It has the same shape as `draft_runs.source_locations_json`. The validator rejects the old keys and tells the operator to use `source_locations`.
+- `blank_or_flagged_fields` is required. An empty list means no field is expected to be blank or flagged, and it is recorded explicitly. Each item has `field`, `expectation`, and `reason`, and may add `expected_field_status` and `source_location`. `field` is one of the extraction field keys. `expectation` is `blank` or `flagged`. `reason` is required. `expected_field_status` is `missing` or `omitted` for `blank`, and `inferred`, `derived`, `unreadable`, or `ambiguous` for `flagged`. Each field appears at most once.
+
+Consistency rules for an expected run:
+
+- A field expected `blank` must have a null expected value when it is `researcher_name`, `growth_date`, `jc_number`, or `composition`. The expected value of `composition` is `stoichiometry`.
+- An expected-approved run cannot expect `composition` blank, because missing stoichiometry blocks approval.
+- An expected-approved run needs at least one non-null lookup value: name, date, or JC number.
+
+**Walkthrough-only mode (Task 26.1).** The validator with `--walkthrough-only` checks walkthrough coverage, the evidence rules, and the overlap with acceptance entries. Acceptance entries in this mode need only `filename` and `drive_file_id`.
+
+**Open decisions owned by lab reviewers.** This design does not decide:
+
+- the walkthrough PDF selection from both binders;
+- whether to confirm or replace each of the six provisional acceptance PDFs;
+- whether `log-2-199.pdf` is expected to hold;
+- any expected outcome;
+- the reviewer names;
+- the numeric tolerances, which are pending Iris.
 
 ---
 
@@ -805,7 +859,7 @@ The acceptance run covers the full path from source PDF to approved search resul
 
 2. **Acceptance run** — uses the [proposed acceptance PDFs](../../../DESIGN-MVP.md#proposed-acceptance-pdfs) reserved by filename, Drive ID, and version hash. These PDFs are kept out of walkthrough tuning. An authorized reviewer records the expected results first without relying on the skill's output, then follows the [acceptance run procedure](../../../DESIGN-MVP.md#acceptance-run-procedure) in a clean Test workspace.
 
-The checklist is keyed by filename, Drive ID, and version hash. The reserved PDF list and the [backup and recovery targets](../../../DESIGN-MVP.md#6-local-storage) are proposals pending lab confirmation. Checks cover intake, automatic draft staging via calls from the skill to the staging tool, clearance, review, approved-only search, and a restore drill against the proposed targets. Iris signs off on the saved results before wider batch processing.
+The local checklist (`test_checklist.local.json`, created from `test_checklist.template.json`; see [Test checklist](#test-checklist)) is keyed by filename, Drive ID, and version hash. The six acceptance PDFs in DESIGN-MVP.md are provisional until a reviewer checks each scan and confirms the entry. `log-2-199.pdf` is only a candidate for a hold until then. Acceptance readiness fails while any entry is provisional, and expected outcomes must be recorded before the skill runs. The reserved PDF list and the [backup and recovery targets](../../../DESIGN-MVP.md#6-local-storage) are proposals pending lab confirmation. Checks cover intake, automatic draft staging via calls from the skill to the staging tool, clearance, review, approved-only search, and a restore drill against the proposed targets. Iris signs off on the saved results before wider batch processing.
 
 ---
 

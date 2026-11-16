@@ -1,0 +1,151 @@
+{
+  "format": 2,
+  "about": "Committed template for the Test checklist (Requirements 27, 28, 30). It names no Drive IDs, hashes, or reviewer observations. Create the local checklist with: cp test_checklist.template.json test_checklist.local.json. The local file is git-ignored, and config.json checklist_path points at it, so the reserved-PDF guard, the status view's Reserved labels, and python tools/check_checklist.py all read the same list. Copy entry shapes from entry_templates into walkthrough or acceptance. Check the walkthrough with: python tools/check_checklist.py --walkthrough-only; check acceptance readiness with: python tools/check_checklist.py",
+  "tool_versions": {
+    "skill": null,
+    "staging_tool": null,
+    "review_app": null
+  },
+  "feedback": {
+    "researcher_tasks": [],
+    "reviewer_tasks": [],
+    "where_people_got_stuck": [],
+    "problems_preventing_completion": []
+  },
+  "walkthrough": [],
+  "acceptance": [],
+  "design_mvp_candidates_not_reserved": {
+    "about": "Reference only; the guard and validator never read this list. These are the proposed acceptance PDFs from DESIGN-MVP.md. To reserve one, add a provisional acceptance entry with its filename and drive_file_id in the local checklist. A reviewer then checks the scan, confirms or replaces it, and records expected outcomes before the skill runs.",
+    "candidates": [
+      {"filename": "log-1-008.pdf", "candidate_note": "Readable multi-run tables, lower-table entries, blank optional fields; staged runs should point to upper-table rows."},
+      {"filename": "log-2-045.pdf", "candidate_note": "Readable multi-run tables, lower-table entries, blank optional fields; staged runs should point to upper-table rows."},
+      {"filename": "log-1-077.pdf", "candidate_note": "Header without a visible date, blank timestamps, a crossed-out upper-table entry; lookup by another verified value; reviewer to decide how the crossed-out entry is treated."},
+      {"filename": "log-2-146.pdf", "candidate_note": "Blank JC cells with a name and date in the header; drafts should keep JC blank and use the name or date for lookup."},
+      {"filename": "log-2-097.pdf", "candidate_note": "Ditto marks in the compound column and a furnace layout; carry-down evidence and the layout link."},
+      {"filename": "log-2-199.pdf", "candidate_note": "Upper-table values without clear run labels. Hold candidate only: expected to hold before extraction only if a reviewer confirms the values cannot be reliably tied to runs."}
+    ],
+    "still_to_identify": [
+      "a clear PDF with one run",
+      "a run that spans PDF pages",
+      "a missing growth date with a usable timestamp",
+      "a missing researcher name",
+      "a run with no usable lookup value",
+      "a confirmed missing or ambiguous stoichiometry case"
+    ]
+  },
+  "entry_templates": {
+    "walkthrough_pdf": {
+      "filename": "",
+      "drive_file_id": "",
+      "file_hash": "",
+      "binder": null,
+      "missing_information_cases": [],
+      "structural_cases": [],
+      "has_furnace_layout_sketch": false,
+      "critical_case": null,
+      "expected_tier": null,
+      "one_critical_run": false,
+      "case_evidence": [
+        {
+          "case": "",
+          "source_locations": [{"pdf_index": null, "row": null, "area": ""}],
+          "observation": "",
+          "observed_by": ""
+        }
+      ],
+      "notes": ""
+    },
+    "walkthrough_waiver": {
+      "critical_case": "",
+      "no_example_found": true,
+      "waiver_reason": "",
+      "recorded_by": ""
+    },
+    "acceptance_provisional": {
+      "filename": "",
+      "drive_file_id": "",
+      "reservation_status": "provisional",
+      "candidate_outcome": null
+    },
+    "acceptance_confirmed": {
+      "filename": "",
+      "drive_file_id": "",
+      "file_hash": "",
+      "reservation_status": "confirmed",
+      "candidate_outcome": null,
+      "expected_risk_tier": null,
+      "expected_hold_stage": null,
+      "expected_hold_reason": null,
+      "expected_run_count": null,
+      "expected_runs": [
+        {
+          "source_locations": [{"pdf_index": null, "row": null}],
+          "researcher_name": null,
+          "growth_date": null,
+          "jc_number": null,
+          "stoichiometry": null,
+          "blank_or_flagged_fields": [
+            {
+              "field": "",
+              "expectation": "",
+              "reason": "",
+              "expected_field_status": null,
+              "source_location": null
+            }
+          ],
+          "expected_status": null,
+          "hold_reason": null,
+          "search_terms": {"month": null, "name": null}
+        }
+      ],
+      "expected_recorded_by": null,
+      "expected_recorded_at": null,
+      "first_run_at": null,
+      "unnecessary_holds": null,
+      "extraction_errors_found_in_review": null,
+      "reviewer_correction_time": null
+    },
+    "allowed_values": {
+      "missing_information_cases": [
+        "missing_researcher_name",
+        "missing_growth_date_with_timestamp",
+        "missing_growth_date_without_timestamp",
+        "missing_jc_number",
+        "missing_furnace_cycle_detail",
+        "missing_furnace_layout",
+        "missing_or_unclear_growth_process",
+        "missing_timestamp",
+        "missing_optional_measurement"
+      ],
+      "structural_cases": [
+        "clear_single_run",
+        "multi_run_all_eligible",
+        "run_spans_pages",
+        "carried_down_compound",
+        "entries_in_both_tables"
+      ],
+      "critical_case": {
+        "a": "no_usable_lookup_value",
+        "b": "missing_stoichiometry",
+        "c": "ambiguous_compound",
+        "d": "ambiguous_ratio",
+        "e": "ambiguous_composition_unit",
+        "f": "overwritten_composition_digit",
+        "g": "unclear_element_symbol",
+        "h": "unknown_ratio_basis",
+        "i": "uncertain_row_or_run_label",
+        "j": "cannot_be_reliably_assessed"
+      },
+      "case_evidence_case": "any case the entry claims, plus furnace_layout_sketch and one_critical_run; run_spans_pages evidence cites at least two pages",
+      "source_location": "pdf_index >= 1 and row >= 1; in case_evidence and blank_or_flagged_fields row may be null with an area such as shared header",
+      "expected_tier": ["critical", "uncertain (required for case j)"],
+      "reservation_status": ["provisional", "confirmed"],
+      "expected_risk_tier": ["non_critical", "critical", "uncertain"],
+      "expected_hold_stage": ["before_extraction", "in_review", null],
+      "expected_status": ["approve", "hold"],
+      "blank_or_flagged_field": ["researcher_name", "growth_date", "jc_number", "composition", "furnace_cycle", "furnace_layout", "growth_process", "timestamps", "measurements"],
+      "expectation": {"blank": ["missing", "omitted"], "flagged": ["inferred", "derived", "unreadable", "ambiguous"]},
+      "reviewer_correction_time": "minutes, a non-negative number; tolerances are pending Iris"
+    }
+  }
+}

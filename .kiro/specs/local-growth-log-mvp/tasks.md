@@ -114,7 +114,7 @@ review_workspace/<environment>/  created at runtime, not committed
 
 - [x] 2.4 Write `config.json` and `common/config.py`
   - `reviewers` list of names; `backup_folder` and `backup_name_pattern` as null placeholders pending lab confirmation
-  - `checklist_path` (default `test_checklist.json`): the file whose `acceptance` entries form the reserved list read by the reserved guard (Task 4.8)
+  - `checklist_path` (default `test_checklist.local.json`): the file whose `acceptance` entries form the reserved list read by the reserved guard (Task 4.8)
   - Loader returns the reviewer list and `checklist_path` read-only; no code path writes the config
   - _Requirements: 7.4, 26.4, 30.1_
 
@@ -881,9 +881,9 @@ The backup folder path, naming convention, and recovery targets are not confirme
 
 **Requires:** Task 2
 
-**Implements:** Requirements 27.1, 27.2, 27.5, 27.7, 27.8, 27.9, 27.10, 28.1, 28.2, 28.3, 28.8, 28.12, 28.13, 28.14
+**Implements:** Requirements 27.1, 27.2, 27.5, 27.7, 27.8, 27.9, 27.10, 27.12, 27.13, 27.14, 28.1, 28.2, 28.3, 28.8, 28.12, 28.13, 28.14, 28.15, 28.16, 28.17, 28.18, 30.1, 30.8, 30.9
 
-- [x] 24.1 Create `test_checklist.json` (empty template, no PDFs named)
+- [x] 24.1 Create `test_checklist.json` (superseded by Task 24.4, which renames it to `test_checklist.template.json`; empty template, no PDFs named)
   - Separate `walkthrough` and `acceptance` lists; each entry keyed by `filename`, `drive_file_id`, and `file_hash`
   - Acceptance entries also hold expected risk tier, expected hold reason, expected run count, per-run source page and row, expected name, date, JC number, stoichiometry where readable, expected approve or hold status, search terms, `expected_recorded_by`, `expected_recorded_at`, and `expected_hold_stage` (`before_extraction`, `in_review`, or null); an optional `first_run_at` is filled when the run starts
   - Add a top-level `tool_versions` record (skill, staging tool, review app) and a `feedback` record (researcher and reviewer tasks, where people got stuck, problems that prevented completion)
@@ -911,7 +911,45 @@ The backup folder path, naming convention, and recovery targets are not confirme
   - Add cases for: each critical case (a) to (j) missing; a critical entry that names two critical cases does not count for either; a waiver without a reason fails and a waiver with a reason passes; no `one_critical_run` entry; each structural case missing
   - _Requirements: 27.1, 27.2, 27.7, 27.8, 27.9, 27.10, 28.1, 28.2, 28.3, 28.8, 28.12, 28.14_
 
-**Verification:** `python tools/check_checklist.py test_checklist.json` fails on the empty template with a list of missing items, and `python -m pytest tests/test_checklist.py` passes.
+- [x] 24.4 Split the checklist into a committed template and a git-ignored local checklist
+  - Rename `test_checklist.json` to `test_checklist.template.json`. It names no PDFs, Drive IDs, file hashes, or reviewer observations, and keeps the entry shapes and allowed values
+  - Add a `design_mvp_candidates_not_reserved` reference list holding the six DESIGN-MVP candidate filenames with their candidate notes. The reserved-PDF guard and the validator never read this key
+  - Add `test_checklist.local.json` to `.gitignore`
+  - Set `checklist_path` in `config.json` and the default in `common/config.py` to `test_checklist.local.json`
+  - `tools/check_checklist.py` with no path argument reads `checklist_path`. When the local file is missing it fails with a message giving `cp test_checklist.template.json test_checklist.local.json`
+  - The guard reports "no reserved list" and applies no guard when the local file is missing
+  - _Requirements: 30.1, 30.5, 30.8, 30.9_
+
+- [x] 24.5 Add walkthrough `case_evidence` to the validator and template
+  - Extend `tools/check_checklist.py` and `test_checklist.template.json` with `case_evidence` items: `case`, `source_locations` (each `pdf_index` >= 1 and `row` >= 1, or `row` null with a non-empty `area`), `observation`, `observed_by`
+  - Fail when a claimed case has no evidence item. Claimed cases include missing-information, structural, and critical cases, `furnace_layout_sketch`, and `one_critical_run`
+  - Fail when an evidence item names a case the entry does not claim, when `observation` or `observed_by` is empty, or when a `source_locations` item is malformed
+  - Fail when `run_spans_pages` evidence cites fewer than two distinct `pdf_index` values
+  - Fail when a walkthrough entry shares a filename or `drive_file_id` with any acceptance entry, provisional or confirmed, and report which identifier matched
+  - Waiver entries need no `case_evidence`
+  - _Requirements: 27.12, 27.13, 27.14_
+
+- [x] 24.6 Add acceptance reservation, expected-run, and readiness rules to the validator and template
+  - Add `reservation_status` (`provisional` or `confirmed`) to acceptance entries. A provisional entry needs only `filename` and `drive_file_id`, may carry `candidate_outcome`, and never counts as an expected outcome
+  - Acceptance readiness (no `--walkthrough-only`) fails while any entry is provisional and reports each one's filename and Drive ID
+  - Expected runs use an ordered, non-empty `source_locations` list of `{pdf_index, row}` positive integers with no duplicates. Reject the old `source_page` and `source_row` keys with a message to use `source_locations`
+  - Require `blank_or_flagged_fields` on each expected run (an empty list is allowed). Each item has `field` (an extraction field key), `expectation` (`blank` or `flagged`), and `reason`, plus optional `expected_field_status` (`missing` or `omitted` for blank; `inferred`, `derived`, `unreadable`, or `ambiguous` for flagged) and `source_location`. Each field appears at most once
+  - A `researcher_name`, `growth_date`, `jc_number`, or `composition` field expected `blank` needs a null expected value (`stoichiometry` for composition)
+  - An expected-approved run cannot expect `composition` blank and needs at least one non-null name, date, or JC number
+  - Require `expected_recorded_by` and `expected_recorded_at`, and fail when `expected_recorded_at` is later than `first_run_at` (equal passes), naming the affected PDF
+  - Add `--walkthrough-only`: it checks walkthrough coverage, evidence, and overlap, and needs only `filename` and `drive_file_id` on acceptance entries
+  - _Requirements: 28.2, 28.15, 28.16, 28.17, 28.18_
+
+- [x]* 24.7 Update `tests/test_checklist.py` for the reworked checklist
+  - Use synthetic placeholder IDs only. Update tests that assumed `test_checklist.json` to use the template or a synthetic local checklist
+  - Evidence cases: missing evidence, evidence for an unclaimed case, bad location (`pdf_index` 0, `row` 0, null row with no `area`), and `run_spans_pages` evidence with one `pdf_index`
+  - Overlap: a walkthrough filename or Drive ID that matches a provisional acceptance entry fails
+  - Provisional entries block acceptance readiness and are reported, but pass `--walkthrough-only`
+  - Expected runs: multi-page `source_locations` pass, old `source_page` and `source_row` keys fail, `blank_or_flagged_fields` is required, and the blank, composition, and lookup-value rules hold
+  - A test that the reserved-PDF guard, the status view's "Reserved (acceptance)" labels, and the validator default all read the same file at `checklist_path`, and that the guard reserves a provisional entry
+  - _Requirements: 27.12, 27.13, 27.14, 28.2, 28.15, 28.16, 28.17, 28.18, 30.1, 30.9_
+
+**Verification:** `python tools/check_checklist.py test_checklist.template.json` fails on the empty template with a list of missing items, and `python -m pytest tests/test_checklist.py` passes.
 
 ---
 
@@ -935,8 +973,9 @@ Runs later, in Test only, after this plan is approved.
 **Open item 1 - walkthrough PDF selection (Req 27.5):** the operator picks PDFs from both Binder 1 and Binder 2 that are outside the reserved acceptance list. Filenames, Drive IDs, and version hashes must be recorded in the Test checklist before the walkthrough starts. This plan does not name PDFs. Tasks 26.2 to 26.5 cannot start until 26.1 passes.
 
 - [ ] 26.1 Operator selects walkthrough PDFs and records them
-  - Record filename, `drive_file_id`, and `file_hash` for each PDF in `test_checklist.json`; `python tools/check_checklist.py` must pass the walkthrough coverage checks (both binders, the nine missing-information cases, a dedicated PDF or a recorded waiver for each of the ten critical cases, the multi-run PDF with one critical run, the five structural cases, at least one PDF with a furnace layout sketch, no overlap with the reserved list)
-  - _Requirements: 27.1, 27.2, 27.5, 27.7, 27.8, 27.9, 27.10_
+  - Record each selected PDF in `test_checklist.local.json` (created with `cp test_checklist.template.json test_checklist.local.json`) with `filename`, `drive_file_id`, `file_hash`, and `case_evidence` citing the page and row (or area) and the reviewer's observation for every assigned case. Selection from both binders is pending operator choice
+  - `python tools/check_checklist.py --walkthrough-only` must pass: both binders, the nine missing-information cases, a dedicated PDF or a recorded waiver for each of the ten critical cases, the multi-run PDF with one critical run, the five structural cases, at least one PDF with a furnace layout sketch, and no PDF sharing a filename or Drive ID with any acceptance entry, provisional or confirmed
+  - _Requirements: 27.1, 27.2, 27.5, 27.7, 27.8, 27.9, 27.10, 27.12, 27.13, 27.14_
 
 - [ ] 26.2 Reset Test and start the app
   - `python db/init_db.py test.sqlite --reset`, then `python review_app/app.py --env test`; confirm the Test banner shows
@@ -976,10 +1015,12 @@ Runs later, in Test only, after this plan is approved.
 Runs later, in Test only. The reserved list in `DESIGN-MVP.md` ("Proposed acceptance PDFs") is a proposal pending lab confirmation. `log-2-199.pdf` is a candidate only; its expected outcome, like every other expectation, is recorded by the reviewer before the run and is not fixed by this plan. An authorized reviewer confirms the reserved list, versions, and expected outcomes before the run.
 
 - [ ] 27.1 Reviewer confirms the reserved list and records expected outcomes first
-  - Record the checklist entries (filename, Drive ID, `file_hash`) and expected outcomes from the scans without using the skill's output; include at least one PDF expected to remain held and fill the coverage gaps named in `DESIGN-MVP.md`
-  - `python tools/check_checklist.py` must pass the acceptance checks, and no reserved PDF appears in the walkthrough list
+  - Start from the six DESIGN-MVP candidates, recorded as `provisional` entries (filename and Drive ID) in `test_checklist.local.json`, so the guard reserves them from the start. `log-2-199.pdf` is a hold candidate only, recorded as `candidate_outcome`, until a reviewer checks the scan
+  - The reviewer checks each scan and confirms or replaces the PDF. Before the skill first runs, the reviewer records `file_hash` and the expected outcomes without using the skill's output: per-run `source_locations` (every page and row of a spanning run), expected values, `blank_or_flagged_fields` with reasons, approve or hold status, search terms, `expected_recorded_by`, and `expected_recorded_at`. The reviewer then sets `reservation_status` to `confirmed`
+  - Include at least one PDF expected to remain held and fill the coverage gaps named in `DESIGN-MVP.md`
+  - `python tools/check_checklist.py` must pass with no provisional entries, and no reserved PDF appears in the walkthrough list
   - Set `expected_hold_stage = before_extraction` for at least one entry and, where the reserved set allows, `in_review` for at least one draft; do not hard-code any filename as the held PDF
-  - _Requirements: 28.1, 28.2, 28.3, 28.8_
+  - _Requirements: 28.1, 28.2, 28.3, 28.8, 28.15, 28.16, 28.17, 28.18_
 
 - [ ] 27.2 Reset Test, record tool versions, and run the staging pass
   - Before the run, record the skill, staging tool, and review app versions under test in `tool_versions` and reset Test with `python db/init_db.py test.sqlite --reset`
@@ -1045,7 +1086,7 @@ Runs later, in Test only. The reserved list in `DESIGN-MVP.md` ("Proposed accept
 - [ ] 29.1 Save acceptance evidence
   - Record every reserved PDF's outcome, each check's pass or fail, the reviewer, the restore drill result, and any discrepancy with its source location; confirm every reserved PDF has an outcome, every eligible draft reached `Pending review` without manual JSON upload, and every required approval and hold was exercised
   - Before sign-off, record feedback in the `feedback` record: ask researchers to find an approved run and open its source PDF, ask reviewers to compare a draft with its source PDF, correct a field, and approve it, and note where people got stuck and any problem that prevented completion
-  - Record per reserved PDF the number of unnecessary holds, the extraction errors found in review, and the reviewer correction time, and confirm `python tools/check_checklist.py test_checklist.json --results` passes. Numeric tolerances for extraction errors and correction time are pending Iris; report the figures without a pass or fail threshold until she sets one
+  - Record per reserved PDF the number of unnecessary holds, the extraction errors found in review, and the reviewer correction time, and confirm `python tools/check_checklist.py --results` passes. Numeric tolerances for extraction errors and correction time are pending Iris; report the figures without a pass or fail threshold until she sets one
   - _Requirements: 28.7, 28.13, 28.14_
 
 - [ ] 29.2 Record Iris's sign-off before wider batch processing
@@ -1083,10 +1124,10 @@ Runs later, in Test only. The reserved list in `DESIGN-MVP.md` ("Proposed accept
     { "id": 2, "tasks": ["2.2", "2.3", "2.4", "0.3"] },
     { "id": 3, "tasks": ["2.5", "2.6", "2.7", "3.1", "3.4", "24.1", "0.4"] },
     { "id": 4, "tasks": ["3.2", "3.3", "9.1", "10.1", "22.1", "23.1", "23.2", "24.2"] },
-    { "id": 5, "tasks": ["3.5", "9.2", "10.2", "13.1", "13.3", "22.2", "23.5", "24.3"] },
-    { "id": 6, "tasks": ["3.6", "4.1", "9.3", "10.3", "13.2", "13.4"] },
-    { "id": 7, "tasks": ["4.2", "4.3", "4.4", "10.4", "11.1", "13.5"] },
-    { "id": 8, "tasks": ["4.5", "11.2", "14.1", "15.1"] },
+    { "id": 5, "tasks": ["3.5", "9.2", "10.2", "13.1", "13.3", "22.2", "23.5", "24.3", "24.4"] },
+    { "id": 6, "tasks": ["3.6", "4.1", "9.3", "10.3", "13.2", "13.4", "24.5"] },
+    { "id": 7, "tasks": ["4.2", "4.3", "4.4", "10.4", "11.1", "13.5", "24.6"] },
+    { "id": 8, "tasks": ["4.5", "11.2", "14.1", "15.1", "24.7"] },
     { "id": 9, "tasks": ["4.6", "4.8", "5.1", "11.3", "12.1", "12.2", "14.2"] },
     { "id": 10, "tasks": ["4.7", "4.9", "5.2", "6.1", "6.2", "6.3", "11.4", "14.3", "15.2"] },
     { "id": 11, "tasks": ["5.3", "6.4", "14.4", "15.3", "16.1"] },

@@ -1,33 +1,62 @@
-"""Tests for the Test checklist validator (Task 24.3).
+"""Tests for the Test checklist validator (Tasks 24.3 and 24.7).
 
-Requirements 27.1, 27.2, 27.7 to 27.10, 28.1 to 28.3, 28.8, 28.12, 28.14.
-Synthetic checklists with placeholder IDs only; no lab PDFs are named.
+Requirements 27.1, 27.2, 27.7 to 27.10, 27.12 to 27.14, 28.1 to 28.3, 28.8, 28.12, 28.14 to 28.18,
+30.1, 30.8, 30.9. Synthetic checklists with placeholder IDs only; no lab PDFs are identified.
 """
 
 import copy
 import json
+import re
 from pathlib import Path
 
 import pytest
 
+from common.config import load_config
+from review_app.app import create_app
+from staging_lib.validate_extraction import FIELD_KEYS
 from tools import check_checklist
 from tools.check_checklist import CRITICAL_CASES, MISSING_INFORMATION_CASES, STRUCTURAL_CASES, check
 
 ROOT = Path(__file__).resolve().parents[1]
+TEMPLATE = ROOT / "test_checklist.template.json"
 
 
 def placeholder_hash(number):
     return f"{number:064x}"
 
 
+def evidence(case, *locations, observation="placeholder observation", observed_by="Placeholder Reviewer"):
+    locations = locations or ({"pdf_index": 1, "row": 1},)
+    return {"case": case, "source_locations": list(locations), "observation": observation,
+            "observed_by": observed_by}
+
+
 def pdf(number, binder=1, **fields):
-    return {"filename": f"log-{binder}-{number:03d}.pdf", "drive_file_id": f"placeholder-drive-{number}",
-            "file_hash": placeholder_hash(number), **fields}
+    """A walkthrough PDF entry with evidence for every case it claims."""
+    entry = {"filename": f"log-{binder}-{number:03d}.pdf", "drive_file_id": f"placeholder-drive-{number}",
+             "file_hash": placeholder_hash(number), **fields}
+    claimed = list(entry.get("missing_information_cases", [])) + list(entry.get("structural_cases", []))
+    if isinstance(entry.get("critical_case"), str):
+        claimed.append(entry["critical_case"])
+    if entry.get("has_furnace_layout_sketch"):
+        claimed.append("furnace_layout_sketch")
+    entry["case_evidence"] = [
+        evidence(case, {"pdf_index": 1, "row": 2}, {"pdf_index": 2, "row": 1}) if case == "run_spans_pages"
+        else evidence(case) for case in claimed]
+    return entry
 
 
-def expected_run(row, status="approve"):
-    run = {"source_page": 1, "source_row": row, "researcher_name": "Placeholder", "growth_date": "2018-10",
-           "jc_number": None, "stoichiometry": "MoSe2", "expected_status": status}
+def flag_one_critical_run(entry):
+    entry["one_critical_run"] = True
+    entry["case_evidence"].append(evidence("one_critical_run", {"pdf_index": 1, "row": 3}))
+
+
+def expected_run(row, status="approve", page=1):
+    run = {"source_locations": [{"pdf_index": page, "row": row}], "researcher_name": "Placeholder",
+           "growth_date": "2018-10", "jc_number": None, "stoichiometry": "MoSe2",
+           "blank_or_flagged_fields": [{"field": "jc_number", "expectation": "blank",
+                                        "reason": "JC cell is empty on the scan"}],
+           "expected_status": status}
     if status == "approve":
         run["search_terms"] = {"month": "2018-10", "name": "Placeholder"}
     else:
@@ -36,13 +65,20 @@ def expected_run(row, status="approve"):
 
 
 def acceptance(number, **fields):
-    entry = pdf(number, binder=2, expected_risk_tier="non_critical", expected_hold_stage=None,
-                expected_hold_reason=None, expected_run_count=2, expected_runs=[expected_run(1), expected_run(2)],
-                expected_recorded_by="Placeholder Reviewer", expected_recorded_at="2026-11-01T09:00:00+00:00",
-                first_run_at=None, unnecessary_holds=None, extraction_errors_found_in_review=None,
-                reviewer_correction_time=None)
+    entry = {"filename": f"log-2-{number:03d}.pdf", "drive_file_id": f"placeholder-drive-{number}",
+             "file_hash": placeholder_hash(number), "reservation_status": "confirmed",
+             "expected_risk_tier": "non_critical", "expected_hold_stage": None, "expected_hold_reason": None,
+             "expected_run_count": 2, "expected_runs": [expected_run(1), expected_run(2)],
+             "expected_recorded_by": "Placeholder Reviewer", "expected_recorded_at": "2026-11-01T09:00:00+00:00",
+             "first_run_at": None, "unnecessary_holds": None, "extraction_errors_found_in_review": None,
+             "reviewer_correction_time": None}
     entry.update(fields)
     return entry
+
+
+def provisional(number, **fields):
+    return {"filename": f"log-2-{number:03d}.pdf", "drive_file_id": f"placeholder-drive-{number}",
+            "reservation_status": "provisional", **fields}
 
 
 def complete():
@@ -56,7 +92,7 @@ def complete():
     for offset, case in enumerate(CRITICAL_CASES, 10):
         tier = "uncertain" if case == "cannot_be_reliably_assessed" else "critical"
         walkthrough.append(pdf(offset, binder=1 + offset % 2, critical_case=case, expected_tier=tier))
-    walkthrough[2]["one_critical_run"] = True
+    flag_one_critical_run(walkthrough[2])
     return {
         "tool_versions": {"skill": "stage-log-runs@abc123", "staging_tool": "abc123", "review_app": "abc123"},
         "feedback": {},
@@ -85,18 +121,25 @@ def test_complete_synthetic_checklist_passes():
     assert report.warnings == []
 
 
-# Template ------------------------------------------------------------------------------------------
+# Template and local checklist (30.1, 30.8, 30.9) ---------------------------------------------------
 
-def test_repository_template_names_no_pdfs_and_fails_with_missing_items(capsys):
-    path = ROOT / "test_checklist.json"
-    data = json.loads(path.read_text(encoding="utf-8"))
+def test_template_names_no_drive_ids_hashes_or_observations():
+    data = json.loads(TEMPLATE.read_text(encoding="utf-8"))
     assert data["walkthrough"] == [] and data["acceptance"] == []
-    assert set(data["tool_versions"]) == {"skill", "staging_tool", "review_app"}
-    assert set(data["entry_templates"]["acceptance_pdf"]) >= {
-        "expected_risk_tier", "expected_hold_reason", "expected_run_count", "expected_runs",
-        "expected_recorded_by", "expected_recorded_at", "expected_hold_stage", "first_run_at",
-        "unnecessary_holds", "extraction_errors_found_in_review", "reviewer_correction_time"}
-    assert check_checklist.main([str(path)]) == 1
+    text = TEMPLATE.read_text(encoding="utf-8")
+    assert not re.search(r"[0-9a-f]{64}", text)
+    for shape in data["entry_templates"].values():
+        if isinstance(shape, dict) and "drive_file_id" in shape:
+            assert shape["drive_file_id"] == ""
+    candidates = data["design_mvp_candidates_not_reserved"]["candidates"]
+    assert [item["filename"] for item in candidates] == [
+        "log-1-008.pdf", "log-2-045.pdf", "log-1-077.pdf", "log-2-146.pdf", "log-2-097.pdf", "log-2-199.pdf"]
+    assert all(set(item) == {"filename", "candidate_note"} for item in candidates)
+    assert "Hold candidate only" in candidates[-1]["candidate_note"]
+
+
+def test_template_fails_with_missing_items(capsys):
+    assert check_checklist.main([str(TEMPLATE)]) == 1
     output = capsys.readouterr().out
     assert "is not ready" in output
     for expected in ("no PDF from Binder 1", "missing_researcher_name", "(a) no_usable_lookup_value",
@@ -105,11 +148,58 @@ def test_repository_template_names_no_pdfs_and_fails_with_missing_items(capsys):
         assert expected in output
 
 
+def test_template_candidates_are_not_reserved_by_the_guard():
+    from staging_lib.reserved_guard import load_reserved_ids
+
+    assert load_reserved_ids(TEMPLATE) is None
+
+
 def test_template_allowed_values_match_the_validator():
-    allowed = json.loads((ROOT / "test_checklist.json").read_text(encoding="utf-8"))["entry_templates"]["allowed_values"]
+    allowed = json.loads(TEMPLATE.read_text(encoding="utf-8"))["entry_templates"]["allowed_values"]
     assert tuple(allowed["missing_information_cases"]) == MISSING_INFORMATION_CASES
     assert tuple(allowed["structural_cases"]) == STRUCTURAL_CASES
     assert {name: letter for letter, name in allowed["critical_case"].items()} == CRITICAL_CASES
+    assert tuple(allowed["blank_or_flagged_field"]) == FIELD_KEYS
+
+
+def test_repository_config_points_at_the_git_ignored_local_checklist():
+    config = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    assert config["checklist_path"] == "test_checklist.local.json"
+    assert "test_checklist.local.json" in (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
+
+
+def test_missing_local_checklist_fails_with_the_copy_command(workspace, capsys):
+    assert not workspace.checklist_path.exists()
+    assert check_checklist.main([]) == 1
+    message = capsys.readouterr().err
+    assert str(workspace.checklist_path) in message
+    assert "cp test_checklist.template.json" in message
+
+
+def test_guard_status_view_and_validator_read_the_same_checklist(workspace, capsys):
+    """Requirement 30.9: one file at checklist_path serves all three readers."""
+    assert load_config().checklist_path == workspace.checklist_path
+    data = complete()
+    data["acceptance"].append(provisional(150, candidate_outcome="possible hold before extraction"))
+    reserved_id = data["acceptance"][-1]["drive_file_id"]
+    workspace.checklist_path.write_text(json.dumps(data), encoding="utf-8")
+
+    # The validator default reads it and reports the provisional entry.
+    assert check_checklist.main([]) == 1
+    output = capsys.readouterr().out
+    assert str(workspace.checklist_path) in output and f"Drive ID {reserved_id}) is still provisional" in output
+    assert check_checklist.main(["--walkthrough-only"]) == 0
+
+    # The guard reserves the provisional entry.
+    database = workspace.database("test")
+    assert workspace.risk_assess(workspace.risk_packet(drive_file_id=reserved_id), database=database) == 1
+    assert "reserved for the acceptance run" in capsys.readouterr().err
+
+    # The status view labels it once it is processed for the acceptance run.
+    assert workspace.risk_assess(workspace.risk_packet(drive_file_id=reserved_id), database=database,
+                                 acceptance_run=True) == 0
+    page = create_app("test", root=workspace.root).test_client().get("/status").get_data(as_text=True)
+    assert "Reserved (acceptance)" in page
 
 
 def test_complete_checklist_passes_on_the_command_line(tmp_path, capsys):
@@ -126,7 +216,7 @@ def test_unreadable_checklist_fails(tmp_path):
     assert check_checklist.main([str(tmp_path / "absent.json")]) == 1
 
 
-# Identity and overlap (27.1, 28.1, 28.3) -----------------------------------------------------------
+# Identity and overlap (27.1, 27.13, 28.1, 28.3) ----------------------------------------------------
 
 @pytest.mark.parametrize("section,index", [("walkthrough", 0), ("acceptance", 0)])
 @pytest.mark.parametrize("key", ["filename", "drive_file_id", "file_hash"])
@@ -145,8 +235,18 @@ def test_malformed_file_hash_fails():
 def test_walkthrough_entry_sharing_an_acceptance_drive_id_fails():
     data = complete()
     data["walkthrough"][0]["drive_file_id"] = data["acceptance"][0]["drive_file_id"]
-    assert any("reserved for the acceptance run" in failure for failure in failures(data))
-    assert any("reserved for the acceptance run" in failure for failure in failures(data, walkthrough_only=True))
+    for options in ({}, {"walkthrough_only": True}):
+        assert any("drive_file_id placeholder-drive-101 matches an acceptance entry" in f
+                   for f in failures(data, **options))
+
+
+@pytest.mark.parametrize("key", ["filename", "drive_file_id"])
+def test_walkthrough_entry_matching_a_provisional_entry_fails(key):
+    data = complete()
+    data["acceptance"].append(provisional(150))
+    data["walkthrough"][1][key] = data["acceptance"][-1][key]
+    result = failures(data, walkthrough_only=True)
+    assert len(result) == 1 and f"{key} " in result[0] and "matches an acceptance entry" in result[0]
 
 
 @pytest.mark.parametrize("binder", [1, 2])
@@ -168,19 +268,26 @@ def test_binder_field_is_used_when_the_filename_has_no_binder():
 
 # Coverage (27.2, 27.7, 27.8, 27.9, 27.10) ----------------------------------------------------------
 
+def drop_case(entry, key, case):
+    entry[key].remove(case)
+    entry["case_evidence"] = [item for item in entry["case_evidence"] if item["case"] != case]
+
+
 @pytest.mark.parametrize("case", MISSING_INFORMATION_CASES)
 def test_each_missing_information_case_is_required(case):
     data = complete()
     for entry in data["walkthrough"]:
         if case in entry.get("missing_information_cases", []):
-            entry["missing_information_cases"].remove(case)
-    assert f"walkthrough: missing-information case {case} is not covered (Requirement 27.2)" in failures(data)
+            drop_case(entry, "missing_information_cases", case)
+    assert failures(data) == [f"walkthrough: missing-information case {case} is not covered (Requirement 27.2)"]
 
 
 def test_missing_information_case_on_a_critical_pdf_does_not_count():
     data = complete()
-    data["walkthrough"][0]["missing_information_cases"].remove("missing_researcher_name")
-    critical_entry(data, "missing_stoichiometry")["missing_information_cases"] = ["missing_researcher_name"]
+    drop_case(data["walkthrough"][0], "missing_information_cases", "missing_researcher_name")
+    target = critical_entry(data, "missing_stoichiometry")
+    target["missing_information_cases"] = ["missing_researcher_name"]
+    target["case_evidence"].append(evidence("missing_researcher_name"))
     report = check(data)
     assert any("missing_researcher_name is not covered" in failure for failure in report.failures)
     assert any("are not counted" in warning for warning in report.warnings)
@@ -191,7 +298,7 @@ def test_each_critical_case_is_required(case):
     data = complete()
     data["walkthrough"].remove(critical_entry(data, case))
     if not any(entry.get("one_critical_run") for entry in data["walkthrough"]):
-        data["walkthrough"][3]["one_critical_run"] = True
+        flag_one_critical_run(data["walkthrough"][3])
     message = (f"walkthrough: critical case ({CRITICAL_CASES[case]}) {case} has no dedicated PDF or waiver "
                "(Requirement 27.8)")
     assert failures(data) == [message]
@@ -202,6 +309,7 @@ def test_entry_naming_two_critical_cases_counts_for_neither():
     first = critical_entry(data, "ambiguous_compound")
     data["walkthrough"].remove(critical_entry(data, "ambiguous_ratio"))
     first["critical_case"] = ["ambiguous_compound", "ambiguous_ratio"]
+    first["case_evidence"].append(evidence("ambiguous_ratio"))
     result = failures(data)
     assert any("names more than one critical case" in failure for failure in result)
     assert any("(c) ambiguous_compound has no dedicated PDF" in failure for failure in result)
@@ -261,13 +369,14 @@ def test_waiver_without_a_reason_fails(reason):
 def test_no_one_critical_run_entry_fails():
     data = complete()
     for entry in data["walkthrough"]:
-        entry.pop("one_critical_run", None)
+        if entry.pop("one_critical_run", None):
+            entry["case_evidence"] = [item for item in entry["case_evidence"] if item["case"] != "one_critical_run"]
     assert failures(data) == ["walkthrough: no multi-run PDF flagged one_critical_run: true (Requirement 27.9)"]
 
 
 def test_one_critical_run_flag_without_a_critical_case_fails():
     data = complete()
-    data["walkthrough"][0]["one_critical_run"] = True
+    flag_one_critical_run(data["walkthrough"][0])
     assert any("one_critical_run needs the PDF's critical_case" in failure for failure in failures(data))
 
 
@@ -276,24 +385,147 @@ def test_each_structural_case_is_required(case):
     data = complete()
     for entry in data["walkthrough"]:
         if case in entry.get("structural_cases", []):
-            entry["structural_cases"].remove(case)
+            drop_case(entry, "structural_cases", case)
     assert failures(data) == [f"walkthrough: structural case {case} is not covered (Requirement 27.10)"]
 
 
 def test_no_layout_sketch_pdf_fails():
     data = complete()
-    data["walkthrough"][0]["has_furnace_layout_sketch"] = False
+    entry = data["walkthrough"][0]
+    entry["has_furnace_layout_sketch"] = False
+    entry["case_evidence"] = [item for item in entry["case_evidence"] if item["case"] != "furnace_layout_sketch"]
     assert failures(data) == ["walkthrough: no PDF flagged has_furnace_layout_sketch: true (Requirement 27.7)"]
 
 
 def test_layout_sketch_on_a_critical_pdf_does_not_count():
     data = complete()
     data["walkthrough"][0]["has_furnace_layout_sketch"] = False
-    critical_entry(data, "ambiguous_ratio")["has_furnace_layout_sketch"] = True
+    data["walkthrough"][0]["case_evidence"].pop()
+    target = critical_entry(data, "ambiguous_ratio")
+    target["has_furnace_layout_sketch"] = True
+    target["case_evidence"].append(evidence("furnace_layout_sketch", {"pdf_index": 1, "row": None,
+                                                                     "area": "Furnace Layout box"}))
     assert "walkthrough: no PDF flagged has_furnace_layout_sketch: true (Requirement 27.7)" in failures(data)
 
 
-# Acceptance (28.2, 28.8, 28.12) --------------------------------------------------------------------
+# Case evidence (27.12, 27.14) ----------------------------------------------------------------------
+
+@pytest.mark.parametrize("case", ["missing_jc_number", "run_spans_pages", "furnace_layout_sketch"])
+def test_claimed_case_without_evidence_fails(case):
+    data = complete()
+    entry = data["walkthrough"][0]
+    entry["case_evidence"] = [item for item in entry["case_evidence"] if item["case"] != case]
+    assert failures(data) == [f"walkthrough[0] log-1-001.pdf: no case_evidence for {case}; cite the page and row "
+                              "(or area) and the observation that qualifies this PDF (Requirement 27.12)"]
+
+
+@pytest.mark.parametrize("case", ["missing_stoichiometry", "one_critical_run"])
+def test_critical_and_one_critical_run_claims_need_evidence(case):
+    data = complete()
+    entry = data["walkthrough"][2]
+    assert entry["critical_case"] == "no_usable_lookup_value"
+    if case == "missing_stoichiometry":
+        entry = critical_entry(data, case)
+    entry["case_evidence"] = [item for item in entry["case_evidence"] if item["case"] != case]
+    assert any(f"no case_evidence for {case}" in failure for failure in failures(data))
+
+
+def test_evidence_for_an_unclaimed_case_fails():
+    data = complete()
+    data["walkthrough"][1]["case_evidence"].append(evidence("clear_single_run"))
+    assert any("case 'clear_single_run' is not one this entry claims" in f for f in failures(data))
+
+
+@pytest.mark.parametrize("location,problem", [
+    ({"pdf_index": 0, "row": 1}, "pdf_index must be a whole number of at least 1"),
+    ({"pdf_index": 1, "row": 0}, "row must be a whole number of at least 1"),
+    ({"pdf_index": 1, "row": None}, "row is null, so name the area"),
+    ({"pdf_index": 1, "row": None, "area": "  "}, "row is null, so name the area"),
+    ("page 1", "must be a JSON object"),
+])
+def test_bad_evidence_location_fails(location, problem):
+    data = complete()
+    data["walkthrough"][1]["case_evidence"][0]["source_locations"] = [location]
+    assert any(problem in failure for failure in failures(data))
+
+
+def test_area_without_row_is_accepted_for_evidence():
+    data = complete()
+    data["walkthrough"][1]["case_evidence"][0]["source_locations"] = [
+        {"pdf_index": 1, "row": None, "area": "shared header"}]
+    assert failures(data) == []
+
+
+@pytest.mark.parametrize("key", ["observation", "observed_by"])
+def test_evidence_needs_observation_and_observer(key):
+    data = complete()
+    data["walkthrough"][1]["case_evidence"][0][key] = ""
+    assert any(f"{key} is not recorded" in failure for failure in failures(data))
+
+
+def test_evidence_needs_at_least_one_location():
+    data = complete()
+    data["walkthrough"][1]["case_evidence"][0]["source_locations"] = []
+    assert any("source_locations must list at least one page" in failure for failure in failures(data))
+
+
+def test_spanning_pages_evidence_on_one_page_fails():
+    data = complete()
+    item = next(i for i in data["walkthrough"][0]["case_evidence"] if i["case"] == "run_spans_pages")
+    item["source_locations"] = [{"pdf_index": 1, "row": 5}, {"pdf_index": 1, "row": 6}]
+    assert any("run_spans_pages evidence must cite at least two pages" in f for f in failures(data))
+
+
+def test_waivers_need_no_evidence():
+    data = complete()
+    data["walkthrough"].remove(critical_entry(data, "unknown_ratio_basis"))
+    data["walkthrough"].append({"critical_case": "unknown_ratio_basis", "no_example_found": True,
+                                "waiver_reason": "No example in either binder."})
+    assert failures(data, walkthrough_only=True) == []
+
+
+# Reservation status (28.15 to 28.17) ---------------------------------------------------------------
+
+def test_provisional_entries_block_acceptance_readiness_and_are_reported():
+    data = complete()
+    data["acceptance"].append(provisional(150, candidate_outcome="may need a hold before extraction"))
+    result = failures(data)
+    assert result == ["acceptance[3] log-2-150.pdf (Drive ID placeholder-drive-150) is still provisional: a "
+                      "reviewer must check the scan, record file_hash and the expected outcomes, then set "
+                      "reservation_status to confirmed (Requirements 28.15 to 28.17)"]
+
+
+def test_provisional_entries_pass_walkthrough_only_without_hash_or_outcomes():
+    data = complete()
+    data["acceptance"] = [provisional(150 + n) for n in range(6)]
+    del data["tool_versions"]
+    assert failures(data, walkthrough_only=True) == []
+
+
+@pytest.mark.parametrize("key", ["filename", "drive_file_id"])
+def test_provisional_entry_needs_filename_and_drive_id(key):
+    data = complete()
+    data["acceptance"].append(provisional(150))
+    del data["acceptance"][-1][key]
+    assert any(f"missing {key}" in failure for failure in failures(data, walkthrough_only=True))
+
+
+def test_reservation_status_is_required():
+    data = complete()
+    del data["acceptance"][0]["reservation_status"]
+    for options in ({}, {"walkthrough_only": True}):
+        assert any("reservation_status must be provisional or confirmed" in f for f in failures(data, **options))
+
+
+def test_candidate_outcome_does_not_count_as_an_expected_hold():
+    data = complete()
+    data["acceptance"][1] = provisional(102, candidate_outcome="hold before extraction if rows cannot be tied")
+    result = failures(data)
+    assert any("is still provisional" in f for f in result)
+    assert "acceptance: no confirmed entry has expected_hold_stage before_extraction (Requirement 28.8)" in result
+
+
+# Acceptance outcomes (28.2, 28.8, 28.12, 28.18) ----------------------------------------------------
 
 def test_missing_tool_versions_fails():
     data = complete()
@@ -308,17 +540,19 @@ def test_incomplete_tool_versions_fail(key):
     assert failures(data) == [f"tool_versions.{key} is not recorded (Requirement 28.12)"]
 
 
-def test_walkthrough_only_skips_acceptance_checks():
+def test_walkthrough_only_skips_acceptance_outcome_checks():
     data = complete()
     del data["tool_versions"]
-    data["acceptance"] = [{"drive_file_id": "placeholder-drive-999"}]
+    data["acceptance"] = [{"filename": "log-2-999.pdf", "drive_file_id": "placeholder-drive-999",
+                           "reservation_status": "confirmed"}]
     assert failures(data, walkthrough_only=True) == []
 
 
 def test_no_before_extraction_entry_fails():
     data = complete()
     del data["acceptance"][1]
-    assert failures(data) == ["acceptance: no entry has expected_hold_stage before_extraction (Requirement 28.8)"]
+    assert failures(data) == ["acceptance: no confirmed entry has expected_hold_stage before_extraction "
+                              "(Requirement 28.8)"]
 
 
 @pytest.mark.parametrize("key,value", [
@@ -330,13 +564,114 @@ def test_acceptance_entry_without_expected_outcome_fails(key, value):
     assert any("no expected outcome" in failure for failure in failures(data))
 
 
-def test_expected_runs_must_match_the_run_count_and_name_page_and_row():
+def test_run_spanning_pages_lists_every_page_and_row():
+    data = complete()
+    data["acceptance"][0]["expected_runs"][0]["source_locations"] = [
+        {"pdf_index": 1, "row": 7}, {"pdf_index": 2, "row": 1}, {"pdf_index": 2, "row": 2}]
+    assert failures(data) == []
+
+
+@pytest.mark.parametrize("locations,problem", [
+    (None, "source_locations must list every page and row"),
+    ([], "source_locations must list every page and row"),
+    ([{"pdf_index": 1, "row": None, "area": "shared header"}], "row must be a whole number of at least 1"),
+    ([{"pdf_index": 0, "row": 1}], "pdf_index must be a whole number of at least 1"),
+    ([{"pdf_index": 1, "row": 2}, {"pdf_index": 1, "row": 2}], "page 1, row 2 is listed twice"),
+])
+def test_bad_expected_source_locations_fail(locations, problem):
+    data = complete()
+    data["acceptance"][0]["expected_runs"][0]["source_locations"] = locations
+    assert any(problem in failure for failure in failures(data))
+
+
+def test_old_source_page_and_row_keys_are_rejected():
+    data = complete()
+    run = data["acceptance"][0]["expected_runs"][0]
+    run["source_page"], run["source_row"] = 1, 1
+    result = failures(data)
+    assert sum("is replaced by source_locations" in failure for failure in result) == 2
+
+
+def test_blank_or_flagged_fields_must_be_recorded():
+    data = complete()
+    del data["acceptance"][0]["expected_runs"][0]["blank_or_flagged_fields"]
+    assert any("record blank_or_flagged_fields" in failure for failure in failures(data))
+
+
+def test_empty_blank_or_flagged_list_is_an_explicit_none():
+    data = complete()
+    run = data["acceptance"][0]["expected_runs"][0]
+    run["jc_number"], run["blank_or_flagged_fields"] = "697", []
+    assert failures(data) == []
+
+
+@pytest.mark.parametrize("item,problem", [
+    ({"field": "colour", "expectation": "blank", "reason": "x"}, "field must be one of"),
+    ({"field": "timestamps", "expectation": "maybe", "reason": "x"}, "expectation must be blank or flagged"),
+    ({"field": "timestamps", "expectation": "blank", "reason": ""}, "give the reason timestamps should be blank"),
+    ({"field": "timestamps", "expectation": "blank", "reason": "x", "expected_field_status": "ambiguous"},
+     "expected_field_status for a blank field must be missing or omitted"),
+    ({"field": "growth_process", "expectation": "flagged", "reason": "x", "expected_field_status": "missing"},
+     "expected_field_status for a flagged field must be inferred or derived or unreadable or ambiguous"),
+    ({"field": "furnace_layout", "expectation": "flagged", "reason": "x",
+      "source_location": {"pdf_index": 1, "row": None}}, "row is null, so name the area"),
+])
+def test_bad_blank_or_flagged_items_fail(item, problem):
+    data = complete()
+    data["acceptance"][0]["expected_runs"][0]["blank_or_flagged_fields"].append(item)
+    assert any(problem in failure for failure in failures(data))
+
+
+def test_flagged_fields_with_status_and_location_pass():
+    data = complete()
+    data["acceptance"][0]["expected_runs"][0]["blank_or_flagged_fields"] += [
+        {"field": "growth_process", "expectation": "flagged", "reason": "only implied by the firing pattern",
+         "expected_field_status": "inferred", "source_location": {"pdf_index": 1, "row": None,
+                                                                  "area": "Firing Pattern box"}},
+        {"field": "timestamps", "expectation": "blank", "reason": "timestamp cells are empty",
+         "expected_field_status": "missing"},
+    ]
+    assert failures(data) == []
+
+
+def test_field_listed_twice_fails():
+    data = complete()
+    run = data["acceptance"][0]["expected_runs"][0]
+    run["blank_or_flagged_fields"].append({"field": "jc_number", "expectation": "flagged", "reason": "x"})
+    assert any("field jc_number is listed more than once" in f for f in failures(data))
+
+
+@pytest.mark.parametrize("field_name,value_key", [
+    ("researcher_name", "researcher_name"), ("growth_date", "growth_date"), ("jc_number", "jc_number"),
+    ("composition", "stoichiometry"),
+])
+def test_blank_field_needs_a_null_expected_value(field_name, value_key):
+    data = complete()
+    run = data["acceptance"][2]["expected_runs"][0]
+    run[value_key] = "something"
+    run["blank_or_flagged_fields"] = [{"field": field_name, "expectation": "blank", "reason": "cell is empty"}]
+    assert any(f"{field_name} is expected blank, so {value_key} must be null" in f for f in failures(data))
+
+
+def test_expected_approved_run_cannot_expect_composition_blank():
+    data = complete()
+    run = data["acceptance"][0]["expected_runs"][0]
+    run["stoichiometry"] = None
+    run["blank_or_flagged_fields"].append({"field": "composition", "expectation": "blank", "reason": "no compound"})
+    assert any("cannot expect composition blank" in f for f in failures(data))
+
+
+def test_expected_approved_run_needs_a_lookup_value():
+    data = complete()
+    run = data["acceptance"][0]["expected_runs"][0]
+    run["researcher_name"] = run["growth_date"] = run["jc_number"] = None
+    assert any("needs a researcher_name, growth_date, or jc_number" in f for f in failures(data))
+
+
+def test_expected_runs_must_match_the_run_count():
     data = complete()
     data["acceptance"][0]["expected_run_count"] = 3
-    data["acceptance"][0]["expected_runs"][0]["source_row"] = None
-    result = failures(data)
-    assert any("lists 2 runs but expected_run_count is 3" in f for f in result)
-    assert any("source_row must be a whole number" in f for f in result)
+    assert any("lists 2 runs but expected_run_count is 3" in f for f in failures(data))
 
 
 def test_expected_approved_run_needs_search_terms_and_held_run_a_reason():
@@ -361,7 +696,7 @@ def test_before_extraction_hold_needs_a_reason_and_a_critical_tier():
 def test_acceptance_entry_without_reviewer_or_time_fails(key):
     data = complete()
     data["acceptance"][0][key] = None
-    assert any(key in failure for failure in failures(data))
+    assert any(key in failure and "log-2-101.pdf" in failure for failure in failures(data))
 
 
 def test_expected_recorded_at_without_time_zone_fails():
@@ -370,10 +705,12 @@ def test_expected_recorded_at_without_time_zone_fails():
     assert any("with a time zone" in failure for failure in failures(data))
 
 
-def test_expected_recorded_after_first_run_fails():
+def test_expected_outcomes_must_be_recorded_before_the_first_run():
     data = complete()
     data["acceptance"][0]["first_run_at"] = "2026-10-31T09:00:00+00:00"
-    assert any("later than first_run_at" in failure for failure in failures(data))
+    assert any("log-2-101.pdf: expected_recorded_at is later than first_run_at" in f for f in failures(data))
+    data["acceptance"][0]["first_run_at"] = "2026-11-01T09:00:00+00:00"
+    assert failures(data) == []
     data["acceptance"][0]["first_run_at"] = "2026-11-02T09:00:00+00:00"
     assert failures(data) == []
 

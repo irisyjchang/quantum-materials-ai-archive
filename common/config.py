@@ -5,8 +5,9 @@ The lab maintains config.json by hand. No code path writes it.
 - ``reviewers``: names shown in the reviewer dropdown (Requirement 7.4).
 - ``backup_folder``, ``backup_name_pattern``: placeholders, null until the
   lab confirms the backup location (Requirement 26.4).
-- ``checklist_path``: the Test checklist whose acceptance entries form the
-  reserved list (Requirement 30.1).
+- ``checklist_path``: the local Test checklist (git-ignored, created from
+  test_checklist.template.json) whose acceptance entries form the reserved
+  list (Requirements 30.1, 30.9).
 - ``filename_index_path``: the index mapping archive filenames to Drive IDs
   (Requirement 1.10).
 
@@ -80,6 +81,6 @@ def load_config(path=None, root=PROJECT_ROOT):
         reviewers=names,
         backup_folder=_optional_string(data, "backup_folder"),
         backup_name_pattern=_optional_string(data, "backup_name_pattern"),
-        checklist_path=_path(data, "checklist_path", "test_checklist.json", root),
+        checklist_path=_path(data, "checklist_path", "test_checklist.local.json", root),
         filename_index_path=_path(data, "filename_index_path", "filename_index.json", root),
     )

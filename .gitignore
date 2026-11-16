@@ -17,6 +17,7 @@ packets/
 
 # Lab-specific local files
 filename_index.json
+test_checklist.local.json
 spike_results.md
 
 # Python and tooling

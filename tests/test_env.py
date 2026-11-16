@@ -118,7 +118,7 @@ def test_project_config_loads():
     config = load_config()
     assert config.backup_folder is None
     assert config.backup_name_pattern is None
-    assert config.checklist_path == ROOT / "test_checklist.json"
+    assert config.checklist_path == ROOT / "test_checklist.local.json"
     assert config.filename_index_path == ROOT / "filename_index.json"
 
 
