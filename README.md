@@ -2,12 +2,13 @@
 
 An AI-assisted archival system to organize research data from Dropbox, paper growth records, and files shared through Slack. Some sources overlap, so part of the project will be identifying duplicates and connecting related records. The goal is to make the data easier to search, sort, and use.
 
-The broader vision includes AI-assisted extraction and comparison of model outputs, with discrepancies flagged for human review. The **MVP** is a Python/FastAPI + SQLite web application for importing **human-verified JSON**, searching, filtering, source references, and CSV export. Extraction and human verification happen outside the archive interface. No AI API integration or automatic PDF/photo conversion is included in the MVP.
+The MVP uses one Codex skill, `stage-log-runs`, to check risk, extract the measurement table from existing growth log PDFs, and stage validated drafts in SQLite. A separate review app on the project operator’s laptop lets a lab-authorized reviewer inspect the source log, correct fields, and approve runs for search. The MVP workflow uses the operator’s ChatGPT subscription and requires no API key.
 
-We’ll start with a small pilot to test different AI models and prompts before expanding to the full dataset.
+The pilot adds photo uploads and moves the app to a shared host so authorized reviewers can review and approve runs online from their own devices.
 
 - **[Start with the pilot](pilot/README.md)**
-- **[Design document and MVP scope](docs/design-document.md)** — proposed architecture, import workflow, data model, acceptance criteria, and decisions for lab review.
+- **[MVP design](DESIGN-MVP.md)**
+- **[Pilot design](pilot/DESIGN-PILOT.md)**
 - [View the first ChatGPT result](pilot/runs/chatgpt/pdf-to-json/run01/output.json)
 - [See its prompt](pilot/runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text)
 - [Project board](https://github.com/users/irisyjchang/projects/2)
