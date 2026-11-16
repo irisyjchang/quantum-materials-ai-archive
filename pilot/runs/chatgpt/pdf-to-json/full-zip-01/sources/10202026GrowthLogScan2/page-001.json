@@ -1,0 +1,376 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 1,
+  "review_status": "unvalidated",
+  "top_annotations": "Yue. 1/16/2020\nEu: 151.96\nPd: 106.42\nSn: 118.71\nAs: 74.922\n1:20:3",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "Sn",
+      "Eu",
+      "Pb",
+      "As",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "Sn",
+      "Eu",
+      "Pb",
+      "As",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC1301",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1301",
+            "Compound": {
+              "formula": "Eu(PbₓSn₁₋ₓ)₂As₂",
+              "x": "0.0[overwritten]5"
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "Sn",
+                "value": "2.0590"
+              },
+              {
+                "column": "Eu",
+                "value": "0.1287"
+              },
+              {
+                "column": "Pb",
+                "value": "0.0771"
+              },
+              {
+                "column": "As",
+                "value": "0.2052"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1.5g"
+              }
+            ],
+            "right-margin annotation": "2738.636"
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1302",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1302",
+            "Compound": {
+              "formula": "Eu(PbₓSn₁₋ₓ)₂As₂",
+              "x": "0.[overwritten]1"
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "Sn",
+                "value": "1.9594"
+              },
+              {
+                "column": "Eu",
+                "value": "0.1393"
+              },
+              {
+                "column": "Pb",
+                "value": "0.1952"
+              },
+              {
+                "column": "As",
+                "value": "0.2061"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1.5g"
+              }
+            ],
+            "right-margin annotation": "2726.446"
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1303",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "JC1303",
+            "Compound": {
+              "formula": "Eu(PbₓSn₁₋ₓ)₂As₂",
+              "x": "0."
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "Sn",
+                "value": "2.1580"
+              },
+              {
+                "column": "Eu",
+                "value": "0.1281"
+              },
+              {
+                "column": "Pb",
+                "value": "/"
+              },
+              {
+                "column": "As",
+                "value": "0.2043"
+              },
+              {
+                "column": "Total (g)",
+                "value": "~1.5g"
+              }
+            ],
+            "right-margin annotation": "2750.926"
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Pb",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Pb",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Pb",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Pb",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Pb",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

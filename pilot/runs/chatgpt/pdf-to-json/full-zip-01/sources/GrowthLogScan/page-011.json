@@ -1,0 +1,358 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 11,
+  "review_status": "unvalidated",
+  "top_annotations": "Qianni & Zhaoyu 12/16/2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "Co",
+      "As",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "Co",
+      "As",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "1",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "1",
+            "Compound": {
+              "formula": "CoAs",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Co",
+                "value": "0.88085"
+              },
+              {
+                "column": "As",
+                "value": "1.11914"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "2g."
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "2.",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "2.",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Co",
+                "value": "-"
+              },
+              {
+                "column": "As",
+                "value": ".."
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Co",
+              "value": "0.8808"
+            },
+            {
+              "column": "As",
+              "value": "1.1190"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "1",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Co",
+              "value": "0.8802"
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "2.",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "Co: 58.9332\nAs: 74.92159\nCoAs: 133.85479",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

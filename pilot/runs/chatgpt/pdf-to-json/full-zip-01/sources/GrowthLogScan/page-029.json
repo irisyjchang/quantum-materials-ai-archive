@@ -1,0 +1,383 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 29,
+  "review_status": "unvalidated",
+  "top_annotations": "Name: Qianni\nDate: 8-6-18",
+  "table_columns": {
+    "Calculated": [
+      "JC#",
+      "Compound",
+      "Ba",
+      "FeAs",
+      "Co",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "JC#",
+      "Compound",
+      "Ba",
+      "FeAs",
+      "Co",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "609",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "JC#": "609",
+            "Compound": {
+              "formula": "BaFe₂As₂ Co doped",
+              "x": "0.07"
+            },
+            "quantities": [
+              {
+                "column": "Ba",
+                "value": "0.8240"
+              },
+              {
+                "column": "FeAs",
+                "value": "3.1384"
+              },
+              {
+                "column": "Co",
+                "value": "0.1414"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": "0.82[illegible]"
+            },
+            {
+              "column": "FeAs",
+              "value": "3.1383"
+            },
+            {
+              "column": "Co",
+              "value": "0.1415"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "609",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "JC#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Ba",
+              "value": ""
+            },
+            {
+              "column": "FeAs",
+              "value": ""
+            },
+            {
+              "column": "Co",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

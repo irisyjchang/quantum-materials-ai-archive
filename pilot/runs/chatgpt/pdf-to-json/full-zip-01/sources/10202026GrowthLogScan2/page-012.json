@@ -1,0 +1,392 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 12,
+  "review_status": "unvalidated",
+  "top_annotations": "Paul + Dan 12/17/2019\nTa = 180.9\nNb = 92.91\nTe = 127.6",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Te",
+      "Nb",
+      "Ta",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Te",
+      "Nb",
+      "Ta",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "1258",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "1258",
+            "Compound": {
+              "formula": "TaTe₄.₀₅",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": "2.5g"
+              },
+              {
+                "column": "Nb",
+                "value": "—"
+              },
+              {
+                "column": "Ta",
+                "value": "0.8751"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "1259",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "1259",
+            "Compound": {
+              "formula": "NbTe₄.₀₅",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": "2.5g"
+              },
+              {
+                "column": "Nb",
+                "value": "0.4498"
+              },
+              {
+                "column": "Ta",
+                "value": "—"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "1260",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "1260",
+            "Compound": {
+              "formula": "Elemental Sn",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0098g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "1261",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "1261",
+            "Compound": {
+              "formula": "Elemental In",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Te",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.5321g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": "2.5017"
+            },
+            {
+              "column": "Nb",
+              "value": "—"
+            },
+            {
+              "column": "Ta",
+              "value": "0.8761"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "1258",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": "2.5009"
+            },
+            {
+              "column": "Nb",
+              "value": "0.4502"
+            },
+            {
+              "column": "Ta",
+              "value": "—"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "1259",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Nb",
+              "value": ""
+            },
+            {
+              "column": "Ta",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Nb",
+              "value": ""
+            },
+            {
+              "column": "Ta",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "Ramp to 900°C in 24 hrs\nDwell 5 days\nTurn off furnace",
+  "Furnace Layout": [
+    [
+      "125[overwritten]9",
+      "1258"
+    ]
+  ],
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "4:38pm 12/17",
+  "End Timestamp": "[overwritten] 12/2[overwritten]4"
+}

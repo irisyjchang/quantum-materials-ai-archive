@@ -1,0 +1,357 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 7,
+  "review_status": "unvalidated",
+  "top_annotations": "12/19/18 Zhaoyu & Qianni",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "V",
+      "Mo",
+      "Bi",
+      "I₂",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "V",
+      "Mo",
+      "Bi",
+      "I₂",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "768",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "768",
+            "Compound": {
+              "formula": "V₀.₉Mo₀.₁I₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "V",
+                "value": "0.012"
+              },
+              {
+                "column": "Mo",
+                "value": "0.0026"
+              },
+              {
+                "column": "Bi",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": "0.1"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "769",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "769",
+            "Compound": {
+              "formula": "V₀.₉Bi₀.₁I₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "V",
+                "value": "0.012"
+              },
+              {
+                "column": "Mo",
+                "value": ""
+              },
+              {
+                "column": "Bi",
+                "value": "0.0056"
+              },
+              {
+                "column": "I₂",
+                "value": "0.1"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "0.0123"
+            },
+            {
+              "column": "Mo",
+              "value": "0.0027"
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": "0.11"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "768",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "0.0123"
+            },
+            {
+              "column": "Mo",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": "0.0057"
+            },
+            {
+              "column": "I₂",
+              "value": "0.11"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "769",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "Mo",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "Mo",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "Mo",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "Mo",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

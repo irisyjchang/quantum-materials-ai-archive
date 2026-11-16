@@ -1,0 +1,358 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 16,
+  "review_status": "unvalidated",
+  "top_annotations": "Yue + Qianni",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "Fe",
+      "Te",
+      "Se",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "Fe",
+      "Te",
+      "Se",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC716",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC716",
+            "Compound": {
+              "formula": "FeTeSeₓ",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.25"
+              },
+              {
+                "column": "Fe",
+                "value": "0.6517"
+              },
+              {
+                "column": "Te",
+                "value": "1.1168"
+              },
+              {
+                "column": "Se",
+                "value": "0.2304"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "~2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC717",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC717",
+            "Compound": {
+              "formula": "FeTe₁₋ₓSeₓ",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.35"
+              },
+              {
+                "column": "Fe",
+                "value": "0.6517"
+              },
+              {
+                "column": "Te",
+                "value": "0.9679"
+              },
+              {
+                "column": "Se",
+                "value": "0.3225"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": "~2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.6517"
+            },
+            {
+              "column": "Te",
+              "value": "1.1168"
+            },
+            {
+              "column": "Se",
+              "value": "0.2304"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC716",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": "0.6517"
+            },
+            {
+              "column": "Te",
+              "value": "0.9678"
+            },
+            {
+              "column": "Se",
+              "value": "0.3225"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC717",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Fe",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "24hr to 680°C 1440min\n48hr at 680°C 2880min\n12hr to 920°C 1440min\n3hr at 920°C 180min\n200hr to 400°C 9000min + 6600min\nto 620°C 400°C\n6hr to 20°C 360min\nFe: 55.847\nSe: 78.96\nTe: 127.6",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

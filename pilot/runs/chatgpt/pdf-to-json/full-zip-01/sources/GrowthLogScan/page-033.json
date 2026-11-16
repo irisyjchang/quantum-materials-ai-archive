@@ -1,0 +1,470 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 33,
+  "review_status": "unvalidated",
+  "top_annotations": "November 16 2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Ti",
+      "V",
+      "Nb",
+      "Ta",
+      "Sb",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Ti",
+      "V",
+      "Nb",
+      "Ta",
+      "Sb",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "732",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "732",
+            "Compound": {
+              "formula": "Ti0.525 Sb0.475",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.00"
+              },
+              {
+                "column": "n",
+                "value": "0.0241"
+              },
+              {
+                "column": "Ti",
+                "value": "0.6058"
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Sb",
+                "value": "1.3942"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "732",
+            "Compound": {
+              "formula": "Ti0.525 Sb0.475",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0241"
+              },
+              {
+                "column": "Ti",
+                "value": "0.60[illegible]"
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Sb",
+                "value": "1.40[illegible]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "733",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "733",
+            "Compound": {
+              "formula": "V0.55 Sb0.45",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.00"
+              },
+              {
+                "column": "n",
+                "value": "0.0257"
+              },
+              {
+                "column": "Ti",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": "0.7190"
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Sb",
+                "value": "1.4060"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.1250"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "733",
+            "Compound": {
+              "formula": "V0.55 Sb0.45",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0257"
+              },
+              {
+                "column": "Ti",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": "0.7109"
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Sb",
+                "value": "1.41[illegible]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.1250"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "734",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "734",
+            "Compound": {
+              "formula": "Nb0.55 Sb0.45",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.00"
+              },
+              {
+                "column": "n",
+                "value": "0.0189"
+              },
+              {
+                "column": "Ti",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": "0.9651"
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Sb",
+                "value": "1.0349"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "734",
+            "Compound": {
+              "formula": "Nb0.55 Sb0.45",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0189"
+              },
+              {
+                "column": "Ti",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": "0.9651"
+              },
+              {
+                "column": "Ta",
+                "value": ""
+              },
+              {
+                "column": "Sb",
+                "value": "1.03[illegible]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "735",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "735",
+            "Compound": {
+              "formula": "Ta0.55 Sb0.45",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.00"
+              },
+              {
+                "column": "n",
+                "value": "0.0130"
+              },
+              {
+                "column": "Ti",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": "1.2899"
+              },
+              {
+                "column": "Sb",
+                "value": "0.7101"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "735",
+            "Compound": {
+              "formula": "Ta0.55 Sb0.45",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0130"
+              },
+              {
+                "column": "Ti",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "Nb",
+                "value": ""
+              },
+              {
+                "column": "Ta",
+                "value": "[overwritten]1.300"
+              },
+              {
+                "column": "Sb",
+                "value": "0.71[illegible]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Firing Pattern\nRamp to 1150°C in 3 h/180 min.\nDwell for 2 days/2880 min.\nRamp to 600°C in 1 day/1440 min. Shutdown.\n1.323086\n[overwritten]",
+  "Furnace Layout": [
+    [
+      "VSb",
+      "NbSb"
+    ],
+    [
+      "TiSb",
+      "TaSb"
+    ]
+  ],
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "2"
+    ],
+    [
+      "Ti",
+      "47.87"
+    ],
+    [
+      "V",
+      "50.942"
+    ],
+    [
+      "Nb",
+      "92.9060"
+    ],
+    [
+      "Ta",
+      "180.9500"
+    ],
+    [
+      "Sb",
+      "121.76"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

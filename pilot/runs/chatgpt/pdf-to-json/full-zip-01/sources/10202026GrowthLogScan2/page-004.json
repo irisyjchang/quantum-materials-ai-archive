@@ -1,0 +1,370 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 4,
+  "review_status": "unvalidated",
+  "top_annotations": "Yue 12-16-2019\nEu = 151.96\nSn = 118.71\nP = 30.974\nAs = 74.922",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "As",
+      "Eu",
+      "Sn",
+      "P",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "As",
+      "Eu",
+      "Sn",
+      "P",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC1282",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1282",
+            "Compound": {
+              "formula": "EuSn₂(PₓAs₁₋ₓ)₂",
+              "x": "0.05"
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "As",
+                "value": "0.0087"
+              },
+              {
+                "column": "Eu",
+                "value": "0.17525"
+              },
+              {
+                "column": "Sn",
+                "value": "2.7474"
+              },
+              {
+                "column": "P",
+                "value": "0.0081"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1283",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1283",
+            "Compound": {
+              "formula": "EuSn₂(P₁₋ₓAsₓ)₂",
+              "x": "0.1"
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "As",
+                "value": "0.0173"
+              },
+              {
+                "column": "Eu",
+                "value": "0.17525"
+              },
+              {
+                "column": "Sn",
+                "value": "2.7427"
+              },
+              {
+                "column": "P",
+                "value": "0.0644"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "As",
+              "value": ""
+            },
+            {
+              "column": "Eu",
+              "value": ""
+            },
+            {
+              "column": "Sn",
+              "value": ""
+            },
+            {
+              "column": "P",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

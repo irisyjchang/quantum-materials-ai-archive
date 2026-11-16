@@ -1,0 +1,375 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 2,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhaoyu&Qianni -12/31/2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "Sr",
+      "Pt",
+      "PtAs₂",
+      "Sn(1:40)",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "Sr",
+      "Pt",
+      "PtAs₂",
+      "Sn(1:40)",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC776",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "JC776",
+            "Compound": {
+              "formula": "SrPt₂As₂",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "Sr",
+                "value": "0.0336"
+              },
+              {
+                "column": "Pt",
+                "value": "0.0749"
+              },
+              {
+                "column": "PtAs₂",
+                "value": "0.1324"
+              },
+              {
+                "column": "Sn(1:40)",
+                "value": "1.8222"
+              },
+              {
+                "column": "Total (g)",
+                "value": "0.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC777",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "JC777",
+            "Compound": {
+              "formula": "SrPt₂As₂",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "Sr",
+                "value": "0.0289"
+              },
+              {
+                "column": "Pt",
+                "value": "[overwritten]0.0644"
+              },
+              {
+                "column": "PtAs₂",
+                "value": "0.1128"
+              },
+              {
+                "column": "Sn(1:40)",
+                "value": "1.573"
+              },
+              {
+                "column": "Total (g)",
+                "value": "0.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "SrPt₂As₂",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sr",
+              "value": "[overwritten]0.0279"
+            },
+            {
+              "column": "Pt",
+              "value": "[overwritten]0.0622"
+            },
+            {
+              "column": "PtAs₂",
+              "value": "[overwritten]0.1099"
+            },
+            {
+              "column": "Sn(1:40)",
+              "value": "[overwritten]1.5131"
+            },
+            {
+              "column": "Total (g)",
+              "value": "0.2000"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sr",
+              "value": "[overwritten]0.0279"
+            },
+            {
+              "column": "Pt",
+              "value": "[overwritten]0.0622"
+            },
+            {
+              "column": "PtAs₂",
+              "value": "[overwritten]0.1099"
+            },
+            {
+              "column": "Sn(1:40)",
+              "value": "[overwritten]1.5131"
+            },
+            {
+              "column": "Total (g)",
+              "value": "1.6852"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sr",
+              "value": ""
+            },
+            {
+              "column": "Pt",
+              "value": "[overwritten]"
+            },
+            {
+              "column": "PtAs₂",
+              "value": ""
+            },
+            {
+              "column": "Sn(1:40)",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": "0.2000"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sr",
+              "value": "0.0336"
+            },
+            {
+              "column": "Pt",
+              "value": "0.0763"
+            },
+            {
+              "column": "PtAs₂",
+              "value": "0.1325"
+            },
+            {
+              "column": "Sn(1:40)",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": "1.6852"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sr",
+              "value": "0.0289"
+            },
+            {
+              "column": "Pt",
+              "value": "0.0644"
+            },
+            {
+              "column": "PtAs₂",
+              "value": "0.1136"
+            },
+            {
+              "column": "Sn(1:40)",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": "0.0000"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC776",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Sr",
+              "value": ""
+            },
+            {
+              "column": "Pt",
+              "value": ""
+            },
+            {
+              "column": "PtAs₂",
+              "value": ""
+            },
+            {
+              "column": "Sn(1:40)",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": "0.0000"
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC777",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Sn = 118.71\nSr 87.62\nBa 137.33\nPt 195.08\nAs 74.922\nPd 106.42\nSrPt₂As₂ 627.624\nPtAs₂ 344.924",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

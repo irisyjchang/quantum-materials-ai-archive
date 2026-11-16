@@ -1,0 +1,365 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 21,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhaoyu 12/6/18",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "Cr",
+      "TeBr₄",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "Cr",
+      "TeBr₄",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "748",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "748",
+            "Compound": {
+              "formula": "CrBr₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": "4.7"
+              },
+              {
+                "column": "TeBr₄",
+                "value": "60.4"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "749",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "749",
+            "Compound": {
+              "formula": "CrBr₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": "4.7"
+              },
+              {
+                "column": "TeBr₄",
+                "value": "60.4"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "750",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "750",
+            "Compound": {
+              "formula": "CrBr₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": "4.7"
+              },
+              {
+                "column": "TeBr₄",
+                "value": "60.4"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "[overwritten]751",
+          "Compound": {
+            "formula": "CrBr₃",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "4.7"
+            },
+            {
+              "column": "TeBr₄",
+              "value": "60.4"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "4.7"
+            },
+            {
+              "column": "TeBr₄",
+              "value": "60"
+            },
+            {
+              "column": "",
+              "value": "Al"
+            },
+            {
+              "column": "",
+              "value": "foil"
+            },
+            {
+              "column": "",
+              "value": "used"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "748",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "4.7"
+            },
+            {
+              "column": "TeBr₄",
+              "value": "60"
+            },
+            {
+              "column": "",
+              "value": "not"
+            },
+            {
+              "column": "",
+              "value": "lots of"
+            },
+            {
+              "column": "",
+              "value": "TeBr₄"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "749",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "4.7"
+            },
+            {
+              "column": "TeBr₄",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": "Al"
+            },
+            {
+              "column": "",
+              "value": "foil"
+            },
+            {
+              "column": "",
+              "value": "used"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "750",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": ""
+            },
+            {
+              "column": "TeBr₄",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

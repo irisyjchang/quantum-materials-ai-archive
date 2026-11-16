@@ -1,0 +1,365 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 14,
+  "review_status": "unvalidated",
+  "top_annotations": "Qianni\nMn Bi Sb Te\n(1:6.5:3.5:16)",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "Mn",
+      "Bi",
+      "Sb",
+      "Te",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "Mn",
+      "Bi",
+      "Sb",
+      "Te",
+      "Total (g)"
+    ]
+  },
+  "samples": [],
+  "unassigned_rows": {
+    "Calculated": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "JC125[overwritten]5",
+          "Compound": {
+            "formula": "MBST MnBi₁.₃Sb₀.₇Te₄ 630°C Decant",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": "0.0425"
+            },
+            {
+              "column": "Bi",
+              "value": "1.05"
+            },
+            {
+              "column": "Sb",
+              "value": "0.3294"
+            },
+            {
+              "column": "Te",
+              "value": "1.5781"
+            },
+            {
+              "column": "Total (g)",
+              "value": "~3g"
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "JC125[overwritten]6",
+          "Compound": {
+            "formula": "same 625°C Decant",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": "0.0425"
+            },
+            {
+              "column": "Bi",
+              "value": "1.05"
+            },
+            {
+              "column": "Sb",
+              "value": "0.3294"
+            },
+            {
+              "column": "Te",
+              "value": "1.5781"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "JC125[overwritten]7",
+          "Compound": {
+            "formula": "same) 620°C Decant",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": "0.0425"
+            },
+            {
+              "column": "Bi",
+              "value": "1.05"
+            },
+            {
+              "column": "Sb",
+              "value": "0.3294"
+            },
+            {
+              "column": "Te",
+              "value": "1.5781"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": "0.0424"
+            },
+            {
+              "column": "Bi",
+              "value": "1.0504"
+            },
+            {
+              "column": "Sb",
+              "value": "0.3296"
+            },
+            {
+              "column": "Te",
+              "value": "1.5783"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC125[overwritten]5",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": "0.0426"
+            },
+            {
+              "column": "Bi",
+              "value": "1.0497"
+            },
+            {
+              "column": "Sb",
+              "value": "0.3292"
+            },
+            {
+              "column": "Te",
+              "value": "1.5781"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC125[overwritten]6",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": "0.0426"
+            },
+            {
+              "column": "Bi",
+              "value": "1.0500"
+            },
+            {
+              "column": "Sb",
+              "value": "0.3290"
+            },
+            {
+              "column": "Te",
+              "value": "1.5783"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC125[overwritten]7",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "Mn",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Sb",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

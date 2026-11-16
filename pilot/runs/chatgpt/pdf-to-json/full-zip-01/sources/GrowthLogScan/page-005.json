@@ -1,0 +1,350 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 5,
+  "review_status": "unvalidated",
+  "top_annotations": "Qianni Jiang Dec. 27th 2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Cu",
+      "Bi",
+      "Se",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Cu",
+      "Bi",
+      "Se",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC772",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC772",
+            "Compound": {
+              "formula": "CuₓBi₂Se₃",
+              "x": "0.3"
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.3"
+              },
+              {
+                "column": "n",
+                "value": "0.004"
+              },
+              {
+                "column": "Cu",
+                "value": "0.0763"
+              },
+              {
+                "column": "Bi",
+                "value": "1.6718"
+              },
+              {
+                "column": "Se",
+                "value": "0.9475"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": "0.0764"
+            },
+            {
+              "column": "Bi",
+              "value": "1.67[overwritten]"
+            },
+            {
+              "column": "Se",
+              "value": "0.9472"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC772",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Cu",
+              "value": ""
+            },
+            {
+              "column": "Bi",
+              "value": ""
+            },
+            {
+              "column": "Se",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "Ramp to 680°C in 12hr\nStay for 24hr\nRamp to 840°C in 12hr\nStay for 24hr\nCool to 640°C in 11.11 hr\nQuench at 640°C",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "Dec. 31st 2018",
+  "End Timestamp": "Jan 4th 2019"
+}

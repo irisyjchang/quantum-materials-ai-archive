@@ -1,0 +1,365 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 13,
+  "review_status": "unvalidated",
+  "top_annotations": "Zhaoyu, Qianni 12/16/18",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "V",
+      "I₂",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "V",
+      "I₂",
+      "",
+      "",
+      "",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "764",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "764",
+            "Compound": {
+              "formula": "VI₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "V",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "I₂",
+                "value": "[overwritten]"
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC778",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "JC778",
+            "Compound": {
+              "formula": "VI₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC779",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "JC779",
+            "Compound": {
+              "formula": "VI₃ Cutted into small pieces",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "",
+                "value": ""
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "0.0158"
+            },
+            {
+              "column": "I₂",
+              "value": "0.1181"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "[overwritten]"
+            },
+            {
+              "column": "I₂",
+              "value": "[overwritten]"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "764",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "0.0156"
+            },
+            {
+              "column": "I₂",
+              "value": "0.1180"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "0.0147"
+            },
+            {
+              "column": "I₂",
+              "value": "0.1098"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC778",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "V",
+              "value": "0.0237"
+            },
+            {
+              "column": "I₂",
+              "value": "0.1772"
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "JC779",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "V: 50.9415\nI: 126.9045\nCr: 51.9961",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

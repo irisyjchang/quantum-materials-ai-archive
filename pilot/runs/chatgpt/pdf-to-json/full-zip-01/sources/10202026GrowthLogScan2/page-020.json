@@ -1,0 +1,383 @@
+{
+  "source_file": "10202026GrowthLogScan2.pdf",
+  "source_page": 20,
+  "review_status": "unvalidated",
+  "top_annotations": "Tony Qianni 2019/11/25\n987°C.\n950°C, shake the furnace.",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Au",
+      "Pd",
+      "Te",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Au",
+      "Pd",
+      "Te",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "JC1241",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "JC1241",
+            "Compound": {
+              "formula": "Au₀.₄Pd₀.₆Te₅",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "780.639"
+              },
+              {
+                "column": "n",
+                "value": "2.562 × 10⁻³"
+              },
+              {
+                "column": "Au",
+                "value": "0.2019"
+              },
+              {
+                "column": "Pd",
+                "value": "0.1635"
+              },
+              {
+                "column": "Te",
+                "value": "1.6346"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "JC1242",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "JC1242",
+            "Compound": {
+              "formula": "Au₀.₆Pd₀.₄Te₅",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "798.748"
+              },
+              {
+                "column": "n",
+                "value": "2.504 × 10⁻³"
+              },
+              {
+                "column": "Au",
+                "value": "0.2959"
+              },
+              {
+                "column": "Pd",
+                "value": "0.1066"
+              },
+              {
+                "column": "Te",
+                "value": "1.5976"
+              },
+              {
+                "column": "Total (g)",
+                "value": "2g"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "1241",
+      "Calculated": [],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "1241",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Au",
+                "value": "0.2019"
+              },
+              {
+                "column": "Pd",
+                "value": "0.1636"
+              },
+              {
+                "column": "Te",
+                "value": "1.6346"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "1242",
+      "Calculated": [],
+      "Measured": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "1242",
+            "Compound": {
+              "formula": "",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": ""
+              },
+              {
+                "column": "n",
+                "value": ""
+              },
+              {
+                "column": "Au",
+                "value": "0.2959"
+              },
+              {
+                "column": "Pd",
+                "value": "0.1066"
+              },
+              {
+                "column": "Te",
+                "value": "1.5976"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Au",
+              "value": ""
+            },
+            {
+              "column": "Pd",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Au",
+              "value": ""
+            },
+            {
+              "column": "Pd",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ],
+    "Measured": [
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Au",
+              "value": ""
+            },
+            {
+              "column": "Pd",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "X",
+              "value": ""
+            },
+            {
+              "column": "n",
+              "value": ""
+            },
+            {
+              "column": "Au",
+              "value": ""
+            },
+            {
+              "column": "Pd",
+              "value": ""
+            },
+            {
+              "column": "Te",
+              "value": ""
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        }
+      }
+    ]
+  },
+  "annotations": "Te 127.60\nPd 106.42\nAu 196.96654\nTe. 127.6\nPV = nRT\n1g\n1 / 133.11\n7.8 × 10⁻³ 1400K\n1100°C\n3.4 × 10⁷ Pa.\n340 atm\n14mm ID\n60mm\nπ7² × 60 mm³\n〃\n840 × π × 10⁻⁹ m³.",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ],
+    [
+      "",
+      ""
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

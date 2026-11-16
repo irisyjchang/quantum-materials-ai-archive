@@ -1,0 +1,397 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 31,
+  "review_status": "unvalidated",
+  "top_annotations": "Josh - 02 Aug 2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "x",
+      "n",
+      "Zr",
+      "Te",
+      "Dopant",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "x",
+      "n",
+      "Zr",
+      "Te",
+      "Dopant",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "582",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "582",
+            "Compound": {
+              "formula": "Zr Te100 Y",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.15"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0355"
+              },
+              {
+                "column": "Te",
+                "value": "4.9594"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0052"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "582",
+            "Compound": {
+              "formula": "Zr Te100 Y",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.1500"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0360"
+              },
+              {
+                "column": "Te",
+                "value": "4.9687"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0055"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "583",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "583",
+            "Compound": {
+              "formula": "Zr Te100 Cd",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.15"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0354"
+              },
+              {
+                "column": "Te",
+                "value": "4.9580"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0066"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "583",
+            "Compound": {
+              "formula": "Zr Te100 Cd",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.1500"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0357"
+              },
+              {
+                "column": "Te",
+                "value": "4.96[illegible]"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.008[illegible]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "584",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "584",
+            "Compound": {
+              "formula": "Zr Te100 Ca",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.15"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0355"
+              },
+              {
+                "column": "Te",
+                "value": "4.9622"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0023"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "584",
+            "Compound": {
+              "formula": "Zr Te100 Ca",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.1500"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0362"
+              },
+              {
+                "column": "Te",
+                "value": "4.9772"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0027"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "585",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "585",
+            "Compound": {
+              "formula": "Zr Te100 Au (impure)",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.15"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0354"
+              },
+              {
+                "column": "Te",
+                "value": "4.9531"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0115"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "585",
+            "Compound": {
+              "formula": "Zr Te100 Au (impure)",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "x",
+                "value": "0.1500"
+              },
+              {
+                "column": "n",
+                "value": "0.0004"
+              },
+              {
+                "column": "Zr",
+                "value": "0.0360"
+              },
+              {
+                "column": "Te",
+                "value": "4.9547"
+              },
+              {
+                "column": "Dopant",
+                "value": "0.0118"
+              },
+              {
+                "column": "Total (g)",
+                "value": "5.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Firing Pattern\nFurnace Cycle of ZrTe5:\nRamp to 800°C in 9 h/540 min.\nDwell for 3 day/4320 min.\nRamp to 515°C in 2 day/2880 min.\nRamp to 460°C in 3 day/4320 min.\nDwell(9990 + 9990 min) and Decant.",
+  "Furnace Layout": "",
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "5"
+    ],
+    [
+      "Zr",
+      "91.224"
+    ],
+    [
+      "Te",
+      "127.6"
+    ],
+    [
+      "Y",
+      "88.905"
+    ],
+    [
+      "Cd",
+      "112.41"
+    ],
+    [
+      "Ca",
+      "40.078"
+    ],
+    [
+      "Au",
+      "197"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

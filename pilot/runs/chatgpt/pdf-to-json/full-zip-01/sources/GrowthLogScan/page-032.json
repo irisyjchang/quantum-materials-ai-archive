@@ -1,0 +1,356 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 32,
+  "review_status": "unvalidated",
+  "top_annotations": "Josh - November 27 2018",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Hf",
+      "Te",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "X",
+      "n",
+      "Hf",
+      "Te",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "736",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "736",
+            "Compound": {
+              "formula": "HfTe30",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.97"
+              },
+              {
+                "column": "n",
+                "value": "0.0010"
+              },
+              {
+                "column": "Hf",
+                "value": "0.1782"
+              },
+              {
+                "column": "Te",
+                "value": "3.8218"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "736",
+            "Compound": {
+              "formula": "HfTe30",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0010"
+              },
+              {
+                "column": "Hf",
+                "value": "0.1801"
+              },
+              {
+                "column": "Te",
+                "value": "3.8850"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "737",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "737",
+            "Compound": {
+              "formula": "HfTe15",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.94"
+              },
+              {
+                "column": "n",
+                "value": "0.0019"
+              },
+              {
+                "column": "Hf",
+                "value": "0.3412"
+              },
+              {
+                "column": "Te",
+                "value": "3.6588"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "737",
+            "Compound": {
+              "formula": "HfTe15",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0019"
+              },
+              {
+                "column": "Hf",
+                "value": "0.34[illegible]"
+              },
+              {
+                "column": "Te",
+                "value": "3.65[illegible]"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "738",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "738",
+            "Compound": {
+              "formula": "HfTe7.5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.88"
+              },
+              {
+                "column": "n",
+                "value": "0.0035"
+              },
+              {
+                "column": "Hf",
+                "value": "0.6288"
+              },
+              {
+                "column": "Te",
+                "value": "3.3712"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "738",
+            "Compound": {
+              "formula": "HfTe7.5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0035"
+              },
+              {
+                "column": "Hf",
+                "value": "0.6285"
+              },
+              {
+                "column": "Te",
+                "value": "3.3769"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    },
+    {
+      "identifier_as_written": "739",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "739",
+            "Compound": {
+              "formula": "HfTe5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "5.00"
+              },
+              {
+                "column": "n",
+                "value": "0.0049"
+              },
+              {
+                "column": "Hf",
+                "value": "0.8744"
+              },
+              {
+                "column": "Te",
+                "value": "3.1256"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "739",
+            "Compound": {
+              "formula": "HfTe5",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "X",
+                "value": "0.0000"
+              },
+              {
+                "column": "n",
+                "value": "0.0049"
+              },
+              {
+                "column": "Hf",
+                "value": "0.8786"
+              },
+              {
+                "column": "Te",
+                "value": "3.1320"
+              },
+              {
+                "column": "Total (g)",
+                "value": "4.0000"
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ]
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Firing Pattern\nRamp to 800°C in 9 h/540 min.\nDwell for 3 day/4320 min.\nRamp to 515°C in 2 day/2880 min.\nRamp to 480°C in 3 day/4320 min.\nDwell(9990 + 9990 min) and Decant.",
+  "Furnace Layout": [
+    [
+      "737",
+      "736"
+    ],
+    [
+      "739",
+      "738"
+    ]
+  ],
+  "Door": "",
+  "Load (g)": [
+    [
+      "Load (g):",
+      "4"
+    ],
+    [
+      "Hf",
+      "178.4900"
+    ],
+    [
+      "Te",
+      "127.6"
+    ]
+  ],
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

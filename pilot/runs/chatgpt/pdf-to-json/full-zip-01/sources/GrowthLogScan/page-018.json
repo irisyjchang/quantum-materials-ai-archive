@@ -1,0 +1,372 @@
+{
+  "source_file": "GrowthLogScan.pdf",
+  "source_page": 18,
+  "review_status": "unvalidated",
+  "top_annotations": "12/08/18\nZhaoyu & Qianni",
+  "table_columns": {
+    "Calculated": [
+      "#",
+      "Compound",
+      "Cr",
+      "Gd",
+      "Hf",
+      "V",
+      "I₂",
+      "Total (g)"
+    ],
+    "Measured": [
+      "#",
+      "Compound",
+      "Cr",
+      "Gd",
+      "Hf",
+      "V",
+      "I₂",
+      "Total (g)"
+    ]
+  },
+  "samples": [
+    {
+      "identifier_as_written": "755",
+      "Calculated": [
+        {
+          "row_number": 1,
+          "transcription": {
+            "#": "755",
+            "Compound": {
+              "formula": "Cr₀.₉Gd₀.₁I₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": "0.0125"
+              },
+              {
+                "column": "Gd",
+                "value": "0.0043"
+              },
+              {
+                "column": "Hf",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": "0.101"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "756",
+      "Calculated": [
+        {
+          "row_number": 2,
+          "transcription": {
+            "#": "756",
+            "Compound": {
+              "formula": "Cr₀.₉Hf₀.₁I₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": "0.0125"
+              },
+              {
+                "column": "Gd",
+                "value": ""
+              },
+              {
+                "column": "Hf",
+                "value": "0.0049"
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": "0.101"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "757",
+      "Calculated": [
+        {
+          "row_number": 3,
+          "transcription": {
+            "#": "757",
+            "Compound": {
+              "formula": "Cr₀.₉V₀.₁I₃",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": "0.0125"
+              },
+              {
+                "column": "Gd",
+                "value": ""
+              },
+              {
+                "column": "Hf",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": "0.0014"
+              },
+              {
+                "column": "I₂",
+                "value": "0.101"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    },
+    {
+      "identifier_as_written": "758",
+      "Calculated": [
+        {
+          "row_number": 4,
+          "transcription": {
+            "#": "758",
+            "Compound": {
+              "formula": "GdI₂",
+              "x": ""
+            },
+            "quantities": [
+              {
+                "column": "Cr",
+                "value": ""
+              },
+              {
+                "column": "Gd",
+                "value": "0.063"
+              },
+              {
+                "column": "Hf",
+                "value": ""
+              },
+              {
+                "column": "V",
+                "value": ""
+              },
+              {
+                "column": "I₂",
+                "value": "0.101"
+              },
+              {
+                "column": "Total (g)",
+                "value": ""
+              }
+            ],
+            "right-margin annotation": ""
+          }
+        }
+      ],
+      "Measured": []
+    }
+  ],
+  "unassigned_rows": {
+    "Calculated": [],
+    "Measured": [
+      {
+        "row_number": 1,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "0.0127"
+            },
+            {
+              "column": "Gd",
+              "value": "0.0043"
+            },
+            {
+              "column": "Hf",
+              "value": ""
+            },
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": "0.101"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "755",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 2,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "0.0127"
+            },
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "Hf",
+              "value": "0.0048"
+            },
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": "0.1"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "756",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 3,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": "0.0123"
+            },
+            {
+              "column": "Gd",
+              "value": ""
+            },
+            {
+              "column": "Hf",
+              "value": ""
+            },
+            {
+              "column": "V",
+              "value": "0.012"
+            },
+            {
+              "column": "I₂",
+              "value": "0.1"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "757",
+        "match_status": "unassigned; row position only"
+      },
+      {
+        "row_number": 4,
+        "transcription": {
+          "#": "",
+          "Compound": {
+            "formula": "",
+            "x": ""
+          },
+          "quantities": [
+            {
+              "column": "Cr",
+              "value": ""
+            },
+            {
+              "column": "Gd",
+              "value": "0.0637"
+            },
+            {
+              "column": "Hf",
+              "value": ""
+            },
+            {
+              "column": "V",
+              "value": ""
+            },
+            {
+              "column": "I₂",
+              "value": "0.1"
+            },
+            {
+              "column": "Total (g)",
+              "value": ""
+            }
+          ],
+          "right-margin annotation": ""
+        },
+        "same_position_calculated_identifier": "758",
+        "match_status": "unassigned; row position only"
+      }
+    ]
+  },
+  "blank_rows": {
+    "Calculated": [],
+    "Measured": []
+  },
+  "annotations": "Gd -\n757 died",
+  "Furnace Layout": "",
+  "Door": "",
+  "Start Timestamp": "",
+  "End Timestamp": ""
+}

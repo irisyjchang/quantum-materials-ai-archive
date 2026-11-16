@@ -1,5 +1,11 @@
 # Pilot
 
+## Full ZIP — organized transcription
+
+**[Browse by source file, page, and sample](runs/chatgpt/pdf-to-json/full-zip-01/README.md)** · [Complete JSON](runs/chatgpt/pdf-to-json/full-zip-01/output.json)
+
+58 worksheet pages and four bottle-label photos. Original values are preserved; uncertain row matches remain unassigned. Status: **unvalidated**.
+
 ## ChatGPT — first test
 - **[View extracted JSON](runs/chatgpt/pdf-to-json/run01/output.json)**
 - [Prompt used](runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) · [Run details](runs/chatgpt/pdf-to-json/run01/metadata.json)
