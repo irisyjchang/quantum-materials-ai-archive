@@ -86,8 +86,11 @@ The operator starts the skill. The human reviewer clears holds and approves runs
 
 ### Risk tiers before extraction
 
-- **Critical · Review before extraction.** Use this tier when a run has no searchable value or when an issue could attach data to the wrong run or change the scientific meaning of a core field. Examples include an uncertain row or an ambiguous compound, ratio, or unit. A human must clear the log before extraction. If a critical issue first appears after extraction, hold the affected draft in the review queue until it is resolved. An absent or duplicate JC number is valid when the run still has a searchable value and a clear location in the original log.
-- **Non-critical · Send to extraction.** Use this tier for optional details that can remain unknown without changing the core values for that log run, such as a missing layout note or an unclear timestamp when another searchable value is available. Keep the uncertainty visible in the draft.
+- **Critical · Review before extraction.** Use this tier when assessment identifies a specific problem with a run's source location, searchable values, or stoichiometry. Examples include no usable name, date, or JC number, an unclear row that could attach data to the wrong run, or missing or ambiguous stoichiometry. A human must clear the whole log before extraction. If a critical issue first appears after extraction, hold the affected draft in the review queue until it is resolved.
+- **Uncertain · Review before extraction.** Use this tier when the available scan does not support a reliable assessment of one or more runs. For example, a faint or cropped measurement table may make it impossible to tell which rows need assessment. Record what could not be assessed. A human must clear the whole log before extraction.
+- **Non-critical · Send to extraction.** Use this tier when every run has a clear source location, at least one usable name, date, or JC number, and interpretable stoichiometry. An absent or duplicate JC number is acceptable when each run still has a usable lookup value and a clear source location. Keep missing or unclear optional details visible in the draft.
+
+Use the technical failure status when the workflow cannot complete a tool operation, such as opening the PDF or saving the assessment.
 
 Use real logs to check the review rules before the pilot. Include a missing JC number with another searchable value, missing stoichiometry, an ambiguous composition or unit, and a missing optional measurement.
 
