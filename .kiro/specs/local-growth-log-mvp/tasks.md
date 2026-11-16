@@ -376,7 +376,7 @@ Command: `python staging.py stage-drafts <packet.json> [--acceptance-run] <datab
 
 Update `.agents/skills/stage-log-runs/SKILL.md`. Read the existing file first and keep what is still correct.
 
-- [ ] 8.1 Update the risk-assessment section
+- [x] 8.1 Update the risk-assessment section
   - Before `risk-assess`, run `python tools/lookup_drive_id.py <archive_filename>` to obtain `drive_file_id`; if it exits 1 (filename not listed) stop and tell the operator
   - Set `model` in each packet to the model name Codex reports or, if Codex cannot report one, a value the operator supplies; set `prompt_version` to the version stated in `SKILL.md`; never leave either blank
   - Produce the versioned risk packet, then call `python staging.py risk-assess <packet.json> --source-pdf <local path> <database.sqlite>` automatically
@@ -385,7 +385,7 @@ Update `.agents/skills/stage-log-runs/SKILL.md`. Read the existing file first an
   - The lower-table rule is a skill rule: the staging tool does not classify issues (it accepts a `non_critical` packet whose issues are lower-table only, Req 4.3), so the rule is checked in the walkthrough (Task 26), not by the staging tool
   - _Requirements: 1.1, 1.2, 1.3, 1.10, 1.11, 4.2, 4.3, 5.2, 5.3, 5.4_
 
-- [ ] 8.2 Update the extraction-gate and extraction sections
+- [x] 8.2 Update the extraction-gate and extraction sections
   - Before extraction call `python staging.py check-gate <drive_file_id> <file_hash> <database.sqlite>`; proceed only on exit 0; otherwise stop, tell the operator reviewer clearance is required, and produce zero extraction packets
   - After clearance the operator resumes the skill on the same `drive_file_id` and `file_hash`
   - Set `model` and `prompt_version` in the extraction packet by the same rule as in 8.1, never blank
@@ -394,12 +394,12 @@ Update `.agents/skills/stage-log-runs/SKILL.md`. Read the existing file first an
   - While the PDF is held without clearance the skill produces zero extraction packets (Req 5.3); after clearance the operator resumes on the same `drive_file_id` and `file_hash` and `check-gate` then exits 0 (Req 6.4)
   - _Requirements: 1.11, 2.1, 2.2, 2.5, 3.1, 3.2, 3.3, 5.3, 6.4_
 
-- [ ]* 8.3 Write a lint test in `tests/test_skill_md.py`
+- [x]* 8.3 Write a lint test in `tests/test_skill_md.py`
   - Assert `SKILL.md` contains the three command lines with their exact arguments (including `--source-pdf`), the lower-table rule, the never-claim-staged rule, and the instruction to extract from the path printed by `check-gate`
   - Assert `SKILL.md` contains the `python tools/lookup_drive_id.py <archive_filename>` step with the stop-if-unlisted rule (Req 1.10), and the rule that `model` and `prompt_version` are always set and never blank (Req 1.11)
   - _Requirements: 1.1, 1.10, 1.11, 2.1, 2.5, 3.1_
 
-- [ ] 8.4 Add the acceptance-run flag to the skill instructions
+- [x] 8.4 Add the acceptance-run flag to the skill instructions
   - **Requires:** 8.2, 8.3 (when implemented), 4.8
   - In `SKILL.md`, add `[--acceptance-run]` to the `risk-assess` and `stage-drafts` call lines, and state that the skill adds the flag only when the operator states the run is an acceptance run, and never otherwise
   - Update the lint test in `tests/test_skill_md.py` (Task 8.3) to assert the updated call lines and the add-only-when-stated rule

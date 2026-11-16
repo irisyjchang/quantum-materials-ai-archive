@@ -1,0 +1,4 @@
+# Local Growth Log MVP. Install into a local virtual environment:
+#   python3 -m venv .venv && .venv/bin/python -m pip install -r requirements.txt
+flask>=3.1,<4
+pytest>=9,<10
