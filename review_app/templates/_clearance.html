@@ -1,0 +1,13 @@
+{# Clearance form for a PDF held pending clearance (Task 12.2, Requirements 6.1, 6.4, 14.4, 7.2).
+   Rendered inside status.html for each held row; the issues are listed just above it. #}
+<form class="clearance-form" method="post" action="{{ url_for('clearance.clear', pdf_id=row.pdf_id) }}">
+  <label>
+    Clearance note
+    <textarea name="clearance_note" rows="2" required
+              placeholder="How the issue was resolved, for example: ratio basis confirmed with the researcher"></textarea>
+  </label>
+  {% include "_reviewer.html" %}
+  <button type="submit" {% if not reviewers %}disabled{% endif %}>Record clearance</button>
+  <p class="hint">You will confirm your name on the next page. After clearance, resume
+    <code>$stage-log-runs</code> on the same PDF version (same Drive file and hash); a replacement scan needs its own assessment and clearance.</p>
+</form>

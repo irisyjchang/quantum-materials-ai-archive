@@ -78,6 +78,12 @@ def create_app(env_name=None, root=environments.PROJECT_ROOT, config_path=None):
     app = Flask("review_app", root_path=str(Path(__file__).resolve().parent))
     app.config["ENVIRONMENT"] = environment
     app.config["REVIEWERS"] = config.reviewers
+    app.config["CHECKLIST_PATH"] = config.checklist_path
+
+    from review_app.routes import approve, clearance, corrections, drafts, hold, pdf, revise, run_detail, search
+    from review_app.routes import status as status_routes
+    for module in (status_routes, clearance, drafts, pdf, corrections, hold, approve, run_detail, revise, search):
+        app.register_blueprint(module.blueprint)
 
     @app.before_request
     def bind_environment():

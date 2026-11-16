@@ -3,4 +3,5 @@
 {% block content %}
   <h1>Growth Log Review</h1>
   <p>{{ pending }} draft{{ "" if pending == 1 else "s" }} awaiting review.</p>
+  <p><a href="{{ url_for('status.status') }}">Processing status</a></p>
 {% endblock %}

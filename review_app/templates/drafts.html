@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Drafts{% endblock %}
+{% block content %}
+  <h1>Drafts awaiting review</h1>
+  {% if not drafts %}
+    <p>No drafts are pending review or held.</p>
+  {% else %}
+    <table class="status-table drafts-table">
+      <thead>
+        <tr><th>Source PDF</th><th>Location</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for draft in drafts %}
+          <tr class="draft-row review-{{ draft.status|lower|replace(' ', '-') }}" data-draft-id="{{ draft.draft_id }}">
+            <td>{{ draft.filename }}</td>
+            <td>
+              {% for loc in draft.locations %}page {{ loc.pdf_index }}, row {{ loc.row }}{% if not loop.last %}; {% endif %}{% endfor %}
+            </td>
+            <td>
+              {{ draft.status }}
+              {% if draft.hold_reason %}<div class="hold-reason">{{ draft.hold_reason }}</div>{% endif %}
+            </td>
+            <td><a href="{{ url_for('drafts.draft_detail', draft_id=draft.draft_id) }}">Open</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

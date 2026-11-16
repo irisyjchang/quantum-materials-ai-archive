@@ -36,6 +36,197 @@ main {
   color: #8a1c1c;
 }
 
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.6rem 2rem;
+  border-bottom: 1px solid #d0d7de;
+}
+
+/* Processing status view */
+.status-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.status-table th,
+.status-table td {
+  border-bottom: 1px solid #d0d7de;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.version {
+  color: #57606a;
+  font-size: 0.85rem;
+}
+
+.reserved-label {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid #6639ba;
+  border-radius: 3px;
+  color: #6639ba;
+  font-size: 0.8rem;
+}
+
+/* Held pending clearance and technical failure are visually distinct (Requirement 14.5). */
+.outcome-held_pending_clearance {
+  background: #fff8e1;
+  border-left: 4px solid #b8860b;
+}
+
+.outcome-technical_failure {
+  background: #fdecea;
+  border-left: 4px solid #b42318;
+}
+
+.retryable {
+  color: #b42318;
+  font-weight: 600;
+}
+
+.reason,
+.hold-reason {
+  color: #57606a;
+}
+
+.saved {
+  padding: 0.5rem 0.75rem;
+  background: #dafbe1;
+  border-left: 4px solid #1a7f37;
+}
+
+.clearance-form textarea {
+  display: block;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.hint {
+  color: #57606a;
+  font-size: 0.85rem;
+}
+
+/* Draft review: fields beside the source PDF (Requirement 8.1). */
+.review-layout {
+  display: grid;
+  grid-template-columns: minmax(20rem, 1fr) minmax(24rem, 1.4fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.pdf-panel {
+  position: sticky;
+  top: 3rem;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 80vh;
+  border: 1px solid #d0d7de;
+}
+
+.row-label {
+  padding: 0.4rem 0.6rem;
+  background: #ddf4ff;
+  border-left: 4px solid #0969da;
+}
+
+.pdf-error {
+  padding: 0.75rem;
+  background: #fdecea;
+  border-left: 4px solid #b42318;
+}
+
+.field {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+}
+
+.field h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.field-status {
+  font-weight: normal;
+  font-size: 0.8rem;
+  color: #57606a;
+}
+
+.field-status-ambiguous,
+.field-status-unreadable,
+.field-status-missing {
+  border-left: 4px solid #b8860b;
+}
+
+.field dl {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.2rem 0.75rem;
+  margin: 0;
+}
+
+.field dd {
+  margin: 0;
+}
+
+.corrected-label {
+  margin-left: 0.4rem;
+  padding: 0 0.3rem;
+  border: 1px solid #1a7f37;
+  border-radius: 3px;
+  color: #1a7f37;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.correction-record {
+  margin: 0.3rem 0 0;
+  color: #1a7f37;
+  font-size: 0.85rem;
+}
+
+.action-form {
+  margin: 0.75rem 0;
+}
+
+.action-form label {
+  display: block;
+  margin: 0.4rem 0;
+}
+
+.action-form textarea {
+  display: block;
+  width: 100%;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #1a7f37;
+  border-radius: 4px;
+  background: #1a7f37;
+  color: #fff;
+  text-decoration: none;
+}
+
+.approve-summary {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: 0.3rem 1rem;
+}
+
+.field pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+}
+
 .env-banner-archive {
   background: #1f3a5f;
   border-bottom: 3px solid #0b1f3a;

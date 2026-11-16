@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Draft{% endblock %}
+{% block content %}
+  <p><a href="{{ url_for('drafts.draft_list') }}">← All drafts</a></p>
+  <h1>Draft from {{ source.filename }}</h1>
+
+  {% if saved and revision %}
+    <p class="saved">Saved: approved by {{ revision[1] }} at {{ revision[2] }} (revision {{ revision[0] }}). It is now in the archive.</p>
+  {% endif %}
+  {% if corrected %}<p class="saved">Correction saved for {{ corrected|replace('_', ' ') }}.</p>{% endif %}
+  {% if held %}<p class="saved">Draft held. It stays out of the archive until it is approved.</p>{% endif %}
+
+  <p class="draft-status">Status: <strong>{{ draft.status }}</strong>
+    {% if draft.hold_reason %}· Hold reason: <span class="hold-reason">{{ draft.hold_reason }}</span>{% endif %}
+    {% if revision %}· Approved by {{ revision[1] }} at {{ revision[2] }}
+      · <a href="{{ url_for('runs.run_detail', run_id=run_id) }}">View the approved run and revision history</a>{% endif %}</p>
+
+  <div class="review-layout">
+    <section class="draft-fields">
+      <h2>Extracted fields</h2>
+      {% for field in fields %}
+        <div class="field field-status-{{ field.status or 'none' }}{% if field.corrections %} field-corrected{% endif %}" data-field="{{ field.key }}">
+          <h3>{{ field.label }} <span class="field-status">{{ field.status or "not provided" }}</span>
+            {% if field.corrections %}<span class="corrected-label">corrected</span>{% endif %}</h3>
+          <dl>
+            <dt>As written</dt>
+            <dd>{% if field.raw_value is not none %}{{ field.raw_value }}{% else %}<em>none</em>{% endif %}</dd>
+            <dt>Value</dt>
+            <dd>{% if field.value is not none %}<pre>{{ field.value }}</pre>{% else %}<em>none</em>{% endif %}</dd>
+            <dt>Evidence</dt>
+            <dd class="evidence">{{ field.evidence or "" }}</dd>
+          </dl>
+          {% if field.key == "furnace_layout" %}{% include "_layout_link.html" %}{% endif %}
+          {% for record in field.corrections %}
+            <p class="correction-record">Corrected by {{ record.reviewer }} at {{ record.at }}:
+              {{ record.reason }}
+              {% if record.source_location %}(page {{ record.source_location.pdf_index }}, row {{ record.source_location.row }}){% endif %}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      {% if draft.status != "Approved" %}
+        <section class="actions">
+          <h2>Review actions</h2>
+          <p><a class="button" href="{{ url_for('approve.approve_page', draft_id=draft.draft_id) }}">Approve…</a></p>
+
+          <details class="action-form">
+            <summary>Correct a field</summary>
+            <form method="post" action="{{ url_for('corrections.correct', draft_id=draft.draft_id) }}">
+              <label>Field
+                <select name="field" required>
+                  <option value="">Choose a field</option>
+                  {% for field in fields %}<option value="{{ field.key }}">{{ field.label }}</option>{% endfor %}
+                </select>
+              </label>
+              <label>New value
+                <textarea name="new_value" rows="2" placeholder="Leave empty to clear. Use JSON for structured fields such as composition."></textarea>
+              </label>
+              <details class="current-values">
+                <summary>Current values to copy</summary>
+                <dl>{% for field in fields %}<dt>{{ field.label }}</dt><dd><code>{{ field.edit_text }}</code></dd>{% endfor %}</dl>
+              </details>
+              <label>Reason <input name="reason" required placeholder="What the source PDF shows"></label>
+              <label>Page <input name="pdf_index" inputmode="numeric" size="3"></label>
+              <label>Row <input name="row" inputmode="numeric" size="3"></label>
+              <span class="hint">Leave page and row empty to use this draft's location.</span>
+              {% include "_reviewer.html" %}
+              <button type="submit" {% if not reviewers %}disabled{% endif %}>Save correction</button>
+            </form>
+          </details>
+
+          <details class="action-form">
+            <summary>Hold this draft</summary>
+            <form method="post" action="{{ url_for('hold.hold', draft_id=draft.draft_id) }}">
+              <label>Hold reason <input name="hold_reason" required placeholder="What must be resolved before approval"></label>
+              <label>Page <input name="pdf_index" inputmode="numeric" size="3"></label>
+              <label>Row <input name="row" inputmode="numeric" size="3"></label>
+              {% include "_reviewer.html" %}
+              <button type="submit" {% if not reviewers %}disabled{% endif %}>Hold draft</button>
+            </form>
+          </details>
+        </section>
+      {% endif %}
+    </section>
+    {% include "_pdf_panel.html" %}
+  </div>
+{% endblock %}

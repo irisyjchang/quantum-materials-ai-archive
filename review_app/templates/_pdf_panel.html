@@ -1,0 +1,38 @@
+{# Source PDF viewer panel (Tasks 13.3, 13.4; Requirements 8.2, 8.3, 8.4, 8.6).
+   Browsers can open a PDF at a page but cannot scroll to a table row, so the
+   recorded row is shown as a label beside the viewer. #}
+<section class="pdf-panel" data-integrity="{{ integrity.state }}">
+  <h2>Source PDF: {{ source.filename }}</h2>
+  <div class="version">Drive ID {{ source.drive_file_id }} · hash {{ source.file_hash[:16] }}…</div>
+
+  {% if locations %}
+    {% set loc = locations[selected] %}
+    <p class="row-label">Measurement table: <strong>page {{ loc.pdf_index }}, row {{ loc.row }}</strong>
+      (rows are counted from 1, skipping the header)</p>
+    {% if locations|length > 1 %}
+      <ul class="location-list">
+        {% for other in locations %}
+          <li>
+            {% if loop.index0 == selected %}<strong>page {{ other.pdf_index }}, row {{ other.row }}</strong>
+            {% else %}<a href="?loc={{ loop.index0 }}">page {{ other.pdf_index }}, row {{ other.row }}</a>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% else %}
+    <p class="notice">No source location is recorded for this draft.</p>
+  {% endif %}
+
+  {% if integrity.ok %}
+    {% set page = locations[selected].pdf_index if locations else 1 %}
+    <iframe class="pdf-viewer" title="Source PDF {{ source.filename }}"
+            src="{{ url_for('pdf.source_pdf', pdf_id=source.pdf_id) }}#page={{ page }}"></iframe>
+    <p><a href="{{ url_for('pdf.source_pdf', pdf_id=source.pdf_id) }}#page={{ page }}" target="_blank" rel="noopener">Open the PDF in a new tab</a></p>
+  {% else %}
+    <div class="pdf-error integrity-{{ integrity.state }}" role="alert">
+      <strong>{% if integrity.state == "mismatch" %}Retained copy changed{% else %}Source PDF unavailable{% endif %}</strong>
+      <p>{{ integrity.message }}</p>
+      <p class="approval-blocked">Approval of drafts from this PDF is blocked until the retained copy is restored.</p>
+    </div>
+  {% endif %}
+</section>

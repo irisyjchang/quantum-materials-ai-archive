@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Approved run{% endblock %}
+{% block content %}
+  <p><a href="{{ url_for('search.search_runs') }}">← Search</a></p>
+  <h1>Approved run from {{ run.filename }}</h1>
+
+  {% if revised %}<p class="saved">Saved: revision {{ run.latest.version }} by {{ run.latest.approved_by }}. Search now returns the revised values.</p>{% endif %}
+  {% if stale %}<p class="notice stale-notice">This run was revised after you opened it. Nothing was saved. Review the latest values below and submit again.</p>{% endif %}
+  {% if error %}<p class="notice">The revision was not saved because of an error: {{ error }}. Nothing changed.</p>{% endif %}
+  {% for message in messages or [] %}<p class="notice">{{ message }}</p>{% endfor %}
+
+  <dl class="approve-summary run-summary">
+    <dt>Researcher name</dt><dd>{{ run.researcher_name or "—" }}</dd>
+    <dt>Growth date</dt><dd>{{ run.growth_date or "—" }}{% if run.date_precision == "month" %} (month only){% endif %}</dd>
+    <dt>JC number</dt><dd>{{ run.jc_number or "—" }}</dd>
+    <dt>Growth process</dt><dd>{{ run.growth_process or "—" }}</dd>
+    <dt>Run ID</dt><dd><code>{{ run.run_id }}</code></dd>
+  </dl>
+
+  <div class="review-layout">
+    <section class="draft-fields">
+      <h2>Approved values (revision {{ run.latest.version }})</h2>
+      {% for field in fields %}
+        <div class="field field-status-{{ field.status or 'none' }}" data-field="{{ field.key }}">
+          <h3>{{ field.label }} <span class="field-status">{{ field.status or "not provided" }}</span></h3>
+          <dl>
+            <dt>As written</dt><dd>{% if field.raw_value is not none %}{{ field.raw_value }}{% else %}<em>none</em>{% endif %}</dd>
+            <dt>Value</dt><dd>{% if field.value is not none %}<pre>{{ field.value }}</pre>{% else %}<em>none</em>{% endif %}</dd>
+            <dt>Evidence</dt><dd class="evidence">{{ field.evidence or "" }}</dd>
+          </dl>
+          {% if field.key == "furnace_layout" %}{% include "_layout_link.html" %}{% endif %}
+        </div>
+      {% endfor %}
+
+      <h2>Revision history</h2>
+      <ol class="revision-history">
+        {% for revision in revisions %}
+          <li class="revision" data-version="{{ revision.version }}">
+            <strong>Revision {{ revision.version }}</strong> approved by {{ revision.approved_by }} at {{ revision.approved_at }}
+            {% if revision.edited_by %}<div>Edited by {{ revision.edited_by }} at {{ revision.edited_at }}</div>{% endif %}
+            {% if revision.changes %}
+              <ul>
+                {% for change in revision.changes %}
+                  <li class="change">{{ change.field|replace('_', ' ') }}: <code>{{ change.old_text if change.old_text is not none else "none" }}</code>
+                    → <code>{{ change.new_text if change.new_text is not none else "none" }}</code>
+                    ({{ change.reason }}{% if change.reviewer %}, {{ change.reviewer }}{% endif %})</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <div class="hint">Approved as extracted, with no corrections.</div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+
+      <details class="action-form">
+        <summary>Revise this run</summary>
+        <form method="post" action="{{ url_for('revise.revise', run_id=run.run_id) }}">
+          <input type="hidden" name="opened_version" value="{{ opened_version }}">
+          <label>Field
+            <select name="field" required>
+              <option value="">Choose a field</option>
+              {% for field in fields %}<option value="{{ field.key }}">{{ field.label }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>New value <textarea name="new_value" rows="2" placeholder="Leave empty to clear. Use JSON for structured fields."></textarea></label>
+          <details class="current-values">
+            <summary>Current values to copy</summary>
+            <dl>{% for field in fields %}<dt>{{ field.label }}</dt><dd><code>{{ field.edit_text }}</code></dd>{% endfor %}</dl>
+          </details>
+          <label>Reason <input name="reason" required placeholder="What the source PDF shows"></label>
+          <label>Page <input name="pdf_index" inputmode="numeric" size="3"></label>
+          <label>Row <input name="row" inputmode="numeric" size="3"></label>
+          <fieldset>
+            <legend>I checked these against the source PDF</legend>
+            {% for key, label in verifications.items() %}
+              <label><input type="checkbox" name="{{ key }}" value="yes" required> {{ label|capitalize }}</label>
+            {% endfor %}
+          </fieldset>
+          {% include "_reviewer.html" %}
+          <button type="submit" {% if not reviewers %}disabled{% endif %}>Save revision</button>
+        </form>
+      </details>
+    </section>
+    {% include "_pdf_panel.html" %}
+  </div>
+{% endblock %}

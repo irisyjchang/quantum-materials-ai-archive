@@ -1,0 +1,6 @@
+{# Furnace layout source-location action (Task 13.6, Requirement 27.7). Needs `layout`, `source`. #}
+<p class="layout-link">
+  <a href="{{ url_for('pdf.source_pdf', pdf_id=source.pdf_id) }}#page={{ layout.pdf_index }}" target="_blank" rel="noopener"
+     data-page="{{ layout.pdf_index }}" data-row="{{ layout.row }}">Open the furnace layout in the source PDF</a>
+  (page {{ layout.pdf_index }}{% if layout.row %}, run on measurement-table row {{ layout.row }}{% endif %})
+</p>

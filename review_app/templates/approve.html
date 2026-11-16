@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Approve{% endblock %}
+{% block content %}
+  <p><a href="{{ url_for('drafts.draft_detail', draft_id=draft.draft_id) }}">← Back to the draft</a></p>
+  <h1>Approve draft from {{ draft.filename }}</h1>
+
+  {% if stale %}
+    <p class="notice stale-notice">This draft changed after you opened it (another correction, hold, or approval was saved).
+      Nothing was saved. Review the latest values below and confirm again.</p>
+  {% endif %}
+  {% if error %}
+    <p class="notice approval-error">The approval was not saved because of an error: {{ error }}.
+      Nothing changed; you can try again.</p>
+  {% endif %}
+  {% for message in messages %}<p class="notice">{{ message }}</p>{% endfor %}
+
+  <h2>Values that will be saved</h2>
+  <dl class="approve-summary">
+    {% for label, text in summary %}
+      <dt>{{ label }}</dt>
+      <dd>{% if text is not none %}<code>{{ text }}</code>{% else %}<em>none</em>{% endif %}</dd>
+    {% endfor %}
+    <dt>Source location</dt>
+    <dd>{% for loc in draft.locations %}page {{ loc.pdf_index }}, row {{ loc.row }}{% if not loop.last %}; {% endif %}{% else %}<em>none</em>{% endfor %}</dd>
+  </dl>
+
+  {% if unmet %}
+    <section class="unmet">
+      <h2>Cannot approve yet</h2>
+      <ul>{% for item in unmet %}<li class="unmet-condition">{{ item }}</li>{% endfor %}</ul>
+      <p>Correct the draft or hold it with a reason.
+        <a href="{{ url_for('drafts.draft_detail', draft_id=draft.draft_id) }}">Return to editing</a></p>
+      <button type="button" disabled>Approve</button>
+    </section>
+  {% else %}
+    <form method="post" action="{{ url_for('approve.approve', draft_id=draft.draft_id) }}">
+      <input type="hidden" name="opened_updated_at" value="{{ state.opened_updated_at }}">
+      <input type="hidden" name="opened_version" value="{{ state.opened_version }}">
+      <fieldset>
+        <legend>I checked these against the source PDF</legend>
+        {% for key, label in verifications.items() %}
+          <label><input type="checkbox" name="{{ key }}" value="yes" required> {{ label|capitalize }}</label><br>
+        {% endfor %}
+      </fieldset>
+      {% include "_reviewer.html" %}
+      <button type="submit" {% if not reviewers %}disabled{% endif %}>Approve</button>
+      <p class="hint">You will confirm your name on the next page. "Saved" appears only after the approval is stored.</p>
+    </form>
+  {% endif %}
+{% endblock %}

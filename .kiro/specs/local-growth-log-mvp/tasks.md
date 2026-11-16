@@ -477,25 +477,25 @@ Implementation note: the real recorded-action routes arrive in Tasks 12 (clearan
 
 **Implements:** Requirements 14.1, 14.2, 14.3, 14.5, 14.7, 10.4, 30.6
 
-- [ ] 11.1 Implement `GET /status` in `review_app/routes/status.py` and `review_app/queries/status.py`
+- [x] 11.1 Implement `GET /status` in `review_app/routes/status.py` and `review_app/queries/status.py`
   - One row per `source_pdfs` version joined to `processing_status`: filename, risk tier, `status`, hold or failure `reason`
   - For PDFs that reached extraction, count `draft_runs` by `review_status` and render "N approved · N pending · N held"
   - Counts are computed on every request so they reflect each reviewer action
   - _Requirements: 14.1, 14.2, 14.3, 14.7_
 
-- [ ] 11.2 Render the status template in `review_app/templates/status.html`
+- [x] 11.2 Render the status template in `review_app/templates/status.html`
   - Show `held_pending_clearance` and `technical_failure` as visually distinct outcomes; technical failures show a retryable indication
   - Show held drafts with their hold reasons for the operator
   - Include a slot for the clearance partial (Task 12)
   - _Requirements: 14.5, 14.7, 10.4_
 
-- [ ]* 11.3 Write tests in `tests/test_status_view.py`
+- [x]* 11.3 Write tests in `tests/test_status_view.py`
   - Seed `source_pdfs`, `processing_status`, and `draft_runs` rows directly with SQL in a temporary database; do not use the hold or approval routes, so this test does not depend on Tasks 15 or 17
   - Two seeded `Pending review` rows render "0 approved · 2 pending · 0 held"; after updating one row to `Held` and one to `Approved` by SQL, the same view renders "1 approved · 0 pending · 1 held"
   - Held and technical-failure rows render distinctly with reasons
   - _Requirements: 14.1, 14.2, 14.3, 14.5, 14.7, 10.4_
 
-- [ ] 11.4 Label reserved PDFs on the processing status view
+- [x] 11.4 Label reserved PDFs on the processing status view
   - **Requires:** 11.2, 4.8
   - In Test only, show "Reserved (acceptance)" beside each PDF whose `drive_file_id` is on the reserved list, reading the list through `staging_lib/reserved_guard.py` and `checklist_path`; never show the label in Archive
   - Add a test in `tests/test_status_view.py` using a synthetic checklist with placeholder IDs: the reserved PDF is labelled in Test, a non-reserved PDF is not, and no label appears in Archive or when the checklist is missing
@@ -511,16 +511,16 @@ Implementation note: the real recorded-action routes arrive in Tasks 12 (clearan
 
 **Implements:** Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 14.4, 1.6, 7.2
 
-- [ ] 12.1 Implement `POST /status/<pdf_id>/clear` in `review_app/routes/clearance.py`
+- [x] 12.1 Implement `POST /status/<pdf_id>/clear` in `review_app/routes/clearance.py`
   - Allowed only when `status` is `held_pending_clearance`; requires a reviewer name and a non-empty clearance note
   - Write `clearance_by`, `clearance_at`, `clearance_note`, set `status` to `cleared`, and update `updated_at`, all on the exact `pdf_id` row so a new `file_hash` is never cleared by an older version's clearance
   - _Requirements: 6.2, 6.3, 6.5, 1.6_
 
-- [ ] 12.2 Implement the clearance prompt in `review_app/templates/_clearance.html`
+- [x] 12.2 Implement the clearance prompt in `review_app/templates/_clearance.html`
   - For held PDFs show the issues from `issues_json`, the reviewer dropdown, the confirmation with the selected name, and a note to resume the skill on the same PDF version
   - _Requirements: 6.1, 6.4, 14.4, 7.2_
 
-- [ ]* 12.3 Write tests in `tests/test_clearance.py`
+- [x]* 12.3 Write tests in `tests/test_clearance.py`
   - Clearance without reviewer or note is rejected; a valid clearance sets the three fields and `cleared`
   - After clearance `python staging.py check-gate` exits 0 for that version and `stage-drafts` accepts its packet
   - A replacement version (same `drive_file_id`, different `file_hash`) is not cleared and needs its own `risk-assess` and clearance
@@ -538,31 +538,31 @@ Implementation note: the real recorded-action routes arrive in Tasks 12 (clearan
 
 **Implements:** Requirements 3.4, 8.1, 8.2, 8.3, 8.4, 8.6, 10.3, 27.7
 
-- [ ] 13.1 Implement `GET /drafts` in `review_app/routes/drafts.py`
+- [x] 13.1 Implement `GET /drafts` in `review_app/routes/drafts.py`
   - List `Pending review` and `Held` drafts with `pdf` filename, source location, status, and hold reason
   - _Requirements: 3.4, 10.3_
 
-- [ ] 13.2 Implement `GET /drafts/<draft_id>`
+- [x] 13.2 Implement `GET /drafts/<draft_id>`
   - Show every field from `original_json` with `status`, `raw_value`, `value`, and `evidence`, beside the source-PDF viewer panel
   - _Requirements: 8.1_
 
-- [ ] 13.3 Implement the PDF viewer route in `review_app/routes/pdf.py` and `templates/_pdf_panel.html`
+- [x] 13.3 Implement the PDF viewer route in `review_app/routes/pdf.py` and `templates/_pdf_panel.html`
   - Serve the file at `source_pdfs.storage_path` and open it at the recorded page (`#page=<pdf_index>`); show the measurement-table row number as a label beside the viewer because browsers cannot scroll to a row (Req 8.2; this is how the app opens the source "at the expected page and row" in DESIGN-MVP.md section 7)
   - If the path does not resolve to a readable file, show the error in the viewer panel and keep the rest of the page usable
   - When the PDF is opened, compare the SHA-256 of the retained copy with `file_hash` in `review_app/pdf_integrity.py`; on a mismatch show a warning in the viewer panel and mark that PDF as blocked for approval of its drafts until the copy is restored
   - _Requirements: 8.2, 8.3, 8.6_
 
-- [ ] 13.4 Show every recorded source location in `templates/_pdf_panel.html`
+- [x] 13.4 Show every recorded source location in `templates/_pdf_panel.html`
   - A run spanning pages lists all `source_locations_json` entries, each opening the viewer at its page and row
   - _Requirements: 8.4_
 
-- [ ]* 13.5 Write tests in `tests/test_draft_detail.py`
+- [x]* 13.5 Write tests in `tests/test_draft_detail.py`
   - The viewer link carries the recorded page (`#page=<pdf_index>`) and the recorded row number is rendered as a label beside the viewer
   - Pending and held drafts are listed; detail shows fields and evidence; a missing `storage_path` file shows an error panel but the page loads; multiple locations are all reachable
   - A retained copy whose SHA-256 differs from `file_hash` shows a warning in the viewer panel and marks the PDF blocked for approval
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.6_
 
-- [ ] 13.6 Add the furnace layout source-location action
+- [x] 13.6 Add the furnace layout source-location action
   - **Requires:** 13.3, 19.1
   - On the draft detail and on the run detail (`review_app/routes/run_detail.py`), add an action beside the `furnace_layout` field that opens the source PDF at that field's source location, using the viewer and integrity check from 13.3
   - Add a test in `tests/test_layout_open.py` that the action links to the recorded page and row from both views
@@ -580,20 +580,20 @@ Implementation note: the real recorded-action routes arrive in Tasks 12 (clearan
 
 Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
-- [ ] 14.1 Implement the correction store in `review_app/corrections.py`
+- [x] 14.1 Implement the correction store in `review_app/corrections.py`
   - Append corrections per draft as JSON under `review_workspace/<environment>/corrections/<draft_id>.json`, each with field, old value, new value, reason, source-location reference, reviewer, and timestamp
   - Never modify `original_json`
   - _Requirements: 9.2, 9.3_
 
-- [ ] 14.2 Implement the edit form and route in `review_app/routes/corrections.py`
+- [x] 14.2 Implement the edit form and route in `review_app/routes/corrections.py`
   - Require a reason and a reviewer name before saving; reject otherwise
   - _Requirements: 9.1, 9.4, 7.1_
 
-- [ ] 14.3 Implement effective values in `review_app/effective.py`
+- [x] 14.3 Implement effective values in `review_app/effective.py`
   - Merge `original_json` with corrections to produce the values shown in detail and used for approval; saving a correction updates `draft_runs.updated_at` so stale protection sees it
   - _Requirements: 9.2, 9.3_
 
-- [ ]* 14.4 Write tests in `tests/test_corrections.py`
+- [x]* 14.4 Write tests in `tests/test_corrections.py`
   - `original_json` is byte-identical after a correction; a correction without a reason or reviewer is rejected; the stored record has old value, new value, reason, and source location
   - _Requirements: 9.1, 9.2, 9.3, 9.4_
 
@@ -607,16 +607,16 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 **Implements:** Requirements 5.4, 10.1, 10.2, 10.3, 10.4, 10.5
 
-- [ ] 15.1 Implement `POST /drafts/<draft_id>/hold` in `review_app/routes/hold.py`
+- [x] 15.1 Implement `POST /drafts/<draft_id>/hold` in `review_app/routes/hold.py`
   - Require a reviewer name and a non-empty `hold_reason` (with an optional source location); set `review_status = 'Held'`, store the reason, update `updated_at`; reject an empty reason with a 400 and no change
   - A critical issue found during review is recorded this way and never reaches `growth_runs`
   - _Requirements: 5.4, 10.1, 10.2_
 
-- [ ] 15.2 Implement the held-draft view
+- [x] 15.2 Implement the held-draft view
   - A held draft shows its hold reason and still allows editing, saving a correction, and re-attempting approval; it stays `Held` (and out of search) until approved
   - _Requirements: 10.3, 10.5_
 
-- [ ]* 15.3 Write tests in `tests/test_hold.py`
+- [x]* 15.3 Write tests in `tests/test_hold.py`
   - Hold without a reason is rejected; hold with a reason sets status and reason; a held draft appears in `/status` with its reason and in no search result and no `growth_runs` row; a held draft can take a correction
   - _Requirements: 5.4, 10.1, 10.2, 10.3, 10.4, 10.5_
 
@@ -635,17 +635,17 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 **Implements:** Requirements 7.2, 8.6, 11.1, 11.2, 11.3, 11.4
 
-- [ ] 16.1 Implement precondition checks in `review_app/preconditions.py`
+- [x] 16.1 Implement precondition checks in `review_app/preconditions.py`
   - On effective values: at least one `source_locations_json` entry with a valid page and row; at least one of `researcher_name`, `growth_date`, `jc_number` populated; `composition_json` populated with a non-null stoichiometry value
   - Stoichiometry is a hard gate with no bypass; return the list of unmet conditions
   - Reject approval while the draft's PDF fails the retained-copy check from `review_app/pdf_integrity.py` (Task 13.3); report it as an unmet condition
   - _Requirements: 8.6, 11.1, 11.2, 11.3_
 
-- [ ] 16.2 Implement the approval confirmation page
+- [x] 16.2 Implement the approval confirmation page
   - `GET /drafts/<draft_id>/approve` lists unmet conditions, disables the approve button, and offers Hold or Return to editing; when all pass it shows the reviewer name for confirmation
   - _Requirements: 11.4, 7.2_
 
-- [ ]* 16.3 Write tests in `tests/test_preconditions.py`
+- [x]* 16.3 Write tests in `tests/test_preconditions.py`
   - Each condition fails independently; all three failing yields three messages; a forged approve POST with missing stoichiometry is rejected server-side
   - A draft whose PDF has a retained copy with a mismatching SHA-256 cannot be approved, including by a direct POST, and approval works again after the copy is restored
   - _Requirements: 8.6, 11.1, 11.2, 11.3, 11.4_
@@ -662,24 +662,24 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 `run_id` is derived deterministically from `draft_id` (see Notes) so a retry can detect an already-committed approval.
 
-- [ ] 17.1 Implement the approved-values mapper in `review_app/approval_mapper.py`
+- [x] 17.1 Implement the approved-values mapper in `review_app/approval_mapper.py`
   - Build the `growth_runs` row (searchable columns, `date_precision`, `composition_json`, `details_json`) and the `run_revisions` snapshot from effective values, including `changes_json` and `edited_by`/`edited_at` when corrections exist
   - _Requirements: 12.1_
 
-- [ ] 17.2 Implement `POST /drafts/<draft_id>/approve` in `review_app/routes/approve.py`
+- [x] 17.2 Implement `POST /drafts/<draft_id>/approve` in `review_app/routes/approve.py`
   - Re-run the preconditions, then one `BEGIN IMMEDIATE` transaction: insert `growth_runs`, insert `run_revisions` (next `version`, `approved_by`, `approved_at`, snapshot, corrections), set `draft_runs.review_status = 'Approved'`
   - For a revision of an already approved run (Task 19), update the searchable columns of the existing `growth_runs` row instead of inserting one
   - _Requirements: 12.1, 11.1, 11.2, 11.3_
 
-- [ ] 17.3 Implement result reporting
+- [x] 17.3 Implement result reporting
   - Show "Saved" only after the commit; on failure show the error and leave the form editable with `growth_runs` and `run_revisions` unchanged
   - _Requirements: 12.2, 12.3_
 
-- [ ] 17.4 Implement idempotent retry
+- [x] 17.4 Implement idempotent retry
   - If the draft's `run_id` and `version` already exist, return the saved revision without inserting a duplicate
   - _Requirements: 12.4_
 
-- [ ]* 17.5 Write tests in `tests/test_approval.py`
+- [x]* 17.5 Write tests in `tests/test_approval.py`
   - A valid approval inserts exactly one `growth_runs` row and one `run_revisions` row with approver and timestamp; a failure injected after the `growth_runs` insert leaves both tables unchanged; a retry of a committed approval returns the existing revision
   - _Requirements: 12.1, 12.2, 12.3, 12.4_
 
@@ -708,15 +708,15 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 **Implements:** Requirements 13.1, 13.2
 
-- [ ] 18.1 Capture state when the reviewer opens the draft
+- [x] 18.1 Capture state when the reviewer opens the draft
   - Always capture `draft_runs.updated_at`; capture `run_revisions.version` only when the run already has a revision; carry both in the approval form
   - _Requirements: 13.1_
 
-- [ ] 18.2 Compare inside the approval transaction
+- [x] 18.2 Compare inside the approval transaction
   - Read the current `updated_at` (and `version` when a revision exists) before writing; if either changed, abort without writing, reload the latest state, and require the reviewer to confirm before approval proceeds
   - _Requirements: 13.1, 13.2_
 
-- [ ]* 18.3 Write tests in `tests/test_stale_approval.py`
+- [x]* 18.3 Write tests in `tests/test_stale_approval.py`
   - A changed `updated_at` (for example after a hold or correction) forces reload and confirmation; a first approval with no revision does not read `version`; a changed `version` forces confirmation
   - _Requirements: 13.1, 13.2_
 
@@ -735,17 +735,17 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 **Implements:** Requirements 9.1, 9.2, 9.3, 9.4, 11.4, 12.1, 13.1, 29.1, 29.2, 29.3, 29.4, 29.5
 
-- [ ] 19.1 Implement `GET /runs/<run_id>` in `review_app/routes/run_detail.py`
+- [x] 19.1 Implement `GET /runs/<run_id>` in `review_app/routes/run_detail.py`
   - Show the approved run and its `run_revisions` in version order, with `changes_json` old and new values, `edited_by`, `approved_by`, and `approved_at`
   - _Requirements: 12.1_
 
-- [ ] 19.2 Implement `POST /runs/<run_id>/revise` in `review_app/routes/revise.py`
+- [x] 19.2 Implement `POST /runs/<run_id>/revise` in `review_app/routes/revise.py`
   - Start a correction from the latest approved values; require a reviewer name, a reason for each change, and the approval preconditions; reuse the correction store, preconditions, approval transaction, and stale check
   - In one transaction insert the `run_revisions` row with version N+1 and update the searchable columns of the same `growth_runs` row; earlier `run_revisions` rows stay unchanged
   - A stale view applies the stale-approval protection from Task 18; a failed transaction leaves `growth_runs` and `run_revisions` unchanged
   - _Requirements: 9.1, 9.2, 9.3, 9.4, 11.4, 12.1, 13.1, 29.1, 29.2, 29.4, 29.5_
 
-- [ ]* 19.3 Write tests in `tests/test_revisions.py`
+- [x]* 19.3 Write tests in `tests/test_revisions.py`
   - Approve then revise produces versions 1 and 2 with the earlier revision byte-identical; the revise path enforces reviewer name, reason, and preconditions
   - A revise from a stale view requires confirmation and writes nothing until confirmed; an injected failure inside the revision transaction leaves `growth_runs` and `run_revisions` unchanged
   - After a revision commits, the search query builder returns the revised value for the same `run_id`
@@ -759,7 +759,7 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 **Requires:** Tasks 9 to 19
 
-- [ ] 20. Checkpoint - Ensure all tests pass, ask the user if questions arise.
+- [x] 20. Checkpoint - Ensure all tests pass, ask the user if questions arise.
   - Run `python -m pytest tests/` for the review app suites.
 
 ---
@@ -774,7 +774,7 @@ Pending corrections are stored outside `draft_runs.original_json` (see Notes).
 
 Search queries `growth_runs` only and never reads `draft_runs`.
 
-- [ ] 21.1 Implement the query builder in `review_app/search/query.py`
+- [x] 21.1 Implement the query builder in `review_app/search/query.py`
   - Researcher name: case-insensitive substring, usable alone
   - Month `YYYY-MM`: `growth_date` prefix match (month-only and day-precision); exact date `YYYY-MM-DD`: equality; each usable alone
   - Name and month together: both conditions (AND); no match returns an empty set
@@ -782,21 +782,21 @@ Search queries `growth_runs` only and never reads `draft_runs`.
   - Growth-process filter: `CVT`, `Flux Growth`, `unclear`, or `any` (no filter)
   - _Requirements: 15.1, 15.2, 16.1, 16.2, 16.3, 17.1, 17.2, 17.3, 18.1, 18.2, 19.1, 19.3_
 
-- [ ] 21.2 Implement ordering and display in `review_app/search/ordering.py`
+- [x] 21.2 Implement ordering and display in `review_app/search/ordering.py`
   - Chronological by `growth_date`, with a month-only value before day-precision values in the same month; month-only dates display without an invented day
   - Same date, no JC number: `researcher_name`, then `run_id`; same date and same non-null JC number: `run_id`
   - Each result shows its source PDF filename and measurement-table row so runs sharing a JC number can be told apart
   - _Requirements: 17.4, 17.5, 19.2, 20.1, 20.2_
 
-- [ ] 21.3 Implement `GET /runs` in `review_app/routes/search.py` and `templates/search.html`
+- [x] 21.3 Implement `GET /runs` in `review_app/routes/search.py` and `templates/search.html`
   - Search form (name, month, exact date, JC number, growth process) and results list built from 21.1 and 21.2
   - _Requirements: 15.1, 15.2, 16.3, 17.3_
 
-- [ ] 21.4 Add the "Open source PDF" action to each result
+- [x] 21.4 Add the "Open source PDF" action to each result
   - Open the retained PDF from `source_pdfs.storage_path` at the page in the run's `source_locations_json` and show the recorded measurement-table row number as a label beside the viewer, reusing the viewer and the SHA-256 integrity check from Task 13.3 (warning in the viewer panel on mismatch)
   - _Requirements: 8.2, 8.6, 20.3, 20.4_
 
-- [ ]* 21.5 Write tests in `tests/test_search.py`
+- [x]* 21.5 Write tests in `tests/test_search.py`
   - Name alone, month alone, exact date, combined name and month, JC substring, shared JC returning all runs, growth-process filter, and sort order including the shared-JC `run_id` rule
   - JC numbers stay text as written: a two-digit partial (for example `06`) and a value with a leading zero are stored and displayed unchanged through staging, correction, and approval, and a JC number reused by another run is accepted (Req 19.4)
   - Pending and held drafts never appear; approved runs from a PDF are searchable while other drafts from that PDF stay pending or held; a run with an unresolved critical issue does not appear

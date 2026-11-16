@@ -14,6 +14,12 @@
       <span>Archive environment. Approvals here are official archive records.</span>
     {% endif %}
   </div>
+  <nav class="site-nav">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('status.status') }}">Processing status</a>
+    <a href="{{ url_for('drafts.draft_list') }}">Drafts</a>
+    <a href="{{ url_for('search.search_runs') }}">Search</a>
+  </nav>
   <main>
     {% block content %}{% endblock %}
   </main>

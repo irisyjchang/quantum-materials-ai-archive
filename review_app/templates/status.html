@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Processing status{% endblock %}
+{% block content %}
+  <h1>Processing status</h1>
+  {% if reserved_warning %}<p class="notice">{{ reserved_warning }}</p>{% endif %}
+  {% if cleared_row %}
+    <p class="saved">Saved: {{ cleared_row.archive_filename }} is cleared for extraction by {{ cleared_row.clearance_by }}.
+      Resume <code>$stage-log-runs</code> on the same PDF version.</p>
+  {% endif %}
+
+  {% if not rows %}
+    <p>No source PDFs have been processed in this environment yet.</p>
+  {% else %}
+    <table class="status-table">
+      <thead>
+        <tr>
+          <th>Source PDF</th>
+          <th>Risk tier</th>
+          <th>Status</th>
+          <th>Drafts</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr class="pdf-row outcome-{{ row.status or 'none' }}" data-pdf-id="{{ row.pdf_id }}">
+            <td>
+              <strong>{{ row.archive_filename }}</strong>
+              {% if row.reserved %}<span class="reserved-label">Reserved (acceptance)</span>{% endif %}
+              <div class="version">Drive ID {{ row.drive_file_id[:12] }}… · hash {{ row.file_hash[:12] }}…</div>
+            </td>
+            <td>{{ row.risk_tier }}</td>
+            <td>
+              <span class="status-label">{{ row.status_label }}</span>
+              {% if row.status == "technical_failure" %}
+                <div class="retryable">Retryable: run the same <code>$stage-log-runs</code> command again for this PDF.</div>
+              {% endif %}
+              {% if row.reason %}<div class="reason">{{ row.reason }}</div>{% endif %}
+              {% if row.status == "cleared" and row.clearance_by %}
+                <div class="clearance">Cleared by {{ row.clearance_by }} at {{ row.clearance_at }}</div>
+              {% endif %}
+            </td>
+            <td>
+              {% if row.reached_extraction %}
+                <span class="draft-counts">{{ row.counts_summary }}</span>
+              {% else %}
+                <span class="draft-counts none">No drafts yet</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% if row.status == "held_pending_clearance" %}
+            <tr class="detail-row held-detail" data-pdf-id="{{ row.pdf_id }}">
+              <td colspan="4">
+                <strong>Issues</strong>
+                {% if row.issues %}
+                  <ul class="issues">
+                    {% for issue in row.issues %}
+                      <li>{{ issue.reason }}
+                        {% if issue.source_location %}(page {{ issue.source_location.pdf_index }}, row {{ issue.source_location.row }}){% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <p>No issues were listed in the assessment.</p>
+                {% endif %}
+                <div class="clearance-slot" data-pdf-id="{{ row.pdf_id }}">
+                  {% include "_clearance.html" %}
+                </div>
+              </td>
+            </tr>
+          {% endif %}
+          {% if row.held_drafts %}
+            <tr class="detail-row held-drafts" data-pdf-id="{{ row.pdf_id }}">
+              <td colspan="4">
+                <strong>Held drafts</strong>
+                <ul>
+                  {% for draft in row.held_drafts %}
+                    <li>
+                      {% for loc in draft.locations %}page {{ loc.pdf_index }}, row {{ loc.row }}{% if not loop.last %}; {% endif %}{% endfor %}:
+                      <span class="hold-reason">{{ draft.hold_reason }}</span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}
