@@ -55,7 +55,7 @@ The operator confirms that Codex can do what the skill depends on before the ski
 
 Create `db/schema.sql` with the five MVP tables (`source_pdfs`, `draft_runs`, `growth_runs`, `run_revisions`, `processing_status`) exactly as specified in the design's SQLite Schema section. This replaces the pilot `growth_logs` table and `growth_log_index` view; do not reference them.
 
-- [ ] 1.1 Write `db/schema.sql`
+- [x] 1.1 Write `db/schema.sql`
   - `source_pdfs`: `drive_file_id TEXT NOT NULL`, `file_hash TEXT NOT NULL`, `UNIQUE(drive_file_id, file_hash)`, `storage_path`
   - `draft_runs`: `review_status` limited to `Pending review`, `Held`, `Approved`; a CHECK that a `Held` row has a non-empty `hold_reason`; index on `pdf_id`
   - `growth_runs`: `source_locations_json NOT NULL`
@@ -64,13 +64,13 @@ Create `db/schema.sql` with the five MVP tables (`source_pdfs`, `draft_runs`, `g
   - Foreign keys with `ON DELETE RESTRICT`; callers enable `PRAGMA foreign_keys = ON`
   - _Requirements: 1.4, 1.6, 8.5, 10.1, 10.2, 11.1, 12.1, 24.1_
 
-- [ ]* 1.2 Write schema tests in `tests/test_schema.py`
+- [x]* 1.2 Write schema tests in `tests/test_schema.py`
   - Apply the schema to an in-memory database and assert all five tables and their columns exist
   - Assert a `source_pdfs` insert without `drive_file_id` fails and a duplicate `(drive_file_id, file_hash)` fails
   - Assert a `Held` draft with an empty or null `hold_reason` is rejected
   - _Requirements: 1.4, 10.1, 10.2_
 
-**Verification:** `sqlite3 :memory: < db/schema.sql ".tables"` lists exactly the five MVP tables, and `python -m pytest tests/test_schema.py` passes.
+**Verification:** `sqlite3 :memory: ".read db/schema.sql" ".tables"` lists exactly the five MVP tables, and `python -m pytest tests/test_schema.py` passes.
 
 ---
 
@@ -97,41 +97,41 @@ retained_pdfs/<environment>/  created at runtime, not committed
 review_workspace/<environment>/  created at runtime, not committed
 ```
 
-- [ ] 2.1 Create the directory layout, package `__init__.py` files, and `.gitignore`
+- [x] 2.1 Create the directory layout, package `__init__.py` files, and `.gitignore`
   - Ignore `*.sqlite`, `retained_pdfs/`, `review_workspace/`, `backups/`, JSON packets, and scans
   - Leave `pilot/` untouched
   - _Requirements: 25.1_
 
-- [ ] 2.2 Write `db/init_db.py`
+- [x] 2.2 Write `db/init_db.py`
   - `python db/init_db.py <database.sqlite>` applies `db/schema.sql` to a new database and exits 0
   - Refuse to run against an existing database that already has tables unless `--reset` is used (reset is implemented in Task 22)
   - _Requirements: 25.1_
 
-- [ ] 2.3 Write `db/env.py`
+- [x] 2.3 Write `db/env.py`
   - Resolve `test` or `archive` (from `--env` or an environment variable) to the database path, retained-PDF directory (`retained_pdfs/<environment>/`), and review-workspace directory
   - Reject unknown environment names
   - _Requirements: 25.1, 25.3_
 
-- [ ] 2.4 Write `config.json` and `common/config.py`
+- [x] 2.4 Write `config.json` and `common/config.py`
   - `reviewers` list of names; `backup_folder` and `backup_name_pattern` as null placeholders pending lab confirmation
   - `checklist_path` (default `test_checklist.json`): the file whose `acceptance` entries form the reserved list read by the reserved guard (Task 4.8)
   - Loader returns the reviewer list and `checklist_path` read-only; no code path writes the config
   - _Requirements: 7.4, 26.4, 30.1_
 
-- [ ]* 2.5 Write tests for init, environment, and config
+- [x]* 2.5 Write tests for init, environment, and config
   - `test` resolves to `test.sqlite` and `archive` to `archive.sqlite`, with distinct retained and workspace directories
   - `init_db.py` creates an empty database with all five tables
   - A scan of `staging_lib/`, `review_app/`, `db/`, and `tools/` finds no import of anything under `pilot/`
   - _Requirements: 25.1, 25.3_
 
-- [ ] 2.6 Implement the filename index and lookup tool
+- [x] 2.6 Implement the filename index and lookup tool
   - **Requires:** 2.4
   - Define `filename_index.json` (git-ignored; a JSON object mapping `archive_filename` to `drive_file_id`) and add `filename_index_path` to `config.json`; add `filename_index.json` to `.gitignore`
   - Implement `common/filename_index.py` (load the index from `filename_index_path`; look up a filename) and `tools/lookup_drive_id.py <archive_filename>`, which prints the `drive_file_id` and exits 0, or exits 1 with a message when the filename is not listed
   - Add `tests/test_lookup_drive_id.py` using a synthetic index with placeholder IDs: a listed filename prints its ID and exits 0; an unlisted filename exits 1 with a message; a missing index file exits 1 with a message
   - _Requirements: 1.10_
 
-- [ ] 2.7 Implement the shared connection helper
+- [x] 2.7 Implement the shared connection helper
   - **Requires:** 2.3
   - Implement `db/connect.py` with one function that opens SQLite with `PRAGMA foreign_keys = ON`, WAL journal mode, and a 5000 ms busy timeout
   - Tasks 4.5 (`staging.py` commands) and 9.1 (`review_app/app.py`) open the database only through this helper
@@ -152,31 +152,31 @@ review_workspace/<environment>/  created at runtime, not committed
 
 Write stateless validation in `staging_lib/`. Validation never opens the database, so a failure leaves it unchanged. The packet field contract is the MVP contract (`researcher_name`, `growth_date`, `jc_number`, `composition`, `furnace_cycle`, `furnace_layout`, `growth_process`, `timestamps`, `measurements`), not the pilot keys (`name`, `date`, `jc`, `technique`).
 
-- [ ] 3.1 Implement envelope validation in `staging_lib/validate_envelope.py`
+- [x] 3.1 Implement envelope validation in `staging_lib/validate_envelope.py`
   - `schema_version` present and equal to a supported version (initially `1`)
   - `stage`, `drive_file_id`, `file_hash`, `model`, `prompt_version` present and non-empty strings
   - Return a descriptive error string on failure and `None` on success
   - _Requirements: 21.1, 21.2_
 
-- [ ] 3.2 Implement risk-packet validation in `staging_lib/validate_risk.py`
+- [x] 3.2 Implement risk-packet validation in `staging_lib/validate_risk.py`
   - `decision` is one of `non_critical`, `critical`, `uncertain`; `issues` is an array; each issue has a `reason` and a `source_location` that is an object or null
   - _Requirements: 21.4_
 
-- [ ] 3.3 Implement extraction-packet validation in `staging_lib/validate_extraction.py`
+- [x] 3.3 Implement extraction-packet validation in `staging_lib/validate_extraction.py`
   - `runs` is an array; each run has non-empty `draft_id`, a non-empty `source_locations` array of `{pdf_index, row}` positive integers, and a `fields` object with all nine required keys
   - Each field has `status` (one of `recorded`, `inferred`, `derived`, `missing`, `unreadable`, `ambiguous`, `omitted`), `raw_value`, `value`, and `evidence`
   - _Requirements: 21.5_
 
-- [ ] 3.4 Implement source-PDF hash verification in `staging_lib/source_pdf.py`
+- [x] 3.4 Implement source-PDF hash verification in `staging_lib/source_pdf.py`
   - Stream the file and compute SHA-256; return whether it equals the packet `file_hash`
   - Missing or unreadable file returns a descriptive error
   - _Requirements: 8.5, 21.6_
 
-- [ ] 3.5 Implement packet loading and error reporting in `staging_lib/packet.py`
+- [x] 3.5 Implement packet loading and error reporting in `staging_lib/packet.py`
   - Read the JSON file, report malformed JSON with a descriptive message, run envelope validation and the stage-specific validator, and map any failure to exit code 1 with nothing written
   - _Requirements: 21.1, 21.2, 21.6, 24.2_
 
-- [ ]* 3.6 Write unit tests for every validation rule in `tests/test_validation.py`
+- [x]* 3.6 Write unit tests for every validation rule in `tests/test_validation.py`
   - One test per rule, run on in-memory data only; a valid packet returns `None`
   - _Requirements: 21.1, 21.2, 21.4, 21.5, 21.6_
 
@@ -192,25 +192,25 @@ Write stateless validation in `staging_lib/`. Validation never opens the databas
 
 Command: `python staging.py risk-assess <packet.json> --source-pdf <local path> [--acceptance-run] <database.sqlite>`. Command modules are `staging_lib/cmd_risk_assess.py`, `retain.py`, `registry.py`, and `status_store.py`.
 
-- [ ] 4.1 Create the `staging.py` dispatcher and command stubs
+- [x] 4.1 Create the `staging.py` dispatcher and command stubs
   - Register `risk-assess`, `check-gate`, and `stage-drafts` to modules under `staging_lib/`; later tasks fill in the stub modules without editing `staging.py`
   - `risk-assess` requires `--source-pdf`; a missing argument exits 1 with a usage message
   - _Requirements: 1.1, 8.5_
 
-- [ ] 4.2 Implement hash check and retained copy in `staging_lib/retain.py`
+- [x] 4.2 Implement hash check and retained copy in `staging_lib/retain.py`
   - Verify the SHA-256 of `--source-pdf` equals `file_hash` before any write; a mismatch exits 1 with a message that the file bytes do not match `file_hash` and writes no rows
   - Copy the verified bytes to `retained_pdfs/<environment>/<drive_file_id>-<file_hash>.pdf` via a temporary file; never overwrite an existing retained copy
   - Return the absolute path; if the later database transaction fails, remove a copy created by this call
   - On retry for a registered version whose retained copy at `storage_path` is missing, and the `--source-pdf` hash equals `file_hash`, recreate the copy at `storage_path`; never overwrite an existing, intact copy
   - _Requirements: 1.9, 8.5_
 
-- [ ] 4.3 Implement `source_pdfs` upsert in `staging_lib/registry.py`
+- [x] 4.3 Implement `source_pdfs` upsert in `staging_lib/registry.py`
   - First call for a `(drive_file_id, file_hash)` pair inserts a row with `storage_path` set to the retained copy; retry reuses the existing `pdf_id` and does not change `storage_path`
   - Same `drive_file_id` with a different `file_hash` always inserts a new row
   - `archive_filename` comes from the base name of `--source-pdf`
   - _Requirements: 1.4, 1.5, 1.6, 8.5_
 
-- [ ] 4.4 Implement `processing_status` upsert in `staging_lib/status_store.py`
+- [x] 4.4 Implement `processing_status` upsert in `staging_lib/status_store.py`
   - New version: insert a row with `risk_decision`, `issues_json`, and `status` (`risk_assessed` for `non_critical`; `held_pending_clearance` for `critical` or `uncertain`, with `reason` set)
   - Retry with a changed assessment result or issues: record the new `risk_decision` and `issues_json` and update `updated_at`; never change `clearance_by`, `clearance_at`, or `clearance_note`. If `status` is `cleared` or `extraction_complete`, leave `status` unchanged; otherwise `status` follows the new assessment result
   - Retry on a version whose `status` is `technical_failure`: set `status` from the stored assessment result and clearance (`held_pending_clearance`, `cleared`, `risk_assessed`, or `extraction_complete` when drafts exist) and clear `reason`
@@ -218,12 +218,12 @@ Command: `python staging.py risk-assess <packet.json> --source-pdf <local path> 
   - `processing_status.file_hash` equals `source_pdfs.file_hash` for the same `pdf_id`
   - _Requirements: 1.5, 1.6, 1.7, 1.8, 4.1, 5.1, 5.5, 14.8_
 
-- [ ] 4.5 Wire `risk-assess` in `staging_lib/cmd_risk_assess.py`
+- [x] 4.5 Wire `risk-assess` in `staging_lib/cmd_risk_assess.py`
   - Order: load and validate the packet, verify the hash, open the database through `db/connect.py` (Task 2.7), then in one transaction register the source PDF (with the retained copy) and upsert `processing_status`
   - Roll back and exit 1 with a descriptive error on any failure; on success print the number of rows staged and exit 0; never write `draft_runs` or `growth_runs`
   - _Requirements: 1.4, 24.1, 24.2, 24.3_
 
-- [ ]* 4.6 Write unit tests in `tests/test_risk_assess.py`
+- [x]* 4.6 Write unit tests in `tests/test_risk_assess.py`
   - First call creates one `source_pdfs` row, one retained copy, and one `processing_status` row
   - Hash mismatch exits 1 with zero rows and no retained copy
   - Retry with the same hash writes no duplicate rows and leaves `storage_path` unchanged
@@ -242,7 +242,7 @@ Command: `python staging.py risk-assess <packet.json> --source-pdf <local path> 
   - For generated sequences of registrations and retries (including deleted copies), every `source_pdfs` row has a retained copy at `storage_path` whose SHA-256 equals `file_hash`
   - **Validates: Requirements 1.9, 8.5**
 
-- [ ] 4.8 Implement the reserved acceptance PDF guard and wire it into `risk-assess`
+- [x] 4.8 Implement the reserved acceptance PDF guard and wire it into `risk-assess`
   - **Requires:** 4.5, 24.1 (the checklist format)
   - Write `staging_lib/reserved_guard.py`: read the `drive_file_id` of every `acceptance` entry from the file at `checklist_path` in `config.json`
   - Apply the guard only when the database is the Test database, resolved with `db/env.py`; never apply it to the Archive database
@@ -251,7 +251,7 @@ Command: `python staging.py risk-assess <packet.json> --source-pdf <local path> 
   - A missing checklist file or an empty `acceptance` list means no guard; print a notice that no reserved list was found
   - _Requirements: 30.1, 30.2, 30.3, 30.4, 30.5_
 
-- [ ]* 4.9 Write tests for the reserved guard in `tests/test_reserved_guard.py`
+- [x]* 4.9 Write tests for the reserved guard in `tests/test_reserved_guard.py`
   - **Requires:** 4.8
   - Use synthetic checklists with placeholder IDs only
   - A reserved ID is rejected without the flag, with no `source_pdfs`, `processing_status`, or retained copy created; the same ID is accepted with `--acceptance-run`; a non-reserved ID is unaffected
@@ -273,17 +273,17 @@ Command: `python staging.py risk-assess <packet.json> --source-pdf <local path> 
 
 Command: `python staging.py check-gate <drive_file_id> <file_hash> <database.sqlite>`. Read-only.
 
-- [ ] 5.1 Implement the shared gate function in `staging_lib/gate.py`
+- [x] 5.1 Implement the shared gate function in `staging_lib/gate.py`
   - For the registered `(drive_file_id, file_hash)`, return cleared when `risk_decision` is `non_critical` or `clearance_by` is populated; otherwise return the reason (unknown version, held pending clearance, no assessment result)
   - Clearance is looked up only for the exact `file_hash`
   - _Requirements: 2.1, 2.3, 6.5_
 
-- [ ] 5.2 Implement the `check-gate` command in `staging_lib/cmd_check_gate.py`
+- [x] 5.2 Implement the `check-gate` command in `staging_lib/cmd_check_gate.py`
   - Open the database read-only (`mode=ro`); exit 0 and print `cleared` when the gate passes; otherwise exit 1 and print the reason with the `drive_file_id` and `file_hash`
   - On exit 0, also print the absolute `source_pdfs.storage_path` of the retained copy for that version, so the skill extracts from the assessed bytes
   - _Requirements: 2.1, 2.2, 2.5_
 
-- [ ]* 5.3 Write unit tests in `tests/test_check_gate.py`
+- [x]* 5.3 Write unit tests in `tests/test_check_gate.py`
   - `non_critical` passes; `critical` without clearance fails with the held reason; `critical` with clearance passes; unknown version fails; a new `file_hash` with the same `drive_file_id` does not inherit clearance
   - The database file is byte-identical before and after every call
   - On exit 0 the output includes the absolute `storage_path` of an existing retained file; on exit 1 no path is printed
@@ -301,30 +301,30 @@ Command: `python staging.py check-gate <drive_file_id> <file_hash> <database.sql
 
 Command: `python staging.py stage-drafts <packet.json> [--acceptance-run] <database.sqlite>`. Modules: `stage_drafts_prechecks.py`, `draft_store.py`, `failure_record.py`, `cmd_stage_drafts.py`.
 
-- [ ] 6.1 Implement version lookup and gate in `staging_lib/stage_drafts_prechecks.py`
+- [x] 6.1 Implement version lookup and gate in `staging_lib/stage_drafts_prechecks.py`
   - Look up `pdf_id` from `(drive_file_id, file_hash)` in `source_pdfs`; if absent, exit 1 with a message that `risk-assess` must complete for that version first
   - Apply the shared gate from Task 5; on failure exit 1 with a message naming `drive_file_id` and `file_hash` and the missing clearance, with no rows written
   - _Requirements: 2.3, 2.4, 21.3_
 
-- [ ] 6.2 Implement draft insert, idempotency, and conflict detection in `staging_lib/draft_store.py`
+- [x] 6.2 Implement draft insert, idempotency, and conflict detection in `staging_lib/draft_store.py`
   - Look up each run by `pdf_id` and `draft_id`; insert new runs as `Pending review` with `source_locations_json`, `original_json`, and `updated_at`
   - Identical content: skip without error; different content: report the `draft_id` and both JSON payloads, exit 1, and roll back the batch
   - A `draft_id` that already exists under a different `pdf_id` is reported as a conflict (see Notes)
   - _Requirements: 3.4, 22.1, 22.2, 23.1, 23.2_
 
-- [ ] 6.3 Implement technical-failure recording in `staging_lib/failure_record.py`
+- [x] 6.3 Implement technical-failure recording in `staging_lib/failure_record.py`
   - Record only when a command fails with an unexpected processing error (such as a file copy or database error) after packet validation has passed and the version is already registered in `source_pdfs`. Roll back the command's own writes first, then record `status = technical_failure` and a non-empty `reason` in `processing_status` in a separate transaction that does not touch `draft_runs`, `growth_runs`, or `run_revisions`
   - A validation failure, a conflict, a gate rejection, or an unregistered version writes no rows, including to `processing_status`; the command only reports the error and exits 1
   - Test both paths: an injected file-copy or database error on a registered version produces one `technical_failure` row and no other changes; a validation failure, conflict, and gate rejection leave `shasum` of the database unchanged
   - _Requirements: 14.7, 21.6, 23.2, 24.2_
 
-- [ ] 6.4 Wire `stage-drafts` in `staging_lib/cmd_stage_drafts.py`
+- [x] 6.4 Wire `stage-drafts` in `staging_lib/cmd_stage_drafts.py`
   - One transaction: prechecks, draft inserts, and setting `processing_status.status` to `extraction_complete` for the `pdf_id`
   - Roll back on any failure and exit 1; on success print the number of rows staged and exit 0; an identical replay stages zero rows and exits 0
   - When the version's `status` is `technical_failure`, a successful `stage-drafts` sets `status` to `extraction_complete` and clears `reason`
   - _Requirements: 3.5, 14.8, 22.1, 24.1, 24.2, 24.3_
 
-- [ ]* 6.5 Write unit tests in `tests/test_stage_drafts.py`
+- [x]* 6.5 Write unit tests in `tests/test_stage_drafts.py`
   - Unknown PDF version rejected; extraction without clearance rejected; extraction after `non_critical` inserts `Pending review` rows and sets `extraction_complete`; extraction after clearance succeeds
   - Identical replay stages zero rows; changed packet reports a conflict and leaves `draft_runs` unchanged; a mid-batch failure leaves the database unchanged
   - A held, uncleared version has zero `draft_runs` rows after a rejected `stage-drafts`; a `non_critical` version whose `issues` array lists lower-table issues is still accepted without clearance
@@ -346,7 +346,7 @@ Command: `python staging.py stage-drafts <packet.json> [--acceptance-run] <datab
   - A generated packet reusing an existing `draft_id` with different content exits non-zero and leaves `draft_runs` unchanged
   - **Validates: Requirements 23.1, 23.2**
 
-- [ ] 6.9 Wire the reserved guard and `--acceptance-run` into `stage-drafts`
+- [x] 6.9 Wire the reserved guard and `--acceptance-run` into `stage-drafts`
   - **Requires:** 4.8, 6.4
   - Call the guard from `staging_lib/reserved_guard.py` at the start of `staging_lib/cmd_stage_drafts.py`, before any database write: without the flag a reserved `drive_file_id` exits 1 with the reserved message and writes nothing; with the flag the PDF is processed as usual
   - Confirm `staging_lib/cmd_check_gate.py` does not call the guard, since `check-gate` is read-only
@@ -361,7 +361,7 @@ Command: `python staging.py stage-drafts <packet.json> [--acceptance-run] <datab
 
 **Requires:** Tasks 3, 4, 5, 6
 
-- [ ] 7. Checkpoint - Ensure all tests pass, ask the user if questions arise.
+- [x] 7. Checkpoint - Ensure all tests pass, ask the user if questions arise.
   - Run `python -m pytest tests/test_schema.py tests/test_validation.py tests/test_risk_assess.py tests/test_check_gate.py tests/test_stage_drafts.py`.
 
 ---

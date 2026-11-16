@@ -1,0 +1,27 @@
+# Local Growth Log MVP: keep databases, scans, packets, and lab-specific data out of Git.
+
+# SQLite databases (Test and Archive) and WAL side files
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+
+# Retained PDF copies, review workspaces, backups, and JSON packets
+retained_pdfs/
+review_workspace/
+backups/
+packets/
+
+# Scans (already-tracked pilot files are unaffected)
+*.pdf
+
+# Lab-specific local files
+filename_index.json
+spike_results.md
+
+# Python and tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
