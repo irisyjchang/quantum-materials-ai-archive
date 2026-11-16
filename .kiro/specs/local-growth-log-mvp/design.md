@@ -44,15 +44,17 @@ flowchart TD
 ```
 Drive PDF
   → Codex skill (risk assessment)
-  → risk JSON packet → skill calls risk-assess automatically
+  → risk JSON packet → skill calls risk-assess automatically (with --source-pdf)
+  → staging tool verifies SHA-256, copies bytes to retained store
   → source_pdfs row registered + processing_status row in SQLite
   [if critical/uncertain → human clearance recorded in processing_status]
+  → skill calls check-gate (read-only) for the exact version
   → Codex skill (extraction, same PDF version)
   → extraction JSON packet → skill calls stage-drafts automatically
   → draft_runs rows staged as Pending review in SQLite
   → Review app (reviewer verifies, corrects, holds, or approves)
   → growth_runs + run_revisions rows in SQLite (on approval)
-  → Search index (growth_log_index view or equivalent)
+  → Search (query of growth_runs, joined to source_pdfs for the filename and retained PDF path)
 ```
 
 ---
@@ -67,14 +69,31 @@ The operator invokes `$stage-log-runs` in Codex with a source PDF. The skill is 
 
 **Inputs:** A source PDF path (or Drive reference) and optional operator-supplied context (e.g. a clearance note).
 
-**Outputs:** A risk JSON packet written to the selected workspace, and — when the PDF is cleared — an extraction JSON packet. After producing each packet the skill calls the corresponding staging tool command directly:
+**Outputs:** A risk JSON packet written to the selected workspace, and — when the PDF is cleared — an extraction JSON packet. The skill calls the staging tool commands directly:
 
-- After the risk packet: `python staging.py risk-assess <packet.json> <database.sqlite>`
-- After the extraction packet: `python staging.py stage-drafts <packet.json> <database.sqlite>`
+- After the risk packet: `python staging.py risk-assess <packet.json> --source-pdf <local path> [--acceptance-run] <database.sqlite>`
+- Immediately before extraction: `python staging.py check-gate <drive_file_id> <file_hash> <database.sqlite>`
+- After the extraction packet: `python staging.py stage-drafts <packet.json> [--acceptance-run] <database.sqlite>`
+
+The skill adds `--acceptance-run` only when the operator states that the run is an acceptance run (Requirement 30.7).
+
+Before `risk-assess`, the skill obtains `drive_file_id` from the filename index (see [Filename index](#filename-index), Requirement 1.10). The skill sets `model` in each packet to the model name Codex reports or, if Codex cannot report one, to a value the operator supplies. It sets `prompt_version` to the version stated in `SKILL.md`. It never leaves either value blank (Requirement 1.11).
 
 The skill uses the staging tool's exit code and output to confirm that records were staged. It reports the staging tool result to the operator. If the staging tool is unavailable or returns an error, the skill saves the completed packet, reports the blocker, and stops. It never claims drafts were staged without a confirmed successful staging tool result.
 
-The skill reads the extraction gate condition from the instructions and enforces it; the staging tool enforces it again independently.
+The skill reads the extraction gate condition from the instructions and enforces it; the staging tool enforces it again independently. When `check-gate` exits `0`, it also prints the absolute `storage_path` of the retained copy, and the skill extracts from that file so that extraction uses the exact bytes that were assessed.
+
+---
+
+### Filename index
+
+`config.json` has a `filename_index_path` entry pointing at a git-ignored `filename_index.json`. That file maps `archive_filename` to `drive_file_id` and is exported from the lab's filename index.
+
+```
+python tools/lookup_drive_id.py <archive_filename>
+```
+
+The tool prints the `drive_file_id` and exits `0`, or exits `1` with a message when the filename is not listed. The skill calls it before `risk-assess` and stops with a message to the operator when it exits `1` (Requirement 1.10).
 
 ---
 
@@ -85,11 +104,14 @@ A local Python command-line tool. It accepts a packet path and a SQLite database
 **Interface:**
 
 ```
-python staging.py risk-assess <packet.json> <database.sqlite>
-python staging.py stage-drafts <packet.json> <database.sqlite>
+python staging.py risk-assess <packet.json> --source-pdf <local path> [--acceptance-run] <database.sqlite>
+python staging.py check-gate <drive_file_id> <file_hash> <database.sqlite>
+python staging.py stage-drafts <packet.json> [--acceptance-run] <database.sqlite>
 ```
 
-Returns exit code `0` on success, `1` on validation failure or conflict. Prints the number of rows staged on success, or a descriptive error message on failure.
+`risk-assess` requires `--source-pdf`, the local path of the source PDF file that the skill assessed. The optional `--acceptance-run` flag on `risk-assess` and `stage-drafts` is described in [Reserved acceptance PDF guard](#reserved-acceptance-pdf-guard). `check-gate` is read-only and writes nothing. It exits `0` and prints `cleared` when the registered version has a recorded `non_critical` assessment result or a recorded clearance. On exit `0` it also prints the absolute `storage_path` of the retained copy, and the skill extracts from that file so that extraction uses the assessed bytes. Otherwise it exits `1` and prints the reason: unknown version, held pending clearance, or no assessment result.
+
+`risk-assess` and `stage-drafts` return exit code `0` on success, `1` on validation failure or conflict. They print the number of rows staged on success, or a descriptive error message on failure.
 
 ---
 
@@ -118,11 +140,13 @@ Approval and revision require a lab-authorized reviewer, and the app records who
 
 A single file on the operator's laptop. All components read from and write to this file. The staging tool is the only writer for risk assessments and draft staging. The review app is the only writer for approvals, holds, and corrections.
 
+**Shared connection helper.** The staging tool and the review app open SQLite through one helper, `db/connect.py`. The helper enables foreign keys and WAL mode and sets a busy timeout of 5000 ms, because the CLI and the web app share one database file.
+
 **Access pattern:**
 
 - Staging tool: writes `source_pdfs`, `draft_runs`, `processing_status`.
 - Review app: reads all tables; writes `draft_runs` (hold/approve status), `growth_runs`, `run_revisions`.
-- Search: reads `growth_runs` and `run_revisions` only.
+- Search: reads `growth_runs` and `source_pdfs` (for the filename and `storage_path`); it never reads `draft_runs`.
 
 ---
 
@@ -316,6 +340,7 @@ The staging tool checks the following before writing anything to the database:
 1. **Schema version.** `schema_version` must be present and equal to a supported version (initially `1`). An unsupported version is a technical failure.
 2. **Required envelope keys.** `stage`, `drive_file_id`, `file_hash`, `model`, and `prompt_version` must all be present and non-empty strings.
 3. **Source PDF match.** For extraction packets (`stage-drafts`), the staging tool looks up the `drive_file_id` and `file_hash` combination in `source_pdfs` to find the registered `pdf_id`; if no matching row exists, the packet is rejected (see [Unknown PDF version](#unknown-pdf-version)). For risk packets (`risk-assess`), the row may not yet exist and will be created by `risk-assess` as part of the same transaction.
+3a. **Source PDF bytes.** For `risk-assess`, the SHA-256 of the file at `--source-pdf` must equal `file_hash`. A mismatch is a validation failure: exit code `1`, no writes, and a message stating the file bytes do not match `file_hash`.
 4. **Stage-specific fields.** Risk packets must have `decision` and `issues`. Extraction packets must have a `runs` array.
 5. **Decision value.** For risk packets, `decision` must be `"non_critical"`, `"critical"`, or `"uncertain"`.
 6. **Extraction precondition.** For extraction packets, the staging tool checks `processing_status` for the registered `pdf_id` resolved from the packet's `drive_file_id` and `file_hash`. It will stage drafts only if the recorded decision is `non_critical` or if a human clearance is recorded. If neither condition is met, the packet is rejected with a clear message and no rows are written.
@@ -323,11 +348,11 @@ The staging tool checks the following before writing anything to the database:
 
 ### Staging logic
 
-**Risk packets.** On first call for a given `drive_file_id` and `file_hash`, `risk-assess` upserts a row in `source_pdfs` to register the exact PDF version, then upserts a row in `processing_status` recording the `decision`, the full issues array, and `updated_at`. Both writes happen in a single transaction. A retry with the same `drive_file_id` and `file_hash` reuses the existing `source_pdfs` row and updates `processing_status` only if the decision has changed. A packet carrying the same `drive_file_id` but a different `file_hash` represents a replacement — the Drive file's bytes have changed. `risk-assess` always creates a new `source_pdfs` row and a fresh `processing_status` row for it. If the previous version was held, clearance does not carry over; the replacement needs its own clearance. `risk-assess` does not write to `draft_runs` or `growth_runs`.
+**Risk packets.** Before writing anything, `risk-assess` computes the SHA-256 of the file at `--source-pdf` and compares it with the packet's `file_hash`. On first call for a given `drive_file_id` and `file_hash`, it copies the verified bytes into a retained store under the active environment (for example `retained_pdfs/<environment>/<drive_file_id>-<file_hash>.pdf`), upserts a row in `source_pdfs` to register the exact PDF version with the absolute path of the copy in `storage_path`, then upserts a row in `processing_status` recording the `decision`, the full issues array, and `updated_at`. The copy and both writes happen in a single transaction; if the copy fails, the transaction rolls back. A retry with the same `drive_file_id` and `file_hash` reuses the existing `source_pdfs` row and the existing retained copy, never overwrites that copy, and updates `processing_status` only if the assessment result or issues have changed (see [Status transitions](#status-transitions)). A retry never overwrites `clearance_by`, `clearance_at`, or `clearance_note`; only the review app can write those fields. A retry for a registered version whose retained copy is missing recreates the copy at `source_pdfs.storage_path`, after the SHA-256 of `--source-pdf` matches `file_hash`. A packet carrying the same `drive_file_id` but a different `file_hash` represents a replacement — the Drive file's bytes have changed. `risk-assess` always creates a new `source_pdfs` row and a fresh `processing_status` row for it. If the previous version was held, clearance does not carry over; the replacement needs its own clearance. `risk-assess` does not write to `draft_runs` or `growth_runs`.
 
-**Extraction packets.** For each run in the packet, the staging tool checks whether a `draft_runs` row already exists for the same `pdf_id`, `file_hash`, and `draft_id`. If none exists, it inserts a new row with status `Pending review`. If one exists with identical JSON content, it skips the row (idempotent retry). If one exists with different JSON content, it surfaces a conflict error and rolls back the entire batch.
+**Extraction packets.** For each run in the packet, the staging tool checks whether a `draft_runs` row already exists for the same `pdf_id` and `draft_id`. If none exists, it inserts a new row with status `Pending review`. If one exists with identical JSON content, it skips the row (idempotent retry). If one exists with different JSON content, it surfaces a conflict error and rolls back the entire batch.
 
-**stage-drafts queuing.** `stage-drafts` stages eligible runs as `Pending review` in `draft_runs`. Runs staged by `stage-drafts` appear in the review app immediately. The staging tool never writes to `growth_runs`; only reviewer approval does that.
+**stage-drafts queuing.** `stage-drafts` stages eligible runs as `Pending review` in `draft_runs`. Runs staged by `stage-drafts` appear in the review app immediately. The staging tool never writes to `growth_runs`; only reviewer approval does that. On successful completion, `stage-drafts` also sets `processing_status.status` to `"extraction_complete"` for the same `pdf_id`.
 
 ### Transaction semantics
 
@@ -340,6 +365,18 @@ An identical retry of a previously imported packet stages zero new rows and exit
 ### Conflict detection
 
 When a changed extraction packet references an existing `draft_id` for the same PDF version, the staging tool reports a conflict with the `draft_id` and both JSON payloads for operator review. No rows are modified. If the new packet covers a different PDF version (different `file_hash`), it is treated as a new extraction and may create new draft rows, but a reviewer must confirm the match between old and new drafts before any approved records change.
+
+### Reserved acceptance PDF guard
+
+The staging tool protects the PDFs reserved for the acceptance run from being recorded during walkthrough tuning (Requirements 30.1 to 30.5).
+
+- **Reserved list.** The reserved list is the `drive_file_id` of every `acceptance` entry in `test_checklist.json`. The tool finds that file through `checklist_path` in `config.json`.
+- **Scope.** The guard applies only when the database is the Test database. It is never applied to the Archive database, and never to `check-gate`, which is read-only.
+- **Without the flag.** When `risk-assess` or `stage-drafts` runs without `--acceptance-run` and the packet's `drive_file_id` is on the reserved list, the tool exits with code `1`, prints a message that the PDF is reserved for the acceptance run, and writes no rows.
+- **With the flag.** When `--acceptance-run` is supplied, the tool processes a reserved PDF as it would any other PDF.
+- **No reserved list.** If the checklist file is missing or has no `acceptance` entries, the tool applies no guard and prints a notice that no reserved list was found.
+
+**Limits.** The guard stops recording only. It does not stop the skill from reading the scan in Codex. A person who passes `--acceptance-run` can bypass it. The guard prevents mistakes, not misuse.
 
 ---
 
@@ -355,9 +392,9 @@ One row per version of a growth-log PDF.
 |---|---|---|
 | `pdf_id` | TEXT PRIMARY KEY | Internal primary key; assigned on first registration. |
 | `archive_filename` | TEXT NOT NULL | Display label shown in the archive (e.g. `log-1-042.pdf`). Not used to identify the PDF version. |
-| `drive_file_id` | TEXT | The Drive file ID for the original PDF. Together with `file_hash`, identifies the exact PDF version. |
+| `drive_file_id` | TEXT NOT NULL | The Drive file ID for the original PDF. Together with `file_hash`, identifies the exact PDF version. |
 | `file_hash` | TEXT NOT NULL | Hash of the exact PDF bytes (SHA-256). Together with `drive_file_id`, identifies the exact PDF version. A replaced Drive file (same `drive_file_id`, different `file_hash`) produces a new `source_pdfs` row. |
-| `storage_path` | TEXT | Path to the retained copy on the laptop when needed to preserve the exact PDF version. |
+| `storage_path` | TEXT | Absolute path to the retained local copy of the PDF. Set by the `risk-assess` copy step (after SHA-256 verification against `file_hash`) on first registration and never empty for a registered version. The reviewer uses this path to open the exact PDF version they are approving. |
 
 ### `draft_runs`
 
@@ -386,7 +423,7 @@ One row per approved experimental run. Rows are written only by the approval tra
 | `date_precision` | TEXT | `"day"` or `"month"`. |
 | `jc_number` | TEXT | The JC number exactly as written; text to preserve partials and leading zeros. Can be null; can repeat across runs. |
 | `growth_process` | TEXT | `"CVT"`, `"Flux Growth"`, `"unclear"`, or null. Supports filtering. |
-| `composition_json` | TEXT | JSON object with formula, ratios, weights, and units. Required for a run with stoichiometry; null if the run was approved with stoichiometry held. |
+| `composition_json` | TEXT | JSON object with formula, ratios, weights, and units. Stoichiometry is a hard approval gate; this field must be populated before a run can be approved. |
 | `source_locations_json` | TEXT NOT NULL | JSON array of `{pdf_index, row}` objects; at least one is required. |
 | `details_json` | TEXT | Optional JSON for furnace steps, sketch references, and growth-process evidence. |
 
@@ -413,7 +450,7 @@ One row per PDF version. Tracks the outcome of risk assessment and extraction fo
 | Column | Type | Notes |
 |---|---|---|
 | `pdf_id` | TEXT NOT NULL | Foreign key to `source_pdfs`. |
-| `file_hash` | TEXT NOT NULL | Matches the hash in `source_pdfs`. Together with `pdf_id` forms the natural key. |
+| `file_hash` | TEXT NOT NULL | Matches `source_pdfs.file_hash` for the same `pdf_id`. Stored here so processing records remain self-contained without joining `source_pdfs`. Must equal `source_pdfs.file_hash` for the same `pdf_id`; the staging tool enforces this on write. |
 | `status` | TEXT NOT NULL | `"risk_assessed"`, `"held_pending_clearance"`, `"cleared"`, `"extraction_complete"`, `"technical_failure"`. |
 | `risk_decision` | TEXT | `"non_critical"`, `"critical"`, `"uncertain"`, or null before risk assessment. |
 | `issues_json` | TEXT | JSON array of issue objects from the risk packet; null if no issues. |
@@ -423,7 +460,20 @@ One row per PDF version. Tracks the outcome of risk assessment and extraction fo
 | `reason` | TEXT | Description of a hold or technical failure. |
 | `updated_at` | TEXT NOT NULL | ISO timestamp of the last status change. |
 
+### Status transitions
+
+`processing_status` has one row per `pdf_id` (primary key `pdf_id`). Transitions are:
+
+- `risk-assess` on a new version: `risk_assessed` for `non_critical`; `held_pending_clearance` for `critical` or `uncertain`.
+- Review app clearance: `held_pending_clearance` → `cleared`.
+- Successful `stage-drafts`: `extraction_complete`.
+- Unexpected processing error on a registered version (after packet validation passed): `technical_failure` with a non-empty `reason`, recorded in a separate transaction after the command's own writes roll back.
+- Retry of `risk-assess` with a changed assessment result: records the new `risk_decision` and `issues_json`. A version whose `status` is `cleared` or `extraction_complete` keeps its `status` and clearance fields; otherwise `status` follows the new assessment result (Requirement 1.8).
+- A later successful command on a `technical_failure` version: sets `status` from the stored assessment result and clearance, and clears `reason` (Requirement 14.8).
+
 ### Schema notes
+
+`draft_runs.updated_at` changes on every hold, reopen, correction, and approval, because the stale-approval check depends on it. `growth_runs.run_id` is derived deterministically from `draft_id`, so a retry of a committed approval is detectable.
 
 The `drive_file_id` + `file_hash` combination identifies the exact PDF version. `pdf_id` is an internal key assigned when `risk-assess` first registers that version. Every `draft_runs` and `processing_status` row references `pdf_id`, which ties it to the exact bytes registered at that time.
 
@@ -439,16 +489,24 @@ The operator can view drafts and processing status. Any lab-authorized reviewer 
 
 The app presents a dropdown of lab-authorized reviewer names. The reviewer selects their name before any action that is recorded — clearing a PDF, saving a correction, holding a draft, or approving a run. The app shows the selected name and requires a selection before the action can proceed. The reviewer list is stored in the app configuration.
 
+Reviewer selection is honor-system. The app has no sign-in, so anyone at the laptop can pick any name. This is an accepted limitation for the MVP, pending lab confirmation.
+
 ### UI surfaces
 
-**Processing status view.** Shows each processed PDF with its current `processing_status` row: risk tier, number of drafts pending, and any hold or failure reason. The operator uses this to track the pipeline. PDFs held for clearance display their issues and a prompt for the reviewer to record clearance. Leave the original PDF in its Drive binder folder. A hold or an approval changes database status and does not move the source PDF, its local copy, or the JSON packets. For each PDF that has reached extraction, show a summary of its draft run statuses — for example, '3 approved · 2 pending · 1 held'. Approved runs from that PDF are searchable while others remain under review. The counts update when a reviewer acts on a draft.
+**Processing status view.** Shows each processed PDF with its current `processing_status` row: risk tier, number of drafts pending, and any hold or failure reason. The operator uses this to track the pipeline. PDFs held for clearance display their issues and a prompt for the reviewer to record clearance. Leave the original PDF in its Drive binder folder. A hold or an approval changes database status and does not move the source PDF, its local copy, or the JSON packets. For each PDF that has reached extraction, show a summary of its draft run statuses — for example, '3 approved · 2 pending · 1 held'. Approved runs from that PDF are searchable while others remain under review. The counts update when a reviewer acts on a draft. In Test, a PDF whose `drive_file_id` is on the reserved list is labelled "Reserved (acceptance)" (Requirement 30.6).
 
-**Draft review view.** Lists `Pending review` and `Held` drafts. Each entry shows the draft fields alongside a rendered view of the source PDF opened at the relevant measurement row. The reviewer can:
+**Draft review view.** Lists `Pending review` and `Held` drafts. Each entry shows the draft fields alongside a rendered view of the source PDF opened at the recorded page, with the measurement-table row number shown beside the viewer. Browser PDF viewers cannot scroll to a table row, so the row appears as a label (Requirement 8.2). The reviewer can:
 
 - Inspect any field value and its `evidence`.
 - Edit a field value (requires reviewer role). Each edit records the old value, new value, reason, and source location.
 - Approve the draft (requires reviewer role).
 - Hold the draft with a written reason and source location reference.
+
+**Source PDF integrity.** When a source PDF is opened from a draft or a search result, the review app compares the SHA-256 of the retained copy with `file_hash`. On a mismatch it shows a warning in the viewer panel and blocks approval of that PDF's drafts until the retained copy is restored.
+
+**Corrections.** Corrections made before approval are stored as JSON records under `review_workspace/<environment>/corrections/<draft_id>.json`. Each record holds the field, old value, new value, reason, source location, reviewer, and timestamp. `draft_runs.original_json` is never modified. Approval folds the records into `run_revisions.changes_json`.
+
+**Furnace layout.** For a furnace layout field, the review app offers an action that opens the source PDF at that field's source location, from both the draft and the approved run. The MVP needs no separate image store.
 
 **Approved run view.** Shows all runs in `growth_runs` with their latest `run_revisions` snapshot. The reviewer can open a run, see its full revision history, and initiate a correction that goes through the same approval workflow.
 
@@ -478,7 +536,11 @@ A run with unresolved stoichiometry stays held and out of search. Approval requi
 
 ### Stale-approval protection
 
-Before writing the approval transaction, the app reads the current `run_revisions.version` for the run and the current `draft_runs.updated_at` for the draft. If either has changed since the reviewer opened the draft, the app shows the latest state and requires the reviewer to confirm before proceeding. This prevents a stale approval from overwriting a newer decision or creating a duplicate revision.
+Before writing the approval transaction, the app reads the current `draft_runs.updated_at` for the draft. If the run already has a `run_revisions` row, the app also reads the current `run_revisions.version`. If either has changed since the reviewer opened the draft, the app shows the latest state and requires the reviewer to confirm before proceeding. This prevents a stale approval from overwriting a newer decision or creating a duplicate revision.
+
+### Revising an approved run
+
+A reviewer can revise an approved run through the same review workflow. The revision starts from the latest approved values and requires a reviewer name, a reason for each change, and the approval preconditions. On confirmation, one SQLite transaction inserts a `run_revisions` row with version N+1 for the same `run_id` and updates the searchable columns of the same `growth_runs` row. Earlier `run_revisions` rows stay unchanged. Stale-approval protection applies. A failed transaction leaves `growth_runs` and `run_revisions` unchanged. After commit, search returns the revised value for the same `run_id`.
 
 ---
 
@@ -507,7 +569,7 @@ Month-only dates (`YYYY-MM`) sort before day-precision entries in that month and
 
 ### Opening the source PDF
 
-Each search result includes a **Open source PDF** action that opens the retained PDF at the page and measurement-table row recorded in `source_locations_json`. The app reads `source_pdfs.storage_path` or `source_pdfs.drive_file_id` to locate the file.
+Each search result includes an **Open source PDF** action. The viewer opens the retained PDF at the page recorded in `source_locations_json` and shows the recorded measurement-table row number beside it, because browser PDF viewers cannot scroll to a table row (Requirements 8.2, 20.4). The app reads `source_pdfs.storage_path` or `source_pdfs.drive_file_id` to locate the file. This is how the design meets the requirement to open the source PDF at the relevant page and row (DESIGN-MVP.md section 7): the page opens and the row is identified by its number. Scrolling to or highlighting the row would need position data that the JSON packet does not carry and is not part of the MVP.
 
 ---
 
@@ -529,12 +591,12 @@ The reviewer records clearance in `processing_status` by setting `clearance_by`,
 
 ### Extraction gate
 
-Before starting extraction, the skill checks the `processing_status` row for the exact `pdf_id` and `file_hash` combination. It proceeds only if:
+Before starting extraction, the skill calls `check-gate` for the exact `drive_file_id` and `file_hash` combination. It proceeds only if:
 
 - `risk_decision` is `"non_critical"`, or
 - `clearance_by` is populated (human clearance recorded).
 
-If neither condition is met, the skill waits and asks the operator to obtain reviewer clearance. The staging tool enforces the same gate: an extraction packet for a PDF without a recorded non-critical decision or clearance is rejected.
+If neither condition is met, the skill waits and asks the operator to obtain reviewer clearance. The staging tool enforces the same gate independently on `stage-drafts`: an extraction packet for a PDF without a recorded non-critical decision or clearance is rejected.
 
 ---
 
@@ -587,39 +649,69 @@ The following properties must hold at all times.
 
 ### Property 1: Extraction gate
 
-An extraction packet is never staged without a recorded non-critical risk decision or human clearance for the same `pdf_id` and `file_hash`.
+An extraction packet is never staged without a recorded non-critical assessment result or human clearance for the registered version identified by `drive_file_id` and `file_hash`.
+
+**Validates: Requirements 2.3, 2.4**
 
 ### Property 2: Atomic approval
 
 A `growth_runs` row is never written outside an approval transaction that also writes a matching `run_revisions` row with `approved_by` and `approved_at`.
 
+**Validates: Requirements 12.1**
+
 ### Property 3: Idempotent import
 
 An identical packet import produces zero new rows and exits successfully.
+
+**Validates: Requirements 22.1, 22.2**
 
 ### Property 4: Conflict rejection
 
 A changed packet for an existing `draft_id` is rejected and no rows are written.
 
+**Validates: Requirements 23.1, 23.2**
+
 ### Property 5: Hold reason required
 
 A `Held` draft always has a non-empty `hold_reason`.
+
+**Validates: Requirements 10.1, 10.2**
 
 ### Property 6: Approved run completeness
 
 An approved run always has at least one entry in `source_locations_json`, at least one of `researcher_name`, `growth_date`, or `jc_number`, and a valid `run_revisions` row.
 
+**Validates: Requirements 11.1, 11.2, 11.3, 12.1**
+
 ### Property 7: Search isolation
 
 Search results contain only rows from `growth_runs`. `draft_runs` rows are never returned by search queries.
+
+**Validates: Requirements 15.1, 15.2, 15.3**
 
 ### Property 8: Stale approval safety
 
 A stale approval never overwrites a revision with a higher version number.
 
+**Validates: Requirements 13.1, 13.2**
+
 ### Property 9: Failed transaction atomicity
 
 A failed approval transaction leaves `growth_runs` and `run_revisions` unchanged.
+
+**Validates: Requirements 12.3**
+
+### Property 10: Retained copy integrity
+
+Every registered `source_pdfs` row has a retained copy whose SHA-256 equals `file_hash`; a mismatch is surfaced and blocks approval.
+
+**Validates: Requirements 8.5, 8.6, 1.9**
+
+### Property 11: Reserved PDF guard
+
+In Test, without `--acceptance-run`, no `source_pdfs`, `processing_status`, or `draft_runs` row is created for a `drive_file_id` on the reserved list.
+
+**Validates: Requirements 30.2, 30.3**
 
 ---
 
@@ -641,17 +733,29 @@ The staging tool prints the conflicting `draft_id` and both JSON payloads, then 
 
 When `stage-drafts` receives an extraction packet whose `drive_file_id` and `file_hash` combination does not match any row in `source_pdfs`, the staging tool rejects the packet with exit code `1` and a message stating that `risk-assess` must complete successfully for that exact PDF version before drafts can be staged. No rows are written. The operator should run `$stage-log-runs` from the risk assessment step for the correct PDF version.
 
+### Reserved PDF processed without the acceptance flag
+
+**Condition**: In the Test database, `risk-assess` or `stage-drafts` runs without `--acceptance-run` for a `drive_file_id` on the reserved list.
+**Response**: The staging tool exits with code `1` and prints a message that the PDF is reserved for the acceptance run. No rows are written.
+**Recovery**: If this is an acceptance run, the operator reruns the command with `--acceptance-run`. Otherwise the operator selects a different PDF for the walkthrough.
+
 ### Approval transaction failure
 
 The review app catches the SQLite error, shows the error message to the reviewer, and leaves the form in an editable state so the reviewer can retry. If a previous transaction for the same draft committed before the app could display confirmation, the retry detects the existing revision and returns it without inserting a duplicate.
 
 ### Stale approval
 
-The app reads the current `run_revisions.version` and `draft_runs.updated_at` before writing. If either has changed since the reviewer opened the view, the app reloads the latest state and asks the reviewer to confirm before proceeding.
+The app reads the current `draft_runs.updated_at` before writing, and the current `run_revisions.version` when the run already has a revision. If either has changed since the reviewer opened the view, the app reloads the latest state and asks the reviewer to confirm before proceeding.
 
 ### Hold without reason
 
 The app prevents a hold from being saved if `hold_reason` is empty. The reviewer must supply a reason before the hold is recorded.
+
+### Retained copy fails verification
+
+**Condition**: The SHA-256 of the retained copy differs from `source_pdfs.file_hash` when a source PDF is opened.
+**Response**: The review app shows a warning in the viewer panel and blocks approval of that PDF's drafts.
+**Recovery**: The operator restores the copy, or reruns `risk-assess` with the original `--source-pdf` so the staging tool recreates it after the hash matches.
 
 ### PDF file not found on disk
 
@@ -665,9 +769,17 @@ If `source_pdfs.storage_path` does not resolve to a readable file, the review ap
 
 Each validation rule in the staging tool should have a dedicated test: missing envelope keys, unsupported schema version, file hash mismatch, extraction packet without clearance, conflict detection, identical retry (idempotency), and each field-contract rule. Tests run against a temporary in-memory SQLite database.
 
+### Pre-build feasibility spike
+
+Before building the skill step, the operator confirms in Codex that it can run a shell command in the workspace, compute a SHA-256, and read and assess one non-reserved PDF at adequate resolution. The operator also measures time and usage per PDF over three to five non-reserved PDFs to plan the wider batch. Results go to `spike_results.md` and are not acceptance evidence.
+
+### Tracer bullet
+
+Once the staging tool and the skill exist, and before the review app is finished, the operator takes one non-reserved PDF through the skill and the staging tool in Test. This is an informal check of the path from PDF to staged draft.
+
 ### Integration testing
 
-For the walkthrough in DESIGN-MVP.md §7, start `$stage-log-runs` on selected PDFs from Binders 1 and 2. Include at least one example for every case in the [walkthrough coverage list](../../../DESIGN-MVP.md#walkthrough-cases-for-missing-or-unclear-information). A PDF can cover multiple cases. At least one walkthrough run must start with a PDF and reach the review app without a manual JSON handoff — the skill must call the staging tool automatically and the drafts must appear in the review queue as a result.
+For the walkthrough in DESIGN-MVP.md §7, start `$stage-log-runs` on selected PDFs from Binders 1 and 2. Include at least one example for every case in the [walkthrough coverage list](../../../DESIGN-MVP.md#walkthrough-cases-for-missing-or-unclear-information) (Requirement 27.2), a dedicated PDF for each critical case in Requirement 27.8 with that case as its only critical issue (or a recorded waiver when no real example exists), a multi-run PDF with exactly one critical run (Requirement 27.9), and the structural examples in Requirement 27.10. A PDF can cover several missing-information or structural cases, but each critical-case PDF carries one critical case so its hold reason can be attributed to one rule. At least one walkthrough run must start with a PDF and reach the review app without a manual JSON handoff — the skill must call the staging tool automatically and the drafts must appear in the review queue as a result.
 
 - Verify that the skill calls `risk-assess` automatically after the risk packet and that the decision is recorded in `processing_status`.
 - For a PDF that needs clearance, verify that the skill holds the PDF and creates zero drafts before clearance is recorded.
@@ -685,9 +797,11 @@ Also exercise the staging tool directly with packets that follow the MVP JSON co
 
 ### Acceptance checks
 
-**Two-round structure:** The MVP testing follows two rounds:
+The acceptance run covers the full path from source PDF to approved search result: intake, clearance, automatic draft staging, review, approval, approved-only search by month, name, and both together, and the source link. It also covers the go/no-go confirmation, recording of the skill, staging tool, and review app versions under test, and researcher and reviewer feedback before wider batch processing (Requirements 28.10 to 28.13). The reviewer records expected-held outcomes beforehand; the design does not fix them. Acceptance reports unnecessary holds, extraction errors found in review, and reviewer correction time per PDF (Requirement 28.14); numeric tolerances are pending Iris. The restore drill may use a Test snapshot until Archive holds approved records, and is repeated on the first real Archive backup (Requirement 26.7).
 
-1. **Walkthrough** — uses PDFs from Binders 1 and 2 that are outside the reserved acceptance list. Includes at least one example for every missing or unclear information case in [DESIGN-MVP.md §7 walkthrough cases](../../../DESIGN-MVP.md#walkthrough-cases-for-missing-or-unclear-information). One PDF can cover multiple cases. At least one run must start with a PDF and reach the review app without manual JSON upload. Tune skill, staging tool, and app here.
+**Two-round structure:** The MVP testing follows two rounds. The walkthrough runs without `--acceptance-run`, so the reserved acceptance PDFs are refused. The acceptance run uses `--acceptance-run` (Requirements 30.2, 30.3, 30.7).
+
+1. **Walkthrough** — uses PDFs from Binders 1 and 2 that are outside the reserved acceptance list. Includes at least one example for every missing or unclear information case in [DESIGN-MVP.md §7 walkthrough cases](../../../DESIGN-MVP.md#walkthrough-cases-for-missing-or-unclear-information), plus one dedicated PDF per critical case, the multi-run PDF with one critical run, and the structural examples (Requirements 27.2, 27.8 to 27.11). Missing-information and structural cases can share a PDF; critical cases cannot. At least one run must start with a PDF and reach the review app without manual JSON upload. Tune skill, staging tool, and app here.
 
 2. **Acceptance run** — uses the [proposed acceptance PDFs](../../../DESIGN-MVP.md#proposed-acceptance-pdfs) reserved by filename, Drive ID, and version hash. These PDFs are kept out of walkthrough tuning. An authorized reviewer records the expected results first without relying on the skill's output, then follows the [acceptance run procedure](../../../DESIGN-MVP.md#acceptance-run-procedure) in a clean Test workspace.
 
@@ -705,5 +819,7 @@ The following are confirmed as outside the MVP boundary and are not addressed in
 - **Researcher photo upload.** All source PDFs come from the existing Drive inventory. No in-app photo capture, page reordering, or PDF conversion from phone photos.
 - **Offline features.** No offline archive sync, no offline photo capture queue, no pending-upload state.
 - **Run 01 / pilot experiments.** The unvalidated ChatGPT extraction in `pilot/runs/chatgpt/pdf-to-json/run01/` and the pilot SQLite walkthrough (`pilot/sqlite/`) are prior experiments and are not part of the MVP workflow. No MVP component reads from, writes to, or depends on those artifacts.
+
+**Deferred.** Matching re-extracted drafts to existing runs, and reviewer confirmation when a PDF is replaced (DESIGN-MVP.md section 6), are deferred beyond this plan.
 
 The features above are described in `pilot/DESIGN-PILOT.md` as the next phase after the MVP and are not part of the local laptop deployment.

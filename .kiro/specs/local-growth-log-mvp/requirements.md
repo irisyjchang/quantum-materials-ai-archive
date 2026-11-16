@@ -4,31 +4,31 @@
 
 The Local Growth Log MVP turns existing Drive growth-log PDFs into a searchable, human-approved crystal-growth archive running entirely on the operator's laptop. The operator invokes the `stage-log-runs` Codex skill on selected PDFs. The skill automatically calls the local staging tool (`risk-assess` and `stage-drafts`) after each corresponding packet. Any lab-authorized reviewer clears PDFs, corrects, holds, or approves drafts in the review app. Only approved runs enter `growth_runs` and appear in search. Iris signs off on the acceptance-run results before wider batch processing begins.
 
-This document derives requirements from the approved design document (`.kiro/specs/local-growth-log-mvp/design.md`) cross-referenced against `DESIGN-MVP.md`. Requirements are not invented independently of those sources.
+This document derives requirements from the approved design document (`.kiro/specs/local-growth-log-mvp/design.md`) cross-referenced against `DESIGN-MVP.md`. Requirements are not invented independently of those sources. Matching re-extracted drafts to existing runs, and reviewer confirmation when a PDF is replaced (DESIGN-MVP.md section 6), are deferred and are not covered by these requirements.
 
 ---
 
 ## Glossary
 
-- **Skill**: The `stage-log-runs` Codex prompt run by the operator in ChatGPT. It is not a local CLI tool.
-- **Staging_Tool**: The local Python CLI (`staging.py`) that accepts JSON packets and writes records to SQLite in a single transaction.
-- **Review_App**: The local web application through which lab-authorized reviewers clear PDFs, inspect drafts alongside source PDFs, correct fields, hold, and approve runs.
-- **SQLite_DB**: The single binary file on the operator's laptop that stores all MVP state.
-- **SourcePDF**: One version of a growth-log PDF, identified by `drive_file_id` and `file_hash`.
-- **DraftRun**: A staged extraction draft in `draft_runs`, awaiting reviewer action.
-- **GrowthRun**: An approved experimental run stored in `growth_runs`.
-- **RunRevision**: A versioned snapshot of an approved run stored in `run_revisions`.
-- **ProcessingStatus**: The row in `processing_status` tracking risk assessment and extraction outcome per PDF version.
-- **Risk_Packet**: A versioned JSON file produced by the Skill, containing the assessment result and issues array for a SourcePDF.
-- **Extraction_Packet**: A versioned JSON file produced by the Skill, containing extracted run data for a cleared SourcePDF.
-- **Reviewer**: A lab-authorized person who can clear PDFs, edit drafts, hold drafts, and approve runs.
+- **skill**: The `stage-log-runs` Codex prompt run by the operator in ChatGPT. It is not a local CLI tool.
+- **staging tool**: The local Python CLI (`staging.py`) that accepts JSON packets and writes records to SQLite in a single transaction.
+- **review app**: The local web application through which lab-authorized reviewers clear PDFs, inspect drafts alongside source PDFs, correct fields, hold, and approve runs.
+- **SQLite database**: The single binary file on the operator's laptop that stores all MVP state for one environment.
+- **source PDF**: One version of a growth-log PDF, identified by `drive_file_id` and `file_hash` and stored as a `source_pdfs` row.
+- **draft run**: A staged extraction draft in `draft_runs`, awaiting reviewer action.
+- **growth run**: An approved experimental run stored in `growth_runs`.
+- **run revision**: A versioned snapshot of an approved run stored in `run_revisions`.
+- **processing status**: The row in `processing_status` tracking risk assessment and extraction outcome per PDF version.
+- **risk JSON packet**: A versioned JSON file produced by the skill, containing the assessment result and issues array for a source PDF.
+- **extraction JSON packet**: A versioned JSON file produced by the skill, containing extracted run data for a cleared source PDF.
+- **reviewer**: A lab-authorized person who can clear PDFs, edit drafts, hold drafts, and approve runs.
 - **operator**: The lab member who starts or resumes `stage-log-runs`. The operator selects source PDFs, monitors the staging tool output, and retries technical failures.
-- **Extraction_Gate**: The rule that extraction may proceed only when the SourcePDF has a recorded `non_critical` assessment result or a human clearance.
-- **JC_Number**: A crystal-growth experiment identifier written on a run; stored as text exactly as written.
-- **Lookup_Value**: At least one of `researcher_name`, `growth_date`, or `jc_number`; required for every approved GrowthRun.
-- **Stoichiometry**: The composition information recorded in `composition_json`; a hard gate for approval.
-- **Test_DB**: `test.sqlite`, the SQLite database used for walkthrough and acceptance testing.
-- **Archive_DB**: `archive.sqlite`, the SQLite database used for official records.
+- **extraction gate**: The rule that extraction may proceed only when the source PDF has a recorded `non_critical` assessment result or a human clearance.
+- **JC number**: A crystal-growth experiment identifier written on a run; stored as text exactly as written.
+- **lookup value**: At least one of `researcher_name`, `growth_date`, or `jc_number`; required for every approved growth run.
+- **stoichiometry**: The composition information recorded in `composition_json`; a hard gate for approval.
+- **Test database**: `test.sqlite`, the SQLite database used for walkthrough and acceptance testing.
+- **Archive database**: `archive.sqlite`, the SQLite database used for official records.
 
 ---
 
@@ -36,40 +36,47 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 ### Requirement 1: Skill invokes risk-assess automatically
 
-**User Story:** As an operator, I want the Skill to call `risk-assess` automatically after producing a risk JSON packet, so that the assessment result is recorded without a manual JSON upload step.
+**User Story:** As an operator, I want the skill to call `risk-assess` automatically after producing a risk JSON packet, so that the assessment result is recorded without a manual JSON upload step.
 
 #### Acceptance Criteria
 
-1. WHEN the operator invokes the Skill with a source PDF path, the skill SHALL produce a versioned risk JSON packet and immediately call `python staging.py risk-assess <packet.json> <database.sqlite>`.
+1. WHEN the operator invokes the skill with a source PDF path, the skill SHALL produce a versioned risk JSON packet and immediately call `python staging.py risk-assess <packet.json> --source-pdf <local path> [--acceptance-run] <database.sqlite>` (the `--acceptance-run` flag is governed by Requirement 30).
 2. WHEN the staging tool returns exit code `0` from `risk-assess`, the skill SHALL report the staging result to the operator.
 3. WHEN the staging tool is unavailable or returns a non-zero exit code from `risk-assess`, the skill SHALL save the completed risk JSON packet, report the blocker to the operator, and stop without claiming the assessment was recorded.
 4. WHEN `risk-assess` is called for the first time for a given `drive_file_id` and `file_hash` combination, the staging tool SHALL upsert a `source_pdfs` row and a `processing_status` row in a single SQLite transaction.
-5. WHEN `risk-assess` is retried with the same `drive_file_id` and `file_hash`, the staging tool SHALL reuse the existing `source_pdfs` row and update `processing_status` only if the decision has changed.
+5. WHEN `risk-assess` is retried with the same `drive_file_id` and `file_hash`, the staging tool SHALL reuse the existing `source_pdfs` row and update `processing_status` only if the assessment result or issues have changed (see 1.8).
 6. WHEN `risk-assess` receives a packet with the same `drive_file_id` but a different `file_hash`, the staging tool SHALL create a new `source_pdfs` row and a fresh `processing_status` row, and the previous version's clearance does not carry over to the new version.
+7. WHEN `risk-assess` is retried for a `drive_file_id` and `file_hash` that already has `clearance_by` populated, the staging tool SHALL NOT overwrite `clearance_by`, `clearance_at`, or `clearance_note`.
+8. WHEN `risk-assess` is retried and the assessment result or issues for a registered version have changed, the staging tool SHALL record the new `risk_decision` and `issues_json`. IF the version's `status` is `"cleared"` or `"extraction_complete"`, THEN the staging tool SHALL leave `status` and all clearance fields unchanged; otherwise `status` SHALL follow the new assessment result.
+9. WHEN `risk-assess` is retried for a registered version whose retained copy is missing and the SHA-256 of the supplied source PDF equals `file_hash`, the staging tool SHALL recreate the retained copy at `source_pdfs.storage_path`.
+10. WHEN the operator invokes the skill with a source PDF, the skill SHALL obtain `drive_file_id` by running `python tools/lookup_drive_id.py <archive_filename>` against the filename index at `filename_index_path` in `config.json`, and SHALL stop with a message to the operator if the filename is not in the index.
+11. the skill SHALL set `model` in each JSON packet to the model name Codex reports or, if Codex cannot report one, to a value the operator supplies, and SHALL set `prompt_version` to the version stated in `SKILL.md`; the skill SHALL NOT leave either value blank.
 
 ### Requirement 2: Extraction gate enforcement
 
-**User Story:** As an operator, I want both the Skill and the staging tool to independently enforce the Extraction_Gate, so that no run is ever extracted from an uncleared PDF.
+**User Story:** As an operator, I want both the skill and the staging tool to independently enforce the extraction gate, so that no run is ever extracted from an uncleared PDF.
 
 #### Acceptance Criteria
 
-1. WHEN the Skill is about to begin extraction, the skill SHALL read the `processing_status` row for the registered `pdf_id` resolved from the packet's `drive_file_id` and `file_hash` and proceed only if `risk_decision` is `"non_critical"` or `clearance_by` is populated.
-2. IF neither a `non_critical` decision nor a human clearance is recorded for the SourcePDF, THEN the skill SHALL stop, inform the operator that reviewer clearance is required, and produce zero extraction JSON packets.
-3. WHEN the staging tool receives an extraction JSON packet via `stage-drafts`, the staging tool SHALL check `processing_status` for the same `drive_file_id` and `file_hash` and reject the packet if neither condition of the Extraction_Gate is met.
-4. IF the staging tool rejects an extraction JSON packet due to a failed Extraction_Gate check, THEN the staging tool SHALL return exit code `1` with a message identifying the `drive_file_id` and `file_hash` and explaining the missing clearance, and no rows SHALL be written.
+1. WHEN the skill is about to begin extraction, the skill SHALL call the read-only staging tool command `python staging.py check-gate <drive_file_id> <file_hash> <database.sqlite>` to check the gate for the `drive_file_id` and `file_hash` combination and SHALL proceed only if the staging tool confirms a recorded `non_critical` assessment result or a human clearance. The staging tool enforces the same gate independently when it receives the extraction JSON packet.
+2. IF neither a `non_critical` assessment result nor a human clearance is recorded for the source PDF, THEN the skill SHALL stop, inform the operator that reviewer clearance is required, and produce zero extraction JSON packets.
+3. WHEN the staging tool receives an extraction JSON packet via `stage-drafts`, the staging tool SHALL check `processing_status` for the same `drive_file_id` and `file_hash` and reject the packet if neither condition of the extraction gate is met.
+4. IF the staging tool rejects an extraction JSON packet due to a failed extraction gate check, THEN the staging tool SHALL return exit code `1` with a message identifying the `drive_file_id` and `file_hash` and explaining the missing clearance, and no rows SHALL be written.
+5. WHEN `check-gate` exits with code `0`, the staging tool SHALL print the absolute `source_pdfs.storage_path` of the retained copy, and the skill SHALL extract from that file so that extraction uses the exact bytes that were assessed.
 
 *Cross-reference: Design Property 1 — Extraction gate.*
 
 ### Requirement 3: Skill invokes stage-drafts automatically
 
-**User Story:** As an operator, I want the Skill to call `stage-drafts` automatically after producing an extraction JSON packet, so that drafts appear as Pending review in the review app without a manual JSON upload step.
+**User Story:** As an operator, I want the skill to call `stage-drafts` automatically after producing an extraction JSON packet, so that drafts appear as Pending review in the review app without a manual JSON upload step.
 
 #### Acceptance Criteria
 
-1. WHEN the SourcePDF passes the Extraction_Gate, the skill SHALL produce a versioned extraction JSON packet and immediately call `python staging.py stage-drafts <packet.json> <database.sqlite>`.
+1. WHEN the source PDF passes the extraction gate, the skill SHALL produce a versioned extraction JSON packet and immediately call `python staging.py stage-drafts <packet.json> [--acceptance-run] <database.sqlite>` (the `--acceptance-run` flag is governed by Requirement 30).
 2. WHEN the staging tool returns exit code `0` from `stage-drafts`, the skill SHALL report the number of staged rows to the operator.
 3. WHEN the staging tool is unavailable or returns a non-zero exit code from `stage-drafts`, the skill SHALL save the completed extraction JSON packet, report the blocker to the operator, and stop without claiming drafts were staged.
-4. WHEN `stage-drafts` succeeds, the review app SHALL display the newly staged DraftRuns with status `"Pending review"` immediately.
+4. WHEN `stage-drafts` succeeds, the review app SHALL display the newly staged draft runs with status `"Pending review"` immediately.
+5. WHEN `stage-drafts` completes successfully, the staging tool SHALL set `processing_status.status` to `"extraction_complete"` for the registered `pdf_id`.
 
 ### Requirement 4: Risk assessment — non-critical tier
 
@@ -77,9 +84,9 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN the Skill produces a risk JSON packet with `decision` equal to `"non_critical"`, the staging tool SHALL record `risk_decision` as `"non_critical"` in `processing_status` and set `status` to `"risk_assessed"`.
-2. WHEN a SourcePDF has `risk_decision` equal to `"non_critical"` and no clearance is required, the skill SHALL proceed to extraction for that PDF version without waiting for reviewer input.
-3. WHEN issues are confined to the lower measurement table of a PDF, the skill SHALL not classify those issues as critical or uncertain for the purpose of determining the risk tier.
+1. WHEN the skill produces a risk JSON packet with `decision` equal to `"non_critical"`, the staging tool SHALL record `risk_decision` as `"non_critical"` in `processing_status` and set `status` to `"risk_assessed"`.
+2. WHEN a source PDF has `risk_decision` equal to `"non_critical"` and no clearance is required, the skill SHALL proceed to extraction for that PDF version without waiting for reviewer input.
+3. WHEN a risk JSON packet has `decision` equal to `"non_critical"`, the staging tool SHALL accept the extraction JSON packet for that version without requiring clearance, even when the packet's `issues` array lists issues confined to the lower measurement table. (Classifying lower-table issues is a skill rule, verified in the walkthrough under Requirement 27.)
 
 ### Requirement 5: Risk assessment — critical and uncertain tiers
 
@@ -87,11 +94,11 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN the Skill produces a risk JSON packet with `decision` equal to `"critical"` or `"uncertain"`, the staging tool SHALL record the decision in `processing_status` and set `status` to `"held_pending_clearance"`.
+1. WHEN the skill produces a risk JSON packet with `decision` equal to `"critical"` or `"uncertain"`, the staging tool SHALL record the decision in `processing_status` and set `status` to `"held_pending_clearance"`.
 2. WHEN any run in a PDF has a critical or uncertain issue, the skill SHALL hold the entire PDF before extraction, not only the affected run.
-3. WHILE a SourcePDF has `status` equal to `"held_pending_clearance"` and no clearance is recorded, the skill SHALL not start extraction for that PDF version.
-4. WHEN a critical issue is first discovered during draft review (after extraction), the review app SHALL set the affected DraftRun's `review_status` to `"Held"` and record a `hold_reason` referencing the critical issue, and the review app SHALL not add that DraftRun to `growth_runs` or search results.
-5. IF a risk JSON packet has `decision` equal to `"uncertain"`, THEN the staging tool SHALL treat it identically to a `"critical"` decision for the purpose of the Extraction_Gate.
+3. WHILE a source PDF has `status` equal to `"held_pending_clearance"` and no clearance is recorded, the skill SHALL not start extraction for that PDF version. The skill SHALL produce zero extraction JSON packets for that version, and zero `draft_runs` rows SHALL exist for it.
+4. WHEN a critical issue is first discovered during draft review (after extraction), the review app SHALL set the affected draft run's `review_status` to `"Held"` and record a `hold_reason` referencing the critical issue, and the review app SHALL not add that draft run to `growth_runs` or search results.
+5. IF a risk JSON packet has `decision` equal to `"uncertain"`, THEN the staging tool SHALL treat it identically to a `"critical"` decision for the purpose of the extraction gate.
 
 ### Requirement 6: Reviewer clearance of held PDFs
 
@@ -99,11 +106,11 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN a SourcePDF has `status` equal to `"held_pending_clearance"`, the review app SHALL display the PDF's issues and a prompt for the Reviewer to record clearance.
-2. WHEN a Reviewer records clearance, the review app SHALL require the Reviewer to select their name from the reviewer dropdown before the clearance action can proceed.
-3. WHEN a Reviewer submits clearance, the review app SHALL record `clearance_by`, `clearance_at`, and a non-empty `clearance_note` in `processing_status` and transition `status` to `"cleared"`.
-4. WHEN clearance is recorded for a SourcePDF, the skill SHALL proceed with extraction when the operator resumes it on the same `pdf_id` and `file_hash`.
-5. WHEN a Drive file is replaced and a new SourcePDF version is created, the review app SHALL require a fresh risk assessment for the new `file_hash` and SHALL NOT carry over clearance from a previous version.
+1. WHEN a source PDF has `status` equal to `"held_pending_clearance"`, the review app SHALL display the PDF's issues and a prompt for the reviewer to record clearance.
+2. WHEN a reviewer records clearance, the review app SHALL require the reviewer to select their name from the reviewer dropdown before the clearance action can proceed.
+3. WHEN a reviewer submits clearance, the review app SHALL record `clearance_by`, `clearance_at`, and a non-empty `clearance_note` in `processing_status` and transition `status` to `"cleared"`.
+4. WHEN clearance is recorded for a source PDF, the skill SHALL proceed with extraction when the operator resumes it on the same `drive_file_id` and `file_hash`. After clearance, `check-gate` SHALL exit with code `0` for that version and `stage-drafts` SHALL accept its extraction JSON packet.
+5. WHEN a Drive file is replaced and a new source PDF version is created, the review app SHALL show the new version as a separate entry that has no clearance, and SHALL NOT apply a clearance recorded for a previous version to it. The new version gets its own assessment result through `risk-assess` (Requirement 1.6).
 
 ### Requirement 7: Reviewer identity and confirmation
 
@@ -111,70 +118,72 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. BEFORE any recorded action (clearance, correction, hold, or approval), the review app SHALL require the Reviewer to select a name from the reviewer dropdown.
-2. WHEN a Reviewer has selected a name, the review app SHALL display the selected name on the confirmation screen before the action is submitted.
+1. BEFORE any recorded action (clearance, correction, hold, or approval), the review app SHALL require the reviewer to select a name from the reviewer dropdown.
+2. WHEN a reviewer has selected a name, the review app SHALL display the selected name on the confirmation screen before the action is submitted.
 3. IF no reviewer name is selected, THEN the review app SHALL prevent the action from proceeding and display a prompt to select a name.
 4. the review app SHALL store reviewer names in the app configuration; reviewer names SHALL NOT be editable from within the app during a review session.
 
 ### Requirement 8: Draft review — open source PDF
 
-**User Story:** As a reviewer, I want to open a DraftRun alongside the source PDF at the exact page and measurement-table row, so that I can verify the extracted fields against the original scan.
+**User Story:** As a reviewer, I want to open a draft run alongside the source PDF at the exact page and measurement-table row, so that I can verify the extracted fields against the original scan.
 
 #### Acceptance Criteria
 
-1. WHEN a Reviewer opens a DraftRun in the review app, the review app SHALL display the extracted fields and a rendered view of the source PDF.
-2. WHEN displaying the source PDF, the review app SHALL open it at the page number and measurement-table row recorded in `source_locations_json` for that DraftRun.
-3. IF `source_pdfs.storage_path` does not resolve to a readable file, THEN the review app SHALL display the error in the source-PDF viewer panel and allow the Reviewer to continue reviewing the available fields.
-4. WHEN multiple source locations are recorded for a DraftRun (run spanning pages), the review app SHALL make all recorded locations accessible to the Reviewer.
+1. WHEN a reviewer opens a draft run in the review app, the review app SHALL display the extracted fields and a rendered view of the source PDF.
+2. WHEN displaying the source PDF, the review app SHALL open it at the page number recorded in `source_locations_json` for that draft run and SHALL display the recorded measurement-table row number beside the viewer. (Browser PDF viewers cannot scroll to a table row, so the row is shown as a label.)
+3. IF `source_pdfs.storage_path` does not resolve to a readable file, THEN the review app SHALL display the error in the source-PDF viewer panel and allow the reviewer to continue reviewing the available fields.
+4. WHEN multiple source locations are recorded for a draft run (run spanning pages), the review app SHALL make all recorded locations accessible to the reviewer.
+5. WHEN `risk-assess` registers a source PDF version for the first time, the staging tool SHALL verify that the SHA-256 of the supplied source PDF file equals `file_hash`, copy those bytes to a retained local copy, and record the absolute path of that copy in `source_pdfs.storage_path`, so that the reviewer can open the exact PDF bytes that were assessed. IF the hash does not match, THEN the staging tool SHALL exit with code `1` and write no rows.
+6. WHEN a source PDF is opened from a draft or a search result, the review app SHALL compare the SHA-256 of the retained copy with `file_hash`. IF they differ, THEN the review app SHALL display a warning in the viewer panel and SHALL prevent approval of drafts from that PDF until the retained copy is restored.
 
 ### Requirement 9: Draft review — field correction
 
-**User Story:** As a reviewer, I want to correct any field on a DraftRun and have the correction recorded with full provenance, so that the approved record reflects the reviewer's verified interpretation.
+**User Story:** As a reviewer, I want to correct any field on a draft run and have the correction recorded with full provenance, so that the approved record reflects the reviewer's verified interpretation.
 
 #### Acceptance Criteria
 
-1. WHEN a Reviewer edits a field on a DraftRun, the review app SHALL require the Reviewer to supply a reason for the correction before saving.
+1. WHEN a reviewer edits a field on a draft run, the review app SHALL require the reviewer to supply a reason for the correction before saving.
 2. WHEN a correction is saved, the review app SHALL record the old value, new value, reason, and source location reference in the correction record.
 3. the review app SHALL preserve `original_json` unmodified; corrections SHALL be stored separately and not overwrite the original extraction.
-4. WHEN a Reviewer submits a correction, the review app SHALL require the Reviewer's name to be selected in the reviewer dropdown before the correction is recorded.
+4. WHEN a reviewer submits a correction, the review app SHALL require the reviewer's name to be selected in the reviewer dropdown before the correction is recorded.
 
 ### Requirement 10: Draft review — hold
 
-**User Story:** As a reviewer, I want to hold a DraftRun with a written reason, so that runs with unresolved issues stay out of search until the issue is resolved.
+**User Story:** As a reviewer, I want to hold a draft run with a written reason, so that runs with unresolved issues stay out of search until the issue is resolved.
 
 #### Acceptance Criteria
 
-1. WHEN a Reviewer holds a DraftRun, the review app SHALL require a non-empty `hold_reason` before the hold can be saved.
-2. WHEN a DraftRun is held, the review app SHALL set `review_status` to `"Held"` and record `hold_reason` in `draft_runs`.
-3. WHILE a DraftRun has `review_status` equal to `"Held"`, the review app SHALL not include that run in `growth_runs` or in search results.
-4. WHEN a Reviewer holds a DraftRun, the review app SHALL make the hold and its reason visible to the operator in the processing status view.
-5. WHEN more information becomes available, the review app SHALL allow the Reviewer to reopen a held DraftRun and resume the approval workflow.
+1. WHEN a reviewer holds a draft run, the review app SHALL require a non-empty `hold_reason` before the hold can be saved.
+2. WHEN a draft run is held, the review app SHALL set `review_status` to `"Held"` and record `hold_reason` in `draft_runs`.
+3. WHILE a draft run has `review_status` equal to `"Held"`, the review app SHALL not include that run in `growth_runs` or in search results.
+4. WHEN a reviewer holds a draft run, the review app SHALL make the hold and its reason visible to the operator in the processing status view.
+5. WHEN a reviewer opens a held draft run, the review app SHALL display its hold reason and allow the reviewer to edit fields, save a correction, or re-attempt approval.
 
 *Cross-reference: Design Property 5 — Hold reason required.*
 
 ### Requirement 11: Draft approval — preconditions
 
-**User Story:** As a reviewer, I want the app to verify that all required fields are confirmed before I approve a run, so that every GrowthRun in the archive has a verifiable source, a searchable value, and confirmed stoichiometry.
+**User Story:** As a reviewer, I want the app to verify that all required fields are confirmed before I approve a run, so that every growth run in the archive has a verifiable source, a searchable value, and confirmed stoichiometry.
 
 #### Acceptance Criteria
 
-1. WHEN a Reviewer attempts to approve a DraftRun, the review app SHALL verify that at least one `source_locations_json` entry pointing to a valid page and measurement row is present.
-2. WHEN a Reviewer attempts to approve a DraftRun, the review app SHALL verify that at least one Lookup_Value (`researcher_name`, `growth_date`, or `jc_number`) is populated.
-3. WHEN a Reviewer attempts to approve a DraftRun, the review app SHALL verify that stoichiometry is recorded in `composition_json`.
-4. IF any precondition in criteria 1–3 is not met, THEN the review app SHALL prevent approval, identify the unmet precondition, and allow the Reviewer to hold the draft or return to editing.
+1. WHEN a reviewer attempts to approve a draft run, the review app SHALL verify that at least one `source_locations_json` entry pointing to a valid page and measurement row is present.
+2. WHEN a reviewer attempts to approve a draft run, the review app SHALL verify that at least one lookup value (`researcher_name`, `growth_date`, or `jc_number`) is populated.
+3. WHEN a reviewer attempts to approve a draft run, the review app SHALL verify that `composition_json` is populated with a non-null stoichiometry value. Stoichiometry is a hard approval gate with no bypass path.
+4. IF any precondition in criteria 1–3 is not met, THEN the review app SHALL prevent approval, identify the unmet precondition, and allow the reviewer to hold the draft or return to editing.
 
 *Cross-reference: Design Property 6 — Approved run completeness.*
 
 ### Requirement 12: Draft approval — atomic transaction
 
-**User Story:** As a reviewer, I want approval to be an all-or-nothing operation, so that the archive never contains a GrowthRun without a matching revision record.
+**User Story:** As a reviewer, I want approval to be an all-or-nothing operation, so that the archive never contains a growth run without a matching revision record.
 
 #### Acceptance Criteria
 
-1. WHEN a Reviewer confirms approval, the review app SHALL execute a single SQLite transaction that inserts a row in `growth_runs`, inserts a row in `run_revisions` with `approved_by`, `approved_at`, the approved-values snapshot, and any recorded corrections, and updates `draft_runs.review_status` to `"Approved"`.
+1. WHEN a reviewer confirms approval, the review app SHALL execute a single SQLite transaction that inserts a row in `growth_runs` (or updates the existing row when the transaction records a revision of an approved run), inserts a row in `run_revisions` with `approved_by`, `approved_at`, the approved-values snapshot, and any recorded corrections, and updates `draft_runs.review_status` to `"Approved"`.
 2. the review app SHALL display "Saved" only after the approval transaction commits.
 3. IF the approval transaction fails, THEN the review app SHALL show the error message, leave the form in an editable state, and leave `growth_runs` and `run_revisions` unchanged.
-4. WHEN a Reviewer retries an approval that already committed before the app displayed confirmation, the review app SHALL detect the existing `run_id` and `version` and return the saved revision without inserting a duplicate.
+4. WHEN a reviewer retries an approval that already committed before the app displayed confirmation, the review app SHALL detect the existing `run_id` and `version` and return the saved revision without inserting a duplicate.
 
 *Cross-reference: Design Properties 2, 9 — Atomic approval; Failed transaction atomicity.*
 
@@ -184,8 +193,8 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. BEFORE writing an approval transaction, the review app SHALL read the current `run_revisions.version` for the run and the current `draft_runs.updated_at` for the draft.
-2. IF either value has changed since the Reviewer opened the draft, THEN the review app SHALL reload and display the latest state and require the Reviewer to confirm before proceeding with approval.
+1. BEFORE writing an approval transaction, the review app SHALL read the current `draft_runs.updated_at` for the draft. IF the growth run already has an existing `run_revisions` row, the review app SHALL also read the current `run_revisions.version`.
+2. IF either value has changed since the reviewer opened the draft, THEN the review app SHALL reload and display the latest state and require the reviewer to confirm before proceeding with approval.
 
 *Cross-reference: Design Property 8 — Stale approval safety.*
 
@@ -195,13 +204,14 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. the review app SHALL provide a processing status view that lists every SourcePDF that has been processed, with its current risk tier, `processing_status.status`, and any hold or failure reason.
-2. WHEN a SourcePDF has reached extraction, the review app SHALL display a summary of its DraftRun statuses (e.g. "3 approved · 2 pending · 1 held").
-3. WHEN a Reviewer acts on a DraftRun, the review app SHALL update the counts on the processing status view to reflect the new status.
-4. WHEN a SourcePDF has `status` equal to `"held_pending_clearance"`, the review app SHALL display the PDF's issues and a clearance prompt to the Reviewer.
+1. the review app SHALL provide a processing status view that lists every source PDF that has been processed, with its current risk tier, `processing_status.status`, and any hold or failure reason.
+2. WHEN a source PDF has reached extraction, the review app SHALL display a summary of its draft run statuses (e.g. "3 approved · 2 pending · 1 held").
+3. WHEN a reviewer acts on a draft run, the review app SHALL update the counts on the processing status view to reflect the new status.
+4. WHEN a source PDF has `status` equal to `"held_pending_clearance"`, the review app SHALL display the PDF's issues and a clearance prompt to the reviewer.
 5. the review app SHALL display held-pending-clearance PDFs and technical-failure PDFs as visually distinct outcomes; technical failures SHALL include an indication that the failure is retryable.
-6. WHEN approved GrowthRuns from a SourcePDF exist, the review app SHALL make those runs searchable even while other DraftRuns from the same PDF remain pending or held.
-7. WHEN every SourcePDF that has been processed has a row in `processing_status`, the SQLite database SHALL record an outcome for each one.
+6. WHEN approved growth runs from a source PDF exist, the review app SHALL make those runs searchable even while other draft runs from the same PDF remain pending or held.
+7. WHEN `risk-assess` or `stage-drafts` completes successfully for a source PDF version, the staging tool SHALL record the outcome in `processing_status` within the same transaction as the command's other writes. IF a command fails with an unexpected processing error (such as a file copy or database error) after packet validation has passed and the version is already registered in `source_pdfs`, THEN the staging tool SHALL roll back that command's own writes and then record `status` as `"technical_failure"` with a non-empty `reason` for that version in a separate transaction. A validation failure, a conflict, a gate rejection, or an unregistered version SHALL NOT write any row, including to `processing_status`; the staging tool SHALL report the error to the caller only. WHEN a source PDF version is held pending clearance or has a technical failure, the review app SHALL display its reason in the processing status view.
+8. WHEN `risk-assess` or `stage-drafts` later succeeds for a version whose `status` is `"technical_failure"`, the staging tool SHALL set `status` from the stored assessment result and clearance (`"held_pending_clearance"`, `"cleared"`, `"risk_assessed"`, or `"extraction_complete"` when drafts exist) and SHALL clear `reason`.
 
 ### Requirement 15: Search — approved runs only
 
@@ -211,7 +221,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 1. the review app SHALL query only `growth_runs` for search results.
 2. WHEN a search query is executed, the review app SHALL not return any row from `draft_runs` regardless of its `review_status`.
-3. WHEN a GrowthRun has an unresolved critical issue (held DraftRun), the review app SHALL not return that run in search results until an approved GrowthRun row exists.
+3. WHEN a draft run is pending or held, no `growth_runs` row exists for it, and the review app SHALL NOT return it in search results; it appears in search only after an approval transaction commits.
 
 *Cross-reference: Design Property 7 — Search isolation.*
 
@@ -221,7 +231,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN a researcher submits a name query, the review app SHALL return all GrowthRuns whose `researcher_name` contains the query string as a substring.
+1. WHEN a researcher submits a name query, the review app SHALL return all growth runs whose `researcher_name` contains the query string as a substring.
 2. the review app SHALL perform researcher-name searches case-insensitively.
 3. WHEN a researcher name query is the only input, the review app SHALL return results without requiring any other search field.
 
@@ -231,10 +241,10 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN a researcher submits a month query in `YYYY-MM` format, the review app SHALL return all GrowthRuns whose `growth_date` starts with that `YYYY-MM` prefix, matching both month-only and day-precision dates within that month.
-2. WHEN a researcher submits an exact date query in `YYYY-MM-DD` format, the review app SHALL return only GrowthRuns whose `growth_date` equals that exact value.
+1. WHEN a researcher submits a month query in `YYYY-MM` format, the review app SHALL return all growth runs whose `growth_date` starts with that `YYYY-MM` prefix, matching both month-only and day-precision dates within that month.
+2. WHEN a researcher submits an exact date query in `YYYY-MM-DD` format, the review app SHALL return only growth runs whose `growth_date` equals that exact value.
 3. WHEN a date or month query is the only input, the review app SHALL return results without requiring any other search field.
-4. WHEN displaying a GrowthRun with a month-only `growth_date` (e.g. `2020-01`), the review app SHALL display it without an invented day component.
+4. WHEN displaying a growth run with a month-only `growth_date` (e.g. `2020-01`), the review app SHALL display it without an invented day component.
 5. WHEN sorting results that include both month-only and day-precision dates within the same month, the review app SHALL sort month-only entries before day-precision entries.
 
 ### Requirement 18: Search — combined name and month
@@ -243,8 +253,8 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN a researcher supplies both a name query and a month query, the review app SHALL return only GrowthRuns that match both the researcher-name substring condition and the month prefix condition simultaneously.
-2. WHEN a researcher supplies both inputs and no GrowthRun matches both, the review app SHALL return an empty result set.
+1. WHEN a researcher supplies both a name query and a month query, the review app SHALL return only growth runs that match both the researcher-name substring condition and the month prefix condition simultaneously.
+2. WHEN a researcher supplies both inputs and no growth run matches both, the review app SHALL return an empty result set.
 
 ### Requirement 19: Search — JC number and growth process filter
 
@@ -252,9 +262,10 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN a researcher searches by JC number, the review app SHALL return all GrowthRuns whose `jc_number` equals the searched value or whose raw written JC contains the searched value as a substring.
-2. WHEN multiple GrowthRuns share the same `jc_number`, the review app SHALL return all matching runs and display each run's source PDF filename and measurement-table row so the researcher can distinguish them.
-3. WHEN a researcher applies a growth-process filter (CVT, Flux Growth, unclear, or any), the review app SHALL restrict results to GrowthRuns with the matching `growth_process` value; selecting "any" SHALL apply no filter.
+1. WHEN a researcher searches by JC number, the review app SHALL return all growth runs whose `jc_number` equals the searched value or whose raw written JC contains the searched value as a substring.
+2. WHEN multiple growth runs share the same `jc_number`, the review app SHALL return all matching runs and display each run's source PDF filename and measurement-table row so the researcher can distinguish them.
+3. WHEN a researcher applies a growth-process filter (CVT, Flux Growth, unclear, or any), the review app SHALL restrict results to growth runs with the matching `growth_process` value; selecting "any" SHALL apply no filter.
+4. WHEN a JC number is staged, corrected, or approved, the staging tool and the review app SHALL store and display it as text exactly as written, including partial numbers (for example a two-digit suffix) and leading zeros, and SHALL NOT convert it to an integer or reject a JC number that another run already uses.
 
 ### Requirement 20: Search — sort order and source PDF link
 
@@ -262,9 +273,10 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN multiple GrowthRuns share the same `growth_date` and have no `jc_number`, the review app SHALL sort those runs alphabetically by `researcher_name`, then by `run_id` when researcher names also match.
-2. WHEN a search result is displayed, the review app SHALL show an "Open source PDF" action for each result.
-3. WHEN a researcher activates the "Open source PDF" action, the review app SHALL open the SourcePDF at the page number and measurement-table row recorded in `source_locations_json` for that GrowthRun.
+1. WHEN multiple growth runs share the same `growth_date` and have no `jc_number`, the review app SHALL sort those runs alphabetically by `researcher_name`, then by `run_id` when researcher names also match.
+2. WHEN multiple growth runs share the same `growth_date` and the same non-null `jc_number`, the review app SHALL sort those runs by `run_id`.
+3. WHEN a search result is displayed, the review app SHALL show an "Open source PDF" action for each result.
+4. WHEN a researcher activates the "Open source PDF" action, the review app SHALL open the source PDF at the page number recorded in `source_locations_json` for that growth run and SHALL display the recorded measurement-table row number beside the viewer.
 
 ### Requirement 21: Staging tool — packet validation
 
@@ -286,7 +298,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 #### Acceptance Criteria
 
 1. WHEN the staging tool receives an extraction JSON packet that is byte-for-byte identical to a previously imported packet, the staging tool SHALL stage zero new rows and exit with code `0`.
-2. WHEN the staging tool receives an extraction JSON packet where a run's `draft_id` already exists in `draft_runs` for the same `pdf_id` and `file_hash` with identical JSON content, the staging tool SHALL skip that run without error.
+2. WHEN the staging tool receives an extraction JSON packet where a run's `draft_id` already exists in `draft_runs` for the same `pdf_id` with identical JSON content, the staging tool SHALL skip that run without error.
 
 *Cross-reference: Design Property 3 — Idempotent import.*
 
@@ -296,7 +308,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 
 #### Acceptance Criteria
 
-1. WHEN the staging tool receives an extraction JSON packet where a run's `draft_id` already exists in `draft_runs` for the same `pdf_id` and `file_hash` but with different JSON content, the staging tool SHALL report the conflicting `draft_id` and both JSON payloads, exit with code `1`, and write no rows.
+1. WHEN the staging tool receives an extraction JSON packet where a run's `draft_id` already exists in `draft_runs` for the same `pdf_id` but with different JSON content, the staging tool SHALL report the conflicting `draft_id` and both JSON payloads, exit with code `1`, and write no rows.
 2. WHEN a conflict is reported, the staging tool SHALL roll back any partial writes so that the SQLite database remains unchanged.
 
 *Cross-reference: Design Property 4 — Conflict rejection.*
@@ -308,7 +320,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 #### Acceptance Criteria
 
 1. the staging tool SHALL execute the entire import of a packet in a single SQLite transaction.
-2. IF any validation check fails or a conflict is detected during import, THEN the staging tool SHALL roll back the transaction and leave the SQLite database unchanged.
+2. IF any validation check fails or a conflict is detected during import, THEN the staging tool SHALL roll back the transaction and leave the SQLite database unchanged (except the separate `technical_failure` record described in Requirement 14.7).
 3. WHEN a packet imports successfully, the staging tool SHALL print the number of rows staged and exit with code `0`.
 
 ### Requirement 25: Test and Archive environments
@@ -321,6 +333,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 2. WHEN the operator resets the Test environment, the staging tool SHALL clear only Test data; source PDFs in Drive and Archive data SHALL remain unaffected.
 3. WHEN the operator processes a source PDF in the Archive environment, the review app SHALL require fresh approvals independent of any decisions recorded in the Test environment.
 4. WHILE a walkthrough or acceptance run is in progress, the review app SHALL clearly label the active environment (Test or Archive) on every page.
+5. WHEN the operator resets the Test environment, the reset SHALL be performed by deleting and recreating `test.sqlite` using `db/init_db.py`. The reset SHALL NOT affect `archive.sqlite`, the reviewer configuration, or any source PDFs in Drive.
 
 ### Requirement 26: Archive backup and restore
 
@@ -334,7 +347,7 @@ This document derives requirements from the approved design document (`.kiro/spe
 4. the operator SHALL store backups in a restricted backup folder in the lab's shared Drive, separate from the binder folders. *(Pending lab confirmation: backup folder path and naming convention.)*
 5. the operator SHALL target losing at most one day of approvals and corrections. *(Pending lab confirmation: recovery time objective.)*
 6. the operator SHALL target restoring searchable records, review history, and source PDF links within one working day of reporting the data loss. *(Pending lab confirmation: recovery time objective.)*
-7. WHEN performing a restore drill, the operator SHALL restore into a separate Test workspace and verify that approved runs are searchable, review history is present, and source PDF links open the exact PDF versions the reviewers saw.
+7. WHEN performing a restore drill, the operator SHALL restore into a separate Test workspace and verify that approved runs are searchable, review history is present, and source PDF links open the exact PDF versions the reviewers saw. Until the Archive database holds approved records, a snapshot of the Test database with the approved acceptance results satisfies this drill; the operator SHALL repeat the drill on the first real Archive backup.
 
 ### Requirement 27: Walkthrough testing
 
@@ -343,10 +356,16 @@ This document derives requirements from the approved design document (`.kiro/spe
 #### Acceptance Criteria
 
 1. the walkthrough SHALL use PDFs from both Binders 1 and 2 that are not on the reserved acceptance list.
-2. the walkthrough SHALL include at least one PDF example covering each of the following cases: missing researcher name, missing growth date with a usable timestamp, missing growth date without a usable timestamp, missing JC number, no usable lookup value, missing stoichiometry, ambiguous stoichiometry, unclear source row or page, and each category of missing optional information (furnace cycle, furnace layout, growth process, timestamp, optional measurement).
-3. the walkthrough SHALL include at least one end-to-end run that starts with a source PDF and results in a DraftRun appearing as "Pending review" in the review app without any manual JSON upload.
+2. the walkthrough SHALL include at least one PDF for each of the following missing-information cases, where the missing item does not by itself make the PDF critical: missing researcher name (a verified date or JC number still supports lookup); missing growth date with a usable timestamp; missing growth date without a usable timestamp; missing JC number; missing furnace cycle detail; missing furnace layout; missing or unclear growth process; missing timestamp; missing optional measurement.
+3. the walkthrough SHALL include at least one end-to-end run that starts with a source PDF and results in a draft run appearing as "Pending review" in the review app without any manual JSON upload.
 4. WHEN the walkthrough is complete, the operator SHALL record the results before resetting the Test environment.
 5. The specific PDF filenames and Drive IDs used in the walkthrough are not fixed by this requirements document and SHALL be selected by the operator from the existing Drive inventory. *(Pending operator selection.)*
+6. the walkthrough SHALL exercise clearing a held PDF, correcting a draft, holding a draft, approving a run, and finding the approved run in search.
+7. the walkthrough SHALL include at least one PDF with a furnace layout sketch, and the reviewer SHALL open the sketch's source location from its draft or approved run.
+8. the walkthrough SHALL include, for each of the following critical cases from DESIGN-MVP.md section 5, a dedicated PDF in which that case is the only critical issue, so that each hold reason can be attributed to one rule: (a) no usable lookup value (no researcher name, date, or JC number can be established); (b) missing stoichiometry; (c) ambiguous compound; (d) ambiguous ratio; (e) ambiguous unit that affects composition; (f) overwritten digit in a composition value; (g) unclear element symbol; (h) unknown ratio basis; (i) uncertain row or run label that could attach values to the wrong run, or an unclear source row or page; (j) a PDF that cannot be reliably assessed (the `uncertain` tier). IF no real PDF exists for a case, THEN the reviewer SHALL record "no example found" with a reason in the checklist, and that waiver SHALL be visible in the saved results.
+9. the walkthrough SHALL include one multi-run PDF in which exactly one run has a critical issue and the other runs are readable, and the operator SHALL verify that the whole PDF is held before extraction and that no draft is staged for the readable runs.
+10. the walkthrough SHALL include structural examples: a clear single-run PDF; a multi-run PDF with all runs eligible; a run that spans PDF pages; a PDF with a compound written once and carried down through later rows (the draft SHALL identify the cell where it was written); and a PDF with entries in both the upper and lower tables (issues in the lower table SHALL NOT hold the PDF, and drafts SHALL point to rows in the upper measurement table).
+11. WHEN the walkthrough processes a PDF for a critical case in criteria 27.8 or 27.9, the operator SHALL verify that the skill records `critical` or `uncertain`, the whole PDF is held, zero draft runs exist before clearance, and the review app shows the hold reason. The operator SHALL also verify at least once that a draft from a PDF that passed assessment is held in the review app for a critical issue first found during review, and that it stays out of `growth_runs` and search.
 
 ### Requirement 28: Acceptance run
 
@@ -355,10 +374,44 @@ This document derives requirements from the approved design document (`.kiro/spe
 #### Acceptance Criteria
 
 1. the acceptance run SHALL use only PDFs from the reserved acceptance list; those PDFs SHALL NOT have been used in any walkthrough tuning session.
-2. BEFORE the acceptance run begins, an authorized Reviewer SHALL record the expected risk tier, expected run count, expected source page and row for each run, expected values for name, date, JC number, and stoichiometry where readable, and expected approval or hold status for each draft — all without relying on the Skill's output.
+2. BEFORE the acceptance run begins, an authorized reviewer SHALL record the expected risk tier, expected run count, expected source page and row for each run, expected values for name, date, JC number, and stoichiometry where readable, and expected approval or hold status for each draft — all without relying on the skill's output.
 3. the acceptance checklist SHALL be keyed by filename, Drive ID, and version hash (`file_hash`).
 4. WHEN the acceptance run is executed, the operator SHALL run `$stage-log-runs` in the Test environment on each reserved PDF and compare the staging tool's recorded outcomes against the checklist.
-5. WHEN a critical or uncertain PDF is encountered during the acceptance run, the review app SHALL show a hold reason, and zero DraftRuns SHALL appear for that PDF before clearance is recorded.
-6. WHERE a Reviewer can resolve a hold during the acceptance run, the operator SHALL record clearance and rerun the same PDF version to verify that extraction resumes.
-7. WHEN the acceptance run is complete, the review app SHALL show that every reserved PDF has a recorded outcome, every eligible DraftRun appeared in "Pending review" without manual JSON upload, and every required approval or hold was exercised.
-8. WHEN Iris signs off on the acceptance-run results, the operator SHALL record the sign-off before beginning wider batch processing in the Archive environment.
+5. WHEN a critical or uncertain PDF is encountered during the acceptance run, the review app SHALL show a hold reason, and zero draft runs SHALL appear for that PDF before clearance is recorded.
+6. WHERE a reviewer can resolve a hold during the acceptance run, the operator SHALL record clearance and rerun the same PDF version to verify that extraction resumes.
+7. WHEN the acceptance run is complete, the review app SHALL show that every reserved PDF has a recorded outcome, every eligible draft run appeared in "Pending review" without manual JSON upload, and every required approval or hold was exercised.
+8. The acceptance run SHALL include at least one reserved PDF that is expected to remain held before extraction (zero draft runs and a recorded hold reason) and, where the reserved set allows, at least one draft that is expected to remain held in the review app. A correctly recorded hold outcome SHALL count as a passing result for that PDF. The expected outcomes SHALL be recorded by the reviewer before the run and SHALL NOT be fixed by this document.
+9. WHEN Iris signs off on the acceptance-run results, the operator SHALL record the sign-off before beginning wider batch processing in the Archive environment.
+10. WHEN the acceptance run reaches review and search, the reviewer SHALL verify that pending and held drafts are not returned by search, that each expected-approved run is found by its recorded search terms (month alone, researcher name alone, and both together), and that the corrected value, approver, approval time, and source link are correct. Where the reserved set includes a PDF with entries in both the upper and lower tables, the reviewer SHALL also verify that issues in the lower table did not hold the PDF and that its drafts point to rows in the upper measurement table.
+11. WHEN the acceptance run is complete, the reviewer SHALL confirm that every critical issue that should hold a PDF before extraction was caught, every expected run in the PDFs cleared for extraction was extracted, every draft links to the correct source PDF page and measurement-table row, every run with missing or unresolved stoichiometry or an unresolved critical issue stays out of `growth_runs` and search, and every imported run has human approval. IF any check fails, THEN the failed checks SHALL be fixed and rerun in Test before sign-off.
+12. BEFORE the acceptance run, the operator SHALL record the versions of the skill, the staging tool, and the review app under test and SHALL reset the Test environment.
+13. BEFORE wider batch processing, researchers SHALL be asked to find an approved run and open its source PDF, and reviewers SHALL be asked to compare a draft with its source PDF, correct a field, and approve it; the operator SHALL record where people got stuck and any problem that prevented completion.
+14. WHEN the acceptance run is complete, the reviewer SHALL record per PDF the number of unnecessary holds, extraction errors found in review, and reviewer correction time, and SHALL report them with the saved results. *(Pending Iris: numeric tolerances for extraction error rate and correction time. The zero-tolerance checks in 28.11 stand as written.)*
+
+*Cross-reference: Requirement 30 enforces criterion 28.1 in the staging tool.*
+
+### Requirement 29: Revising an approved run
+
+**User Story:** As a reviewer, I want to correct an approved run through the same review workflow, so that search returns the corrected value while earlier approved versions stay on record.
+
+#### Acceptance Criteria
+
+1. WHEN a reviewer starts a revision of a growth run, the review app SHALL start from the latest approved values and SHALL require a reviewer name (Requirement 7), a reason for each change (Requirement 9), and the approval preconditions (Requirement 11).
+2. WHEN a reviewer confirms a revision, the review app SHALL, in a single SQLite transaction, insert a `run_revisions` row with version N+1 and update the searchable columns of the same `growth_runs` row, and SHALL keep every earlier `run_revisions` row unchanged.
+3. WHEN a revision commits, the review app SHALL return the revised value in search for the same `run_id`.
+4. WHEN a revision is attempted from a stale view, the review app SHALL apply the stale-approval protection in Requirement 13.
+5. IF a revision transaction fails, THEN the review app SHALL leave `growth_runs` and `run_revisions` unchanged.
+
+### Requirement 30: Reserved acceptance PDF guard
+
+**User Story:** As an operator, I want the staging tool to refuse to record walkthrough work on reserved acceptance PDFs, so that the acceptance run uses scans the team did not tune the workflow on.
+
+#### Acceptance Criteria
+
+1. the staging tool SHALL read the reserved list from the `acceptance` entries of `test_checklist.json` (the `drive_file_id` of each entry), at the path given by `checklist_path` in `config.json`.
+2. WHILE the database is the Test database and the `risk-assess` or `stage-drafts` command is run without the `--acceptance-run` flag, IF the packet's `drive_file_id` is on the reserved list, THEN the staging tool SHALL exit with code `1`, print a message that the PDF is reserved for the acceptance run, and write no rows.
+3. WHEN the `--acceptance-run` flag is supplied for the Test database, the staging tool SHALL process a reserved PDF as it would any other PDF.
+4. the staging tool SHALL NOT apply the reserved-list guard to the Archive database, and `check-gate` SHALL NOT apply it because `check-gate` is read-only.
+5. IF the checklist file is missing or has no `acceptance` entries, THEN the staging tool SHALL apply no guard and SHALL print a notice that no reserved list was found.
+6. WHILE the Test database is in use, the review app SHALL label each PDF in the processing status view whose `drive_file_id` is on the reserved list as "Reserved (acceptance)".
+7. WHEN the operator states that a run is an acceptance run, the skill SHALL add `--acceptance-run` to its `risk-assess` and `stage-drafts` calls; the skill SHALL NOT add the flag otherwise.
