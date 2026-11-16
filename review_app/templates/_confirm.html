@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Confirm{% endblock %}
+{% block content %}
+  <h1>Confirm</h1>
+  <p class="confirm-summary">You are about to {{ action }} as <strong class="confirm-reviewer">{{ reviewer }}</strong>.</p>
+  <p>If this is not your name, go back and select your own name.</p>
+  <form method="post" action="{{ target }}">
+    {% for key, value in fields %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+    <input type="hidden" name="confirmed" value="1">
+    <button type="submit">Confirm as {{ reviewer }}</button>
+    <a href="javascript:history.back()">Go back</a>
+  </form>
+{% endblock %}

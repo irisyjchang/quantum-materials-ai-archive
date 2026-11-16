@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Growth Log Review{% endblock %} · {{ environment.label }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="env-{{ environment.name }}">
+  <div class="env-banner env-banner-{{ environment.name }}" role="status" data-environment="{{ environment.name }}">
+    <strong>{{ environment.label }}</strong>
+    {% if environment.name == "test" %}
+      <span>Test environment. Approvals here are practice records and never become Archive records.</span>
+    {% else %}
+      <span>Archive environment. Approvals here are official archive records.</span>
+    {% endif %}
+  </div>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

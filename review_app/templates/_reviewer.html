@@ -1,0 +1,17 @@
+{# Reviewer dropdown. Include inside a recorded-action form: {% include "_reviewer.html" %} #}
+<label class="reviewer-picker">
+  Reviewer
+  {% if reviewers %}
+    <select name="reviewer" required>
+      <option value="">Select your name</option>
+      {% for name in reviewers %}
+        <option value="{{ name }}">{{ name }}</option>
+      {% endfor %}
+    </select>
+  {% else %}
+    <select name="reviewer" disabled>
+      <option value="">No authorized reviewers configured</option>
+    </select>
+    <span class="notice">Ask the lab to add the authorized names to config.json.</span>
+  {% endif %}
+</label>

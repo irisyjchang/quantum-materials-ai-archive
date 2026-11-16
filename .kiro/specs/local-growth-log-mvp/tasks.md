@@ -24,16 +24,16 @@ Phases 1 to 7 are coding tasks. Task 0, Task 8.5, and Tasks 26 to 29 are operato
 
 The operator confirms that Codex can do what the skill depends on before the skill is built. Results go to `spike_results.md` in the workspace (git-ignored). The spike results are not acceptance evidence. Never use reserved acceptance PDFs in the spike. If any of 0.1 to 0.3 fails, stop and revisit the design before Task 8.
 
-- [ ] 0.1 Confirm Codex can run a shell command in the workspace (operator-run)
+- [x] 0.1 Confirm Codex can run a shell command in the workspace (operator-run)
   - Ask Codex to run a command such as `python --version` and record the output and pass or fail
   - _Requirements: 1.1_
 
-- [ ] 0.2 Confirm Codex can compute a SHA-256 and call the staging tool (operator-run)
+- [x] 0.2 Confirm Codex can compute a SHA-256 and call the staging tool (operator-run)
   - Ask Codex to compute the SHA-256 of one non-reserved PDF and compare it with `shasum -a 256`
   - Ask Codex to run `python staging.py` once Task 4 exists, or a stub script that echoes its arguments before then; record pass or fail
   - _Requirements: 1.1, 2.1, 3.1_
 
-- [ ] 0.3 Confirm Codex can read and assess one non-reserved PDF at adequate resolution (operator-run)
+- [x] 0.3 Confirm Codex can read and assess one non-reserved PDF at adequate resolution (operator-run)
   - Record the resolution or rendering method used (for example the page render DPI) and whether the measurement table and handwriting were legible; record pass or fail
   - _Requirements: 1.1_
 
@@ -405,7 +405,7 @@ Update `.agents/skills/stage-log-runs/SKILL.md`. Read the existing file first an
   - Update the lint test in `tests/test_skill_md.py` (Task 8.3) to assert the updated call lines and the add-only-when-stated rule
   - _Requirements: 30.7_
 
-- [ ]* 8.5 Tracer bullet in Test (operator-run, optional, informal)
+- [x]* 8.5 Tracer bullet in Test (operator-run, optional, informal)
   - **Requires:** 8.4, 6.9, 4.8
   - Take one non-reserved PDF through `$stage-log-runs` in Test, without `--acceptance-run`, until its draft reaches `Pending review` (check with `sqlite3 test.sqlite "SELECT review_status FROM draft_runs"`); this can be done before the review app is finished
   - Note the result in `spike_results.md` as informal; it is not acceptance evidence, and no reserved PDF is used
@@ -425,15 +425,15 @@ Update `.agents/skills/stage-log-runs/SKILL.md`. Read the existing file first an
 
 Write `review_app/app.py` (Flask app factory). It reads the environment from `--env` or an environment variable and opens the matching database with foreign keys enabled.
 
-- [ ] 9.1 Implement app startup and database access in `review_app/app.py`
+- [x] 9.1 Implement app startup and database access in `review_app/app.py`
   - Resolve the environment with `db/env.py` and open the database through `db/connect.py` (Task 2.7); fail with a clear message if the database does not exist or lacks the schema
   - _Requirements: 25.1, 25.3_
 
-- [ ] 9.2 Implement the persistent environment banner in `review_app/templates/base.html`
+- [x] 9.2 Implement the persistent environment banner in `review_app/templates/base.html`
   - Show `Test` or `Archive` on every page with distinct styling
   - _Requirements: 25.4_
 
-- [ ]* 9.3 Write tests in `tests/test_app_env.py`
+- [x]* 9.3 Write tests in `tests/test_app_env.py`
   - The app opens `test.sqlite` for `test` and `archive.sqlite` for `archive`; every route response contains the environment label; two temporary databases for the two environments never share rows
   - _Requirements: 25.1, 25.3, 25.4_
 
@@ -447,21 +447,23 @@ Write `review_app/app.py` (Flask app factory). It reads the environment from `--
 
 **Implements:** Requirements 7.1, 7.2, 7.3, 7.4
 
-- [ ] 10.1 Load reviewers from `config.json` in `review_app/reviewers.py`
+- [x] 10.1 Load reviewers from `config.json` in `review_app/reviewers.py`
   - Names come only from config; no route edits the list
   - _Requirements: 7.4_
 
-- [ ] 10.2 Implement the dropdown partial and server-side guard
+- [x] 10.2 Implement the dropdown partial and server-side guard
   - `templates/_reviewer.html` renders the dropdown; a `require_reviewer` helper rejects any recorded action (clearance, correction, hold, approval) whose submitted name is empty or not in the config, writing nothing
   - _Requirements: 7.1, 7.3_
 
-- [ ] 10.3 Implement the confirmation partial
+- [x] 10.3 Implement the confirmation partial
   - `templates/_confirm.html` shows the selected reviewer name before an action is submitted
   - _Requirements: 7.2_
 
-- [ ]* 10.4 Write tests in `tests/test_reviewer.py`
+- [x]* 10.4 Write tests in `tests/test_reviewer.py`
   - Each recorded-action route returns an error and writes nothing when no name or an unknown name is submitted; no route modifies the reviewer list
   - _Requirements: 7.1, 7.3, 7.4_
+
+Implementation note: the real recorded-action routes arrive in Tasks 12 (clearance), 14 (correction), 15 (hold), and 17 (approval). Each must call `require_confirmed_reviewer` from `review_app/reviewers.py` before writing, and its tests must repeat the refusal check (no name, unknown name, nothing written). Task 10's tests use a test-only route with temporary reviewer names; the real `config.json` reviewer list stays empty until the lab supplies the authorized names.
 
 **Verification:** `POST` to any recorded-action route without a reviewer name returns an error status and leaves the database unchanged.
 

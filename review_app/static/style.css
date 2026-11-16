@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1f2328;
+}
+
+main {
+  padding: 1.5rem 2rem;
+}
+
+/* The environment banner stays at the top of every page. */
+.env-banner {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.6rem 2rem;
+  font-size: 0.95rem;
+}
+
+.env-banner strong {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.env-banner-test {
+  background: #fff3cd;
+  border-bottom: 3px solid #b8860b;
+  color: #5c4400;
+}
+
+.reviewer-error,
+.notice {
+  color: #8a1c1c;
+}
+
+.env-banner-archive {
+  background: #1f3a5f;
+  border-bottom: 3px solid #0b1f3a;
+  color: #ffffff;
+}

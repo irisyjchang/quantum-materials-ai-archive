@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  <h1>Growth Log Review</h1>
+  <p>{{ pending }} draft{{ "" if pending == 1 else "s" }} awaiting review.</p>
+{% endblock %}
