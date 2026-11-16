@@ -986,6 +986,8 @@ Runs later, in Test only, after this plan is approved.
   - If a reserved acceptance PDF is selected by mistake, the staging tool rejecting it is the expected result; replace it with a non-reserved PDF
   - Practice all five actions: clear a held PDF, correct a draft, hold a draft, approve a run, and find the approved run in search
   - Cover every case listed in the checklist
+  - Check two runs with a blank `x`. For a run with enough source information, verify the calculated `x` and its evidence under Measurements. For a run without a defined basis or sufficient quantities, verify that `x` stays blank and that its absence alone does not block approval.
+    - Pending before the demo: find a real scan with a blank `x` and enough recorded information to calculate it on a defined basis. A synthetic check confirmed the review app displays a derived value and its evidence. The real scan still needs to go through `stage-log-runs` in Test.
   - For at least one walkthrough PDF with a furnace layout sketch, open the sketch's source location from its draft and from its approved run using the Task 13.6 action
   - Confirm the lower-table rule (Req 4.3): a PDF whose only issues are in the lower measurement table is assessed `non_critical`
   - For each critical-case PDF, confirm the skill records the expected `critical` or `uncertain` tier, the whole PDF is held, zero draft runs exist before clearance, and the review app shows a hold reason that names that case

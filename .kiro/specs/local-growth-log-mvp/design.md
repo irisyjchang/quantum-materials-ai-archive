@@ -266,7 +266,7 @@ Both risk and extraction packets share a common envelope. The staging tool rejec
 | `drive_file_id` | string | The Drive file ID of the source PDF. Together with `file_hash`, identifies the exact PDF version. `risk-assess` uses these two fields to register the version in `source_pdfs` and assigns an internal `pdf_id`. |
 | `file_hash` | string | Hash of the exact PDF bytes processed. The staging tool matches this against `source_pdfs.file_hash` to confirm the same PDF version. |
 | `model` | string | Model identifier used for this run (e.g. `"gpt-6.1-sol"`). |
-| `prompt_version` | string | Identifier of the prompt template used (e.g. `"stage-log-runs-v1"`). |
+| `prompt_version` | string | Identifier of the prompt template used (e.g. `"stage-log-runs-v2"`). |
 
 ### Risk packet additional fields
 
@@ -310,6 +310,8 @@ Each field is an object with:
 | `raw_value` | string or null | The text as written in the source PDF. |
 | `value` | any or null | Normalized or structured representation. `null` for unknown values. |
 | `evidence` | string | Source location, calculation basis, or explanation of why the value is unavailable. |
+
+**Optional `x`.** `stage-log-runs` preserves a legible written `x`, including zero. When `x` is blank and the recorded quantities and documented composition or substitution basis determine a unique value, the skill records the calculation in `measurements.value.derived_x` with `status: "derived"`, a numeric `value`, and `evidence`. The evidence identifies the source row, inputs, basis, calculation, and atomic weights when used. If the source does not determine `x`, it stays blank. Missing `x` alone does not block extraction or approval.
 
 ### Field status values
 

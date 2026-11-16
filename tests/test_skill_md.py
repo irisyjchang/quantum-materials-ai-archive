@@ -50,7 +50,7 @@ def test_lookup_runs_before_assessment_and_stops_when_unlisted():
 
 def test_model_and_prompt_version_are_never_blank():
     assert "Never leave `model` or `prompt_version` blank" in TEXT
-    assert "`prompt_version` to `stage-log-runs-v1`" in TEXT
+    assert "`prompt_version` to `stage-log-runs-v2`" in TEXT
 
 
 def test_commands_appear_in_order():
