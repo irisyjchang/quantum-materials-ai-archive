@@ -821,13 +821,13 @@ Search queries `growth_runs` only and never reads `draft_runs`.
 
 **Implements:** Requirements 25.2, 25.5, 27.4
 
-- [ ] 22.1 Implement `python db/init_db.py test.sqlite --reset`
+- [x] 22.1 Implement `python db/init_db.py test.sqlite --reset`
   - Delete and recreate `test.sqlite` with the MVP schema, and clear `retained_pdfs/test/` and `review_workspace/test/`
   - Refuse any path or environment other than Test; never touch `archive.sqlite`, `config.json`, or Drive PDFs
   - Require an explicit confirmation that walkthrough or acceptance results were saved first
   - _Requirements: 25.2, 25.5, 27.4_
 
-- [ ]* 22.2 Write tests in `tests/test_reset.py`
+- [x]* 22.2 Write tests in `tests/test_reset.py`
   - Using temporary directories: reset empties Test data and leaves a sibling archive database, retained archive PDFs, and config byte-identical; reset against an Archive path is refused; reset without confirmation is refused
   - _Requirements: 25.2, 25.5_
 
@@ -843,31 +843,31 @@ Search queries `growth_runs` only and never reads `draft_runs`.
 
 The backup folder path, naming convention, and recovery targets are not confirmed by the lab. Build the tooling with configurable placeholders and do not hard-code them.
 
-- [ ] 23.1 Implement `tools/backup.py`
+- [x] 23.1 Implement `tools/backup.py`
   - `python tools/backup.py snapshot --env <env> [--dest <folder>] [--reason <label>]` uses SQLite's backup API for a consistent snapshot, and copies the review workspace and the retained PDF versions needed to reopen approvals
   - The destination comes from `config.json` `backup_folder` (null placeholder) or `--dest`; with neither, refuse with a message that the lab has not confirmed a folder
   - Record the timestamp of the last successful backup in a local status file; on failure exit non-zero, record the failure, and leave the last-success value unchanged
   - Support `--reason pre-migration` so the snapshot can be taken before any database migration
   - _Requirements: 26.1, 26.2, 26.3, 26.4_
 
-- [ ] 23.2 Implement `tools/restore.py`
+- [x] 23.2 Implement `tools/restore.py`
   - Restore a snapshot, its workspace, and retained PDFs into a separate Test workspace (for example `test_restore.sqlite`); refuse to restore over `archive.sqlite`
   - _Requirements: 26.7_
 
-- [ ] 23.3 Implement `tools/verify_restore.py`
+- [x] 23.3 Implement `tools/verify_restore.py`
   - Against the restored database: run the search query builder to confirm approved runs are searchable, confirm `run_revisions` history is present, confirm each `storage_path` exists and its SHA-256 equals `file_hash`
   - Report the elapsed restore time and the age of the newest restored approval so they can be compared with the lab's targets
   - _Requirements: 26.5, 26.6, 26.7_
 
-- [ ] 23.4 Show the last successful backup on the status view
+- [x] 23.4 Show the last successful backup on the status view
   - Add the last-backup timestamp and any recorded failure to `GET /status`
   - _Requirements: 26.3_
 
-- [ ]* 23.5 Write tests for backup and restore in `tests/test_backup_restore.py`
+- [x]* 23.5 Write tests for backup and restore in `tests/test_backup_restore.py`
   - Use temporary databases only: a snapshot opens and matches the source; a missing destination is refused; a failed backup does not advance the last-success timestamp; restore into a separate path leaves the source untouched and refuses an Archive target
   - _Requirements: 26.1, 26.2, 26.3, 26.4, 26.7_
 
-- [ ]* 23.6 Write tests for restore verification in `tests/test_verify_restore.py`
+- [x]* 23.6 Write tests for restore verification in `tests/test_verify_restore.py`
   - A restored database with approved runs, revisions, and valid retained PDFs passes; a missing PDF or hash mismatch fails
   - _Requirements: 26.7_
 
@@ -883,7 +883,7 @@ The backup folder path, naming convention, and recovery targets are not confirme
 
 **Implements:** Requirements 27.1, 27.2, 27.5, 27.7, 27.8, 27.9, 27.10, 28.1, 28.2, 28.3, 28.8, 28.12, 28.13, 28.14
 
-- [ ] 24.1 Create `test_checklist.json` (empty template, no PDFs named)
+- [x] 24.1 Create `test_checklist.json` (empty template, no PDFs named)
   - Separate `walkthrough` and `acceptance` lists; each entry keyed by `filename`, `drive_file_id`, and `file_hash`
   - Acceptance entries also hold expected risk tier, expected hold reason, expected run count, per-run source page and row, expected name, date, JC number, stoichiometry where readable, expected approve or hold status, search terms, `expected_recorded_by`, `expected_recorded_at`, and `expected_hold_stage` (`before_extraction`, `in_review`, or null); an optional `first_run_at` is filled when the run starts
   - Add a top-level `tool_versions` record (skill, staging tool, review app) and a `feedback` record (researcher and reviewer tasks, where people got stuck, problems that prevented completion)
@@ -892,7 +892,7 @@ The backup folder path, naming convention, and recovery targets are not confirme
   - Each acceptance entry also has result fields, null until the run: `unnecessary_holds`, `extraction_errors_found_in_review`, and `reviewer_correction_time` (Req 28.14). Numeric tolerances for these are pending Iris, so the template records values without pass or fail thresholds
   - _Requirements: 27.5, 27.7, 28.2, 28.3, 28.12, 28.13, 28.14_
 
-- [ ] 24.2 Implement `tools/check_checklist.py`
+- [x] 24.2 Implement `tools/check_checklist.py`
   - Fail when an entry lacks `filename`, `drive_file_id`, or `file_hash`; when a walkthrough entry shares a `drive_file_id` with an acceptance entry; or when the walkthrough does not include Binder 1 and Binder 2 files
   - Fail when any of the nine missing-information cases in Req 27.2 is uncovered (missing researcher name, missing growth date with a usable timestamp, missing growth date without one, missing JC number, missing furnace cycle detail, missing furnace layout, missing or unclear growth process, missing timestamp, missing optional measurement)
   - Fail when any of the ten critical cases in Req 27.8 (a) to (j) has no walkthrough entry whose `critical_case` names it and that lists no other critical case; a case passes only if it has such an entry or a waiver with `no_example_found: true` and a non-empty `waiver_reason`
@@ -904,7 +904,7 @@ The backup folder path, naming convention, and recovery targets are not confirme
   - The validator checks the lists only. The staging guard (Tasks 4.8 and 6.9) enforces the separation at run time in Test (Requirement 30 with 28.1)
   - _Requirements: 27.1, 27.2, 27.5, 27.7, 27.8, 27.9, 27.10, 28.1, 28.2, 28.3, 28.8, 28.12, 28.14_
 
-- [ ]* 24.3 Write tests in `tests/test_checklist.py`
+- [x]* 24.3 Write tests in `tests/test_checklist.py`
   - Each failure condition is detected on a synthetic checklist that uses placeholder IDs only; a complete synthetic checklist passes
   - Add cases for: no layout-sketch walkthrough PDF, no `before_extraction` acceptance entry, missing `tool_versions`, and `expected_recorded_at` later than `first_run_at`
   - Add a case for `--results`: null 28.14 result fields fail, filled fields pass
@@ -919,7 +919,7 @@ The backup folder path, naming convention, and recovery targets are not confirme
 
 **Requires:** Tasks 1 to 24
 
-- [ ] 25. Checkpoint - Ensure all tests pass, ask the user if questions arise.
+- [x] 25. Checkpoint - Ensure all tests pass, ask the user if questions arise.
   - Run `python -m pytest tests/`; resolve all failures before the operator-run tasks begin.
 
 ---

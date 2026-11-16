@@ -3,6 +3,21 @@
 {% block content %}
   <h1>Processing status</h1>
   {% if reserved_warning %}<p class="notice">{{ reserved_warning }}</p>{% endif %}
+  <div class="backup-status">
+    {% if backup.unreadable %}
+      <p class="notice">{{ backup.unreadable }}</p>
+    {% elif backup.last_success %}
+      <p class="backup-last-success">Last successful backup: {{ backup.last_success.at }}
+        {% if backup.last_success.reason %}({{ backup.last_success.reason }}){% endif %}
+        <span class="version">{{ backup.last_success.snapshot }}</span></p>
+    {% else %}
+      <p class="backup-last-success none">No successful backup recorded for this environment.</p>
+    {% endif %}
+    {% if backup.failure_is_current %}
+      <p class="notice backup-failure">Last backup attempt failed at {{ backup.last_failure.at }}:
+        {{ (backup.last_failure.error or "no reason recorded").rstrip(".") }}. Investigate before relying on the last successful backup.</p>
+    {% endif %}
+  </div>
   {% if cleared_row %}
     <p class="saved">Saved: {{ cleared_row.archive_filename }} is cleared for extraction by {{ cleared_row.clearance_by }}.
       Resume <code>$stage-log-runs</code> on the same PDF version.</p>
