@@ -1,5 +1,8 @@
 # Pilot
 
+- [Field guide and five-model pilot plan](field-guide.md)
+- [Local SQLite walkthrough](sqlite/README.md)
+
 ## ChatGPT — first test
 - **[View extracted JSON](runs/chatgpt/pdf-to-json/run01/output.json)**
 - [Prompt used](runs/chatgpt/pdf-to-json/run01/pdf-to-json-v1.text) · [Run details](runs/chatgpt/pdf-to-json/run01/metadata.json)
