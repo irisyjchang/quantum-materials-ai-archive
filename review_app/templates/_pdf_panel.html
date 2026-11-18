@@ -25,9 +25,14 @@
 
   {% if integrity.ok %}
     {% set page = locations[selected].pdf_index if locations else 1 %}
-    <iframe class="pdf-viewer" title="Source PDF {{ source.filename }}"
-            src="{{ url_for('pdf.source_pdf', pdf_id=source.pdf_id) }}#page={{ page }}"></iframe>
-    <p><a href="{{ url_for('pdf.source_pdf', pdf_id=source.pdf_id) }}#page={{ page }}" target="_blank" rel="noopener">Open the PDF in a new tab</a></p>
+    {% set rotation = (request.args.get('rotation', 0)|int) % 360 %}
+    {% if rotation not in (0, 90, 180, 270) %}{% set rotation = 0 %}{% endif %}
+    <p>
+      <a href="{{ url_for('pdf.source_pdf', pdf_id=source.pdf_id) }}#page={{ page }}" target="_blank" rel="noopener">Open the PDF in a new tab</a>
+      · <a href="?loc={{ selected }}&amp;rotation={{ (rotation + 90) % 360 }}">Rotate preview</a>
+    </p>
+    <img class="pdf-viewer" alt="Source PDF {{ source.filename }}, page {{ page }}"
+         src="{{ url_for('pdf.preview_page', pdf_id=source.pdf_id, page=page, rotation=rotation if rotation else none) }}">
   {% else %}
     <div class="pdf-error integrity-{{ integrity.state }}" role="alert">
       <strong>{% if integrity.state == "mismatch" %}Retained copy changed{% else %}Source PDF unavailable{% endif %}</strong>

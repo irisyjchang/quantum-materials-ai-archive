@@ -170,14 +170,14 @@ def test_every_result_has_an_open_source_pdf_action(review):
 
 def test_open_source_pdf_shows_the_page_and_row_label(review):
     page = review.client.get(f"/runs/{run_id('draft-bob')}/source").get_data(as_text=True)
-    assert f'src="/pdf/{review.pdf_id}#page=1"' in page
+    assert f'src="/pdf/{review.pdf_id}/preview/1"' in page
     assert "page 1, row 4</strong>" in page and 'data-integrity="ok"' in page
 
 
 def test_open_source_pdf_warns_about_a_tampered_copy(review):
     review.storage_path.write_bytes(b"%PDF-1.4\n% altered\n")
     page = review.client.get(f"/runs/{run_id('draft-zhong')}/source").get_data(as_text=True)
-    assert 'data-integrity="mismatch"' in page and "<iframe" not in page
+    assert 'data-integrity="mismatch"' in page and 'class="pdf-viewer"' not in page
 
 
 # JC kept as written through correction and approval (19.4) -------------------------------------------

@@ -3,9 +3,11 @@
 Requirements 3.4, 8.1 to 8.4, 8.6, 10.3. Temporary databases only.
 """
 
+from io import BytesIO
 from pathlib import Path
 
 import pytest
+from PIL import Image
 
 from conftest import PDF_BYTES, query
 from factories import field, run
@@ -74,7 +76,8 @@ def test_unknown_draft_is_not_found(staged):
 def test_viewer_opens_the_recorded_page_with_the_row_label(staged):
     _, pdf_id, _, client = staged
     page = text(client.get("/drafts/draft-p1-r4"))
-    assert f'src="/pdf/{pdf_id}#page=1"' in page
+    assert f'src="/pdf/{pdf_id}/preview/1"' in page
+    assert f'href="/pdf/{pdf_id}#page=1"' in page
     assert "page 1, row 4</strong>" in page
     assert 'href="?loc=1"' in page
 
@@ -82,15 +85,38 @@ def test_viewer_opens_the_recorded_page_with_the_row_label(staged):
 def test_every_recorded_location_is_reachable(staged):
     _, pdf_id, _, client = staged
     page = text(client.get("/drafts/draft-p1-r4?loc=1"))
-    assert f'src="/pdf/{pdf_id}#page=2"' in page
+    assert f'src="/pdf/{pdf_id}/preview/2"' in page
     assert "page 2, row 1</strong>" in page
     assert 'href="?loc=0"' in page
+    rotated = text(client.get("/drafts/draft-p1-r4?loc=1&rotation=90"))
+    assert f'src="/pdf/{pdf_id}/preview/2?rotation=90"' in rotated
 
 
 def test_out_of_range_location_falls_back_to_the_first(staged):
     _, pdf_id, _, client = staged
-    assert f'src="/pdf/{pdf_id}#page=1"' in text(client.get("/drafts/draft-p1-r4?loc=9"))
-    assert f'src="/pdf/{pdf_id}#page=1"' in text(client.get("/drafts/draft-p1-r4?loc=x"))
+    assert f'src="/pdf/{pdf_id}/preview/1"' in text(client.get("/drafts/draft-p1-r4?loc=9"))
+    assert f'src="/pdf/{pdf_id}/preview/1"' in text(client.get("/drafts/draft-p1-r4?loc=x"))
+
+
+def test_preview_renders_the_selected_page_as_an_image(workspace):
+    pdf = BytesIO()
+    with Image.new("RGB", (100, 60), "white") as first, Image.new("RGB", (60, 100), "white") as second:
+        first.save(pdf, format="PDF", save_all=True, append_images=[second])
+    source, file_hash = workspace.make_pdf("log-1-912.pdf", pdf.getvalue())
+    database = workspace.database()
+    assert workspace.risk_assess(workspace.risk_packet(file_hash=file_hash), source_pdf=source) == 0
+    pdf_id, = query(database, "SELECT pdf_id FROM source_pdfs")[0]
+    client = create_app("test", root=workspace.root).test_client()
+
+    preview = client.get(f"/pdf/{pdf_id}/preview/2")
+    assert preview.status_code == 200 and preview.mimetype == "image/jpeg"
+    with Image.open(BytesIO(preview.data)) as image:
+        assert image.height > image.width
+    rotated = client.get(f"/pdf/{pdf_id}/preview/2?rotation=90")
+    assert rotated.status_code == 200
+    with Image.open(BytesIO(rotated.data)) as image:
+        assert image.width > image.height
+    assert client.get(f"/pdf/{pdf_id}/preview/3").status_code == 404
 
 
 def test_pdf_route_serves_the_exact_retained_bytes(staged):
@@ -116,7 +142,7 @@ def test_missing_copy_shows_an_error_but_the_page_loads(staged):
     assert response.status_code == 200
     assert 'data-integrity="missing"' in page
     assert "Source PDF unavailable" in page and "Approval of drafts from this PDF is blocked" in page
-    assert "<iframe" not in page
+    assert 'class="pdf-viewer"' not in page
     assert 'data-field="composition"' in page
     assert client.get(f"/pdf/{pdf_id}").status_code == 409
 
@@ -127,8 +153,9 @@ def test_changed_copy_shows_a_warning_and_blocks_approval(staged):
     page = text(client.get("/drafts/draft-p1-r1"))
     assert 'data-integrity="mismatch"' in page
     assert "Retained copy changed" in page and "Approval of drafts from this PDF is blocked" in page
-    assert "<iframe" not in page
+    assert 'class="pdf-viewer"' not in page
     assert client.get(f"/pdf/{pdf_id}").status_code == 409
+    assert client.get(f"/pdf/{pdf_id}/preview/1").status_code == 409
 
 
 def test_intact_copy_is_not_blocked(staged):

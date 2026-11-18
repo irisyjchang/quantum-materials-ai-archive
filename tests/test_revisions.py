@@ -55,7 +55,7 @@ def test_run_page_shows_values_pdf_and_revision_history(approved):
     assert "Approved run from log-1-901.pdf" in page
     assert '<li class="revision" data-version="1">' in page
     assert f"approved by {REVIEWER}" in page and "Approved as extracted" in page
-    assert f'src="/pdf/{approved.pdf_id}#page=1"' in page and "page 1, row 1</strong>" in page
+    assert f'src="/pdf/{approved.pdf_id}/preview/1"' in page and "page 1, row 1</strong>" in page
     assert 'data-environment="test"' in page
 
 
